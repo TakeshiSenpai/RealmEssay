@@ -1,3 +1,4 @@
 # RealmEssay
 Proyecto De Ingeniería de software
-Hola 
+## RealmEssay
+Para el frontend se usará react con MUI componets
