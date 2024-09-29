@@ -1,4 +1,4 @@
-import requests
+import requests,TTS_local
 
 # URL para procesar la evaluación
 url = 'http://127.0.0.1:5000/process_evaluation'
@@ -8,3 +8,4 @@ response = requests.get(url)
 
 # Imprimir la respuesta del servidor
 print(response.json())
+
