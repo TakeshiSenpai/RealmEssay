@@ -16,7 +16,7 @@ def load_api_token(file_path):
 API_BASE_URL = "https://api.cloudflare.com/client/v4/accounts/a71faaf431a55b28fbf7c2bfbe9c1fba/ai/run/"
 
 # Cargar el token de la API desde el archivo
-api_token = load_api_token('api_token.txt')
+api_token = load_api_token('auth/api_token.txt')
 
 
 # Función para ejecutar el modelo
