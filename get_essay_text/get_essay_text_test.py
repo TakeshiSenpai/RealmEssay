@@ -1,9 +1,10 @@
 import unittest
 import os
+import requests
 
 from get_essay_text import getFileFormat, getPDFText, getTXTText
 
-class SendEssayTest(unittest.TestCase):
+class GetEssayTextTest(unittest.TestCase):
     def testPDFFile(self):
         print("\n\n\n")
         file = os.path.join(os.path.dirname(__file__), 'Propuesta de arquitectura.pdf')
@@ -19,6 +20,7 @@ class SendEssayTest(unittest.TestCase):
         text = getTXTText(file)
         print(text)
         self.assertGreater(len(text), 0)
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
