@@ -1,0 +1,1 @@
+My key is ready to go to make requests and get speech from text from Google. I tried these commands and many more. The docs offer no straight forward solutions to getting started with Python that I've found. I don't know where my API key goes along with the JSON and URL
