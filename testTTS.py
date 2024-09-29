@@ -1,4 +1,4 @@
-import TTS_local,TTS_GCP
+import TTS_local
 
 def run_and_save_from_file(file_path):
     """Read text from a file and convert it to a voice file"""
