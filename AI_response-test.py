@@ -1,4 +1,4 @@
-import os,requests
+import os,requests,TTS_GCP2
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
@@ -90,6 +90,8 @@ def process_evaluation():
         # Verificar si 'result' y 'response' están presentes
         if 'result' in result and 'response' in result['result']:
             ai_response = result['result']['response']
+            cleanText=TTS_GCP2.procesar_texto(ai_response)
+            TTS_GCP2.run_and_save(cleanText,"cleanOutput.mp3")
             return jsonify({"message": "Revisión completada con éxito", "response": ai_response})
         else:
             # Si no está presente el campo esperado
