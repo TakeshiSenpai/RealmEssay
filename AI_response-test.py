@@ -69,7 +69,7 @@ def process_evaluation():
         criteria = f.read()
 
     # Asignar el rol y construir los inputs para la IA
-    role_text = "You are an academic writing assistant. Please evaluate the essay focusing on the following aspects and grade the essays from 0 to 10."
+    role_text = "Usted es un asistente de redacción académica. Por favor, evalúe el ensayo centrándose en los siguientes aspectos y puntúe los ensayos de 0 a 10."
     system_instructions = f"{role_text} {criteria}"
 
     # Inputs para la IA
@@ -82,17 +82,22 @@ def process_evaluation():
     result = run_model("@cf/meta/llama-3-8b-instruct", inputs, timeout=1200)
     print("Resultado de la IA:", result)
 
-    # Revisar el resultado
+  # Revisar el resultado
     if 'error' in result:
         return jsonify({"message": "Error al procesar la solicitud: " + result['error']})
 
     try:
-        ai_response = result['content']
+        # Verificar si 'result' y 'response' están presentes
+        if 'result' in result and 'response' in result['result']:
+            ai_response = result['result']['response']
+            return jsonify({"message": "Revisión completada con éxito", "response": ai_response})
+        else:
+            # Si no está presente el campo esperado
+            return jsonify({"message": "Error al procesar la respuesta de la IA: no se encontró 'response'."})
     except KeyError:
         return jsonify({"message": "Error al procesar la respuesta de la IA."})
 
     # Devolver la evaluación al cliente
-    return jsonify({"message": "Revisión completada con éxito", "response": ai_response})
 # Iniciar la aplicación
 if __name__ == '__main__':
     app.run(debug=True)

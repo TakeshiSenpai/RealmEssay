@@ -5,7 +5,7 @@ url = 'http://127.0.0.1:5000/submit_criteria'
 
 # Datos a enviar
 data = {
-    'criteria': 'Grammar, Structure, Argumentation'
+    'criteria': 'Gramática, estructura y argumentación'
 }
 
 # Enviar la solicitud POST al servidor Flask
