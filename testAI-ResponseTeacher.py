@@ -1,11 +1,11 @@
 import requests
 
-# URL para enviar el ensayo
-url = 'http://127.0.0.1:5000/submit_essay'
+# URL para enviar los criterios
+url = 'http://127.0.0.1:5000/submit_criteria'
 
 # Datos a enviar
 data = {
-    'essay': 'Este es el ensayo del estudiante que será evaluado.'
+    'criteria': 'Grammar, Structure, Argumentation'
 }
 
 # Enviar la solicitud POST al servidor Flask
