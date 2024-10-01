@@ -1,6 +1,7 @@
 import { useState } from "react"
 import React from 'react' //Para crear componentes en react, devuelve un trozo de htlm 
 
+//Para crear todo de golpe usar "   "
 export const NuevoComponente = () => {
 
     const [nombre,SuperNombre] = useState("Enrique")
