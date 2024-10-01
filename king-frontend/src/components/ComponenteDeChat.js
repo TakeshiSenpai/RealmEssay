@@ -3,8 +3,11 @@ import Button from '@mui/joy/Button';
 import Textarea from '@mui/joy/Textarea';
 import {Box} from '@mui/joy';
 import { AttachFile, Send } from '@mui/icons-material';
+import { Navigate } from 'react-router-dom';
 
 export const ComponenteDeChat = () => {
+    const token = localStorage.getItem('token'); 
+
     const [mensaje,setMensaje] = React.useState('');
     const handleChange = (event) => {
         setMensaje(event.target.value); // Actualiza el estado con el valor actual
@@ -15,7 +18,7 @@ export const ComponenteDeChat = () => {
 
 
 
-  return (
+  return token ? (
     <Box 
       sx={{ 
         display: 'flex',          // Usar flexbox
@@ -67,7 +70,5 @@ export const ComponenteDeChat = () => {
     </Box>
     </Box>
       
-  );
+  ) : <Navigate to="/auth" />;
 }
-
-//export const ComponenteDeChat = () => {
