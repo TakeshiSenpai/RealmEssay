@@ -2,11 +2,16 @@
 
 .venv
 .env
+venv/
 
 __pycache__
 *.pyc
 
 **/pyvenv.cfg
+
+# IDEs
+.idea
+.vscode
 
 # Node
 
