@@ -1,20 +1,20 @@
-import * as React from 'react';
-import Button from '@mui/joy/Button';
-import Textarea from '@mui/joy/Textarea';
-import {Box} from '@mui/joy';
-import { AttachFile, Send } from '@mui/icons-material';
-import { Navigate } from 'react-router-dom';
+import * as React from 'react'
+import Button from '@mui/joy/Button'
+import Textarea from '@mui/joy/Textarea'
+import {Box} from '@mui/joy'
+import { AttachFile, Send } from '@mui/icons-material'
+import { Navigate } from 'react-router-dom'
 
 export const ComponenteDeChat = () => {
-    const token = localStorage.getItem('token'); 
+    const token = localStorage.getItem('token') 
 
-    const [mensaje,setMensaje] = React.useState('');
+    const [mensaje,setMensaje] = React.useState('')
     const handleChange = (event) => {
-        setMensaje(event.target.value); // Actualiza el estado con el valor actual
-      };
+        setMensaje(event.target.value) // Actualiza el estado con el valor actual
+      }
       const handleSubmit = () => {
-        console.log("Mensaje escrito:", mensaje); // Aquí podrías hacer algo con el mensaje, como enviarlo a una API
-      };
+        console.log("Mensaje escrito:", mensaje) // Aquí podrías hacer algo con el mensaje, como enviarlo a una API
+      }
 
 
 
@@ -70,5 +70,5 @@ export const ComponenteDeChat = () => {
     </Box>
     </Box>
       
-  ) : <Navigate to="/auth" />;
+  ) : <Navigate to="/auth" />
 }
