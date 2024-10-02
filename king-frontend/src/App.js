@@ -30,7 +30,7 @@ function App() {
 
     <Box sx = {{ bgcolor : '#343541', height: '110 vh',    padding: '20px'}}>
       
-        <ComponenteDeChat/>
+        <ComponenteDelChat/>
       
     </Box>
     
