@@ -9,3 +9,7 @@ y remplazar sus datos en la variable "uri", por su url correspondiente en la bas
 
 Enlace a la base de datos de MongoDB :
 mongodb+srv://<db_username>:<db_password>@cluster0.2b8il.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
+Usuarios:
+Manu: yxoE2ZAonqZVYecY
+Kadir: uG3oSpwwxFWLvjks
