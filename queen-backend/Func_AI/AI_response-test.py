@@ -16,7 +16,7 @@ def load_api_token(file_path):
 API_BASE_URL = "https://api.cloudflare.com/client/v4/accounts/a71faaf431a55b28fbf7c2bfbe9c1fba/ai/run/"
 
 # Cargar el token de la API desde el archivo
-api_token = load_api_token('auth/api_token.txt')
+api_token = load_api_token('queen-backend\\Func_AI\\Auth\\API_token.txt')
 
 
 # Función para ejecutar el modelo
@@ -35,7 +35,8 @@ def run_model(model, inputs, timeout=1200):
 # Ruta para que el estudiante envíe el ensayo
 @app.route('/submit_essay', methods=['POST'])
 def submit_essay():
-    essay_text = request.form['essay']  # Obtenemos el texto enviado por el estudiante
+    data=request.json
+    essay_text = data.get('essay')  # Obtenemos el texto enviado por el estudiante
 
     # Guardar el ensayo en un archivo temporal
     with open(ESSAY_FILE, 'w') as f:
@@ -46,7 +47,8 @@ def submit_essay():
 # Ruta para que el profesor envíe los criterios de evaluación
 @app.route('/submit_criteria', methods=['POST'])
 def submit_criteria():
-    criteria = request.form['criteria']  # Criterios proporcionados por el profesor
+    data=request.json
+    criteria = data.get('criteria')  # Criterios proporcionados por el profesor
 
     # Guardar los criterios en un archivo temporal
     with open(CRITERIA_FILE, 'w') as f:
