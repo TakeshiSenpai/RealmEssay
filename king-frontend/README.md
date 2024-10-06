@@ -12,7 +12,8 @@ Para correr el proyecto, sigue estos pasos:
     pip install -r ../queen-backend/requirements.txt
     ```
 
-3. Corre el backend localizado en la carpeta ```queen-backend/Auth```.
+3. Corre el backend localizado en la carpeta ```queen-backend/api-_getway```.
+   - VER README.md en la carpeta ```queen-backend/```.
 4. Corre el frontend:
     ```sh
     npm run start
