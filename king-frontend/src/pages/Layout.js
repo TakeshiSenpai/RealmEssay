@@ -11,9 +11,9 @@ import DialogContent from '@mui/joy/DialogContent';
 import Box from '@mui/joy/Box';
 import Typography from '@mui/joy/Typography';
 import { Outlet, Link } from "react-router-dom";
-import { ChangeCircleTwoTone, ExitToApp, Home, MenuBookOutlined } from '@mui/icons-material';
+import {ChangeCircleTwoTone, EditNote, ExitToApp, Home, MenuBookOutlined} from '@mui/icons-material';
 import { ListItemButton, ListItemContent } from '@mui/joy';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 
 const Layout = () => {
   const [open, setOpen] = React.useState(false);
@@ -43,9 +43,7 @@ const Layout = () => {
         <MenuBookOutlined />
       </IconButton>
       <Drawer open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>
-          Envio de ensayos
-        </DialogTitle>
+        <DialogTitle>Envío de ensayos</DialogTitle>
         <DialogContent>
           <List>
             <ListItem>
@@ -54,10 +52,16 @@ const Layout = () => {
                 <ListItemContent>Home</ListItemContent>
               </ListItemButton>
             </ListItem>
+            {/*<ListItem>*/}
+            {/*  <ListItemButton component={Link} to="/blogs" onClick={() => setOpen(false)}> */}
+            {/*    <ListItemDecorator>🧅</ListItemDecorator> */}
+            {/*    <ListItemContent>Blogs</ListItemContent>*/}
+            {/*  </ListItemButton>*/}
+            {/*</ListItem>*/}
             <ListItem>
-              <ListItemButton component={Link} to="/blogs" onClick={() => setOpen(false)}> 
-                <ListItemDecorator>🧅</ListItemDecorator> 
-                <ListItemContent>Blogs</ListItemContent>
+              <ListItemButton component={Link} to="/Rubrica" onClick={() => setOpen(false)}>
+                <ListItemDecorator><EditNote /></ListItemDecorator>
+                <ListItemContent>Rúbrica</ListItemContent>
               </ListItemButton>
             </ListItem>
           </List>

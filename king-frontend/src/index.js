@@ -7,16 +7,18 @@ import reportWebVitals from './reportWebVitals';
 import Layout from "./pages/Layout";
 import Home from "./pages/Home";
 import Auth from './pages/Auth';
+import Rubrica from "./pages/Rubrica";
 
-export default function App3() {
+function App3() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} /> 
+            <Route index element={<Home />} />
+            <Route path="/rubrica" element={<Rubrica />} />
         </Route>
 
-        <Route path="/auth" element={<Auth />} /> 
+        <Route path="/auth" element={<Auth />} />
       </Routes>
     </BrowserRouter>
   );

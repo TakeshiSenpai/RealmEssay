@@ -1,5 +1,4 @@
-# Getting Started with Create React App
-
+# Getting Started with King-Frontend
 Para correr el proyecto, sigue estos pasos:
 
 1. Instala los requerimientos del frontend:
