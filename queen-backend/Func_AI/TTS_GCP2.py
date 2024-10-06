@@ -3,7 +3,7 @@ from google.cloud import texttospeech
 import os
 
 # Configura el entorno con la ruta de las credenciales
-os.environ["GOOGLE_APP_CREDENTIALS"]="auth/testservices-437021-9f204df463fb.json"
+os.environ["GOOGLE_APP_CREDENTIALS"]="queen-backend\\Func_AI\\Auth\\testservices-437021-9f204df463fb.json"
 
 # Función para limpiar el texto
 def procesar_texto(texto):
