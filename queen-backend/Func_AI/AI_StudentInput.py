@@ -10,8 +10,8 @@ def realInput(data):
         response.raise_for_status()
         # Imprimir la respuesta del servidor
         print(response.json())
-    except requests.exceptions.requestException as e:
-        print("error al realizar la solicitud {e}")
+    except requests.exceptions.RequestException as e:
+        print(f"error al realizar la solicitud {e}")
 
 
 
