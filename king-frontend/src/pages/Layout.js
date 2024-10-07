@@ -111,7 +111,7 @@ const Layout = () => {
               <FormControl>
                 <Input autoFocus required name="codigo" />
               </FormControl>
-              <Button type="submit">Submit</Button>
+              <Button type="submit">Enviar</Button>
             </Stack>
           </form>
         </ModalDialog>
@@ -121,7 +121,7 @@ const Layout = () => {
           <List>
           {arregloDeConversaciones.map((_, index) => (
               <ListItem key={index}>
-                <ListItemButton component={Link} to="/blogs" onClick={() => setOpen(false)}>
+                <ListItemButton component={Link} to="/" onClick={() => setOpen(false)}>
                   {arregloDeConversaciones[index].length > 30?arregloDeConversaciones[index].slice(0,25)+"...":arregloDeConversaciones[index]  }
                 </ListItemButton>
               </ListItem>
