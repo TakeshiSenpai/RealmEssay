@@ -1,0 +1,23 @@
+{
+    "Nombre": "Dr. Juan Pérez",
+    "Email": "juan.perez@uabc.edu.mx",
+    "Carrera": "Ingeniería en Computación",
+    "cursos": [
+    {
+      "Nombre del curso": "Ingeniería de software",
+      "Código": "301"
+    },
+    {
+      "Nombre del curso": "Programación Estructurada",
+      "Código": "302"
+    },
+    {
+      "Nombre del curso": "Cálculo Integral",
+      "Código": "303"
+    }
+  ],
+    "Cubículo": "cubículo A",
+    "Fecha de creación": "2018-08-15",
+    "Estado": "Activo"
+}
+  

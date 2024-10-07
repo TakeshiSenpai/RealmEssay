@@ -4,8 +4,10 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 # Rutas donde se almacenarán temporalmente los datos
-ESSAY_FILE = "essay.txt"
-CRITERIA_FILE = "criteria.txt"
+
+ESSAY_FILE = "queen-backend\\Func_AI\\essay.txt"
+CRITERIA_FILE = "queen-backend\\Func_AI\\criteria.txt"
+
 
 # Cargar el token desde un archivo
 def load_api_token(file_path):
