@@ -1,8 +1,8 @@
-from flask import Flask, jsonify, request
+from flask import Flask
 from flask_cors import CORS
 
 import Auth.google_auth as google_auth
-
+from ia_function.process_rubric import process_rubric
 app = Flask(__name__)
 CORS(app)
 
@@ -12,11 +12,7 @@ def login_google():
 
 @app.route('/tarea/rubrica', methods=['POST'])
 def get_rubric():
-    if request.json.get('rubrica'):
-        print(request.json.get('rubrica'))
-        return jsonify({'success': True, 'message': 'Rúbrica recibida'}), 200
-    else:
-        return jsonify({'success': False, 'message': 'Rúbrica no recibida'}), 400
+    return process_rubric()
 
 @app.after_request
 def add_header(response):
