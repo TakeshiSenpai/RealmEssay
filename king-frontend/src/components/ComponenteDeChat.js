@@ -58,7 +58,7 @@ export const ComponenteDeChat = () => {
         sx={{ mb:'auto' }} // Ajustar la altura del botón
       >
         <AttachFile/> 
-        <VisuallyHiddenInput type="file" accept=".pdf"/>
+        <VisuallyHiddenInput type="file" accept=".pdf, .txt"/>
       </IconButton>
 
       {/* Área de texto en el centro */}

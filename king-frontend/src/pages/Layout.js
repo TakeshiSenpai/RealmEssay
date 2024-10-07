@@ -11,7 +11,7 @@ import Box from '@mui/joy/Box';
 import Typography from '@mui/joy/Typography';
 import ViewSidebarRoundedIcon from '@mui/icons-material/ViewSidebarRounded';
 import { Outlet, Link } from "react-router-dom";
-import { ListItemButton } from '@mui/joy';
+import {ListItemButton, ListItemContent, ListItemDecorator} from '@mui/joy';
 import { useNavigate } from 'react-router-dom'; 
 import Tooltip from '@mui/joy/Tooltip';
 import {Divider } from '@mui/material';
@@ -29,6 +29,7 @@ import MenuButton from '@mui/joy/MenuButton';
 import MenuItem from '@mui/joy/MenuItem';
 import MoreVert from '@mui/icons-material/MoreVert';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
+import {EditNote} from "@mui/icons-material";
 
 const drawerWidth = 240;  // Define el a
 const Layout = () => {
@@ -94,8 +95,8 @@ const Layout = () => {
           </Tooltip>
           <Modal open={openModal} onClose={() => setOpenModal(false)}>
         <ModalDialog>
-          <DialogTitle>Ingresa el codigo de chat</DialogTitle>
-          <DialogContent>El codigo debe ser proporsionado por su profesor</DialogContent>
+          <DialogTitle>Ingresa el código de chat</DialogTitle>
+          <DialogContent>El código debe ser proporcionado por su profesor</DialogContent>
           <form
             onSubmit={(event) => {
               event.preventDefault();
