@@ -1,5 +1,7 @@
 import unittest
 import os
+from pathlib import Path
+
 import requests
 
 from get_essay_text import getFileFormat, getPDFText, getTXTText
@@ -7,7 +9,7 @@ from get_essay_text import getFileFormat, getPDFText, getTXTText
 class GetEssayTextTest(unittest.TestCase):
     def testPDFFile(self):
         print("\n\n\n")
-        file = os.path.join(os.path.dirname(__file__), 'Propuesta de arquitectura.pdf')
+        file = str(Path('Propuesta de arquitectura.pdf'))
         self.assertEqual(getFileFormat(file).lower(), 'pdf')
         text = getPDFText(file)
         print(text)

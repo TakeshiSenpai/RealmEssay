@@ -93,11 +93,11 @@ export const Rubrica = () => {
         // Todo bien, enviar rúbrica
         try {
             const response = await fetch('http://127.0.0.1:5000/tarea/rubrica', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({rubrica: sentParameters})
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({rubrica: sentParameters})
             })
 
             const data = await response.json()
@@ -111,7 +111,7 @@ export const Rubrica = () => {
         <Box sx={{paddingTop: -5, paddingX: 2}}>
             <h1>Rúbrica</h1>
 
-            <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+            <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center',}}>
                 <p>Prueba del envío de rúbrica</p>
                 {(parameters.length > 0) &&
                     <p>Total de puntos: <strong>{parameters.reduce((sum, param) => sum + param.totalValue, 0)}</strong>
@@ -194,7 +194,7 @@ export const Rubrica = () => {
                     </Box>
 
                     {/* Criterias */}
-                    <Box sx={{display: 'flex', overflowX: 'auto', gap: 2}}>
+                    <Box sx={{display: 'flex', overflowX: 'auto', gap: 2, maxWidth: '100%', whiteSpace: 'wrap'}}>
                         {parameter.criterias.map((criteria, criteriaIndex) => (
                             <Box
                                 key={criteriaIndex}
