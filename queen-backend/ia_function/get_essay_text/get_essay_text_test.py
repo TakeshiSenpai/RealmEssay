@@ -14,7 +14,7 @@ class GetEssayTextTest(unittest.TestCase):
 
     def testTXTFile(self):
         print("\n\n\n")
-        file =str(Path('Propuesta de arquitectura.txt'))
+        file = str(Path('Propuesta de arquitectura.txt'))
         self.assertEqual(getFileFormat(file).lower(), 'txt')
         text = getTXTText(file)
         print(text)
