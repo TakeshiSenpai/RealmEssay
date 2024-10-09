@@ -1,4 +1,4 @@
-import requests,TTS_local
+import requests
 
 # URL para procesar la evaluación
 url = 'http://127.0.0.1:5000/process_evaluation'
