@@ -19,6 +19,7 @@ itsdangerous
 Jinja2
 MarkupSafe
 oauthlib
+pathlib
 pyasn1
 pyasn1_modules
 pycparser
