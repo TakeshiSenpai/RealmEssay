@@ -5,8 +5,8 @@ app = Flask(__name__)
 
 # Rutas donde se almacenarán temporalmente los datos
 
-ESSAY_FILE = "queen-backend\\Func_AI\\essay.txt"
-CRITERIA_FILE = "queen-backend\\Func_AI\\criteria.txt"
+ESSAY_FILE = "essay.txt"
+CRITERIA_FILE = "criteria.txt"
 
 
 # Cargar el token desde un archivo
@@ -18,7 +18,7 @@ def load_api_token(file_path):
 API_BASE_URL = "https://api.cloudflare.com/client/v4/accounts/a71faaf431a55b28fbf7c2bfbe9c1fba/ai/run/"
 
 # Cargar el token de la API desde el archivo
-api_token = load_api_token('queen-backend\\Func_AI\\Auth\\API_token.txt')
+api_token = load_api_token('Auth\\API_token.txt')
 
 
 # Función para ejecutar el modelo
