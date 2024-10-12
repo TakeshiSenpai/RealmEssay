@@ -1,6 +1,7 @@
-import AI_StudentInput
-from get_essay_text import get_essay_text
+from pathlib import Path
 
+import ia_student_input
+from ia_function.get_essay_text import get_essay_text
 
 import re
 
@@ -20,8 +21,6 @@ def test(filename):
         'essay' : text
     }
     print(text_data)
-    AI_StudentInput.realInput(text_data)
+    ia_student_input.real_input(text_data)
 
-test('queen-backend\\Func_AI\\get_essay_text\\Propuesta de arquitectura.pdf')
-
-
+test(str(Path('../get_essay_text/Propuesta de arquitectura.pdf')))

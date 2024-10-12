@@ -2,7 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 
 import authentication.google_auth as google_auth
-from ia_function.process_rubric import process_rubric
+from ia_function.process_rubric.process_rubric import process_rubric
 app = Flask(__name__)
 CORS(app)
 
