@@ -1,7 +1,5 @@
 import os,requests,TTS_GCP2
 from flask import Flask, request, jsonify
-import ia_function.tts.tts_gcp2 as tts_gcp2
-from pathlib import Path
 
 app = Flask(__name__)
 
@@ -9,6 +7,7 @@ app = Flask(__name__)
 
 ESSAY_FILE = "essay.txt"
 CRITERIA_FILE = "criteria.txt"
+
 
 # Cargar el token desde un archivo
 def load_api_token(file_path):
@@ -19,7 +18,8 @@ def load_api_token(file_path):
 API_BASE_URL = "https://api.cloudflare.com/client/v4/accounts/a71faaf431a55b28fbf7c2bfbe9c1fba/ai/run/"
 
 # Cargar el token de la API desde el archivo
-api_token = load_api_token(Path('../model_authentication/api_token.txt'))
+api_token = load_api_token('Auth\\API_token.txt')
+
 
 # Función para ejecutar el modelo
 def run_model(model, inputs, timeout=1200):
@@ -94,8 +94,8 @@ def process_evaluation():
         # Verificar si 'result' y 'response' están presentes
         if 'result' in result and 'response' in result['result']:
             ai_response = result['result']['response']
-            cleanText=tts_gcp2.procesar_texto(ai_response)
-            tts_gcp2.run_and_save(cleanText,"cleanOutput.mp3")
+            cleanText=TTS_GCP2.procesar_texto(ai_response)
+            TTS_GCP2.run_and_save(cleanText,"cleanOutput.mp3")
             return jsonify({"message": "Revisión completada con éxito", "response": ai_response})
         else:
             # Si no está presente el campo esperado

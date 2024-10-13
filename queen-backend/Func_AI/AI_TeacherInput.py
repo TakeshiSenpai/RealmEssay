@@ -4,7 +4,7 @@ import requests
 url = 'http://127.0.0.1:5000/submit_criteria'
 
 
-def real_input(data):
+def realInput(data):
     try:
         response = requests.post(url, json=data)
         response.raise_for_status()
@@ -14,7 +14,7 @@ def real_input(data):
         print("error al realizar la solicitud {e}")
 
 
-def test_input():
+def testInput():
     # Datos a enviar
     data = {
         'criteria': 'Gramática, estructura y argumentación'
@@ -27,4 +27,4 @@ def test_input():
     print(response.json())
 
 
-test_input()
+testInput()
