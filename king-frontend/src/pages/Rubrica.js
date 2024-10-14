@@ -108,6 +108,8 @@ export const Rubrica = () => {
     }
 
     return (
+        <Box sx={{ maxWidth: '600px', margin: '0 auto', padding: '2rem', border: '1px solid #ddd', borderRadius: '8px' }}>
+   
         <Box sx={{paddingTop: -5, paddingX: 2}}>
             <h1>Rúbrica</h1>
 
@@ -303,6 +305,7 @@ export const Rubrica = () => {
                     Enviar Rúbrica
                 </Button>
             </Box>
+        </Box>
         </Box>
     )
 }

@@ -1,4 +1,4 @@
-import os, requests
+import os,requests,TTS_GCP2
 from flask import Flask, request, jsonify
 import ia_function.tts.tts_gcp2 as tts_gcp2
 from pathlib import Path
