@@ -1,14 +1,16 @@
-import os,requests,TTS_GCP2
+
+import os, requests,json
 from flask import Flask, request, jsonify
-import ia_function.tts.tts_gcp2 as tts_gcp2
-from pathlib import Path
+import pathlib 
+from tts import tts_gcp2
 
 app = Flask(__name__)
 
 # Rutas donde se almacenarán temporalmente los datos
 
-ESSAY_FILE = "essay.txt"
-CRITERIA_FILE = "criteria.txt"
+ESSAY_FILE = pathlib.Path('queen-backend/ia_function/ia_response/essay.txt').resolve()
+CRITERIA_FILE = pathlib.Path('queen-backend/ia_function/ia_response/criteria.txt').resolve()
+
 
 # Cargar el token desde un archivo
 def load_api_token(file_path):
@@ -19,21 +21,49 @@ def load_api_token(file_path):
 API_BASE_URL = "https://api.cloudflare.com/client/v4/accounts/a71faaf431a55b28fbf7c2bfbe9c1fba/ai/run/"
 
 # Cargar el token de la API desde el archivo
-api_token = load_api_token(Path('../model_authentication/api_token.txt'))
 
-# Función para ejecutar el modelo
-def run_model(model, inputs, timeout=1200):
+api_token = load_api_token(pathlib.Path('queen-backend\\ia_function\\model_authentication\\api_token.txt').resolve())
+
+
+#Función para ejecutar el modelo
+def run_model(model, inputs, timeout=1200, stream=True):
     headers = {"Authorization": f"Bearer {api_token}"}
-    input_data = { "messages": inputs }
+    input_data = {"messages": inputs, "stream": stream}
+    
     try:
-        response = requests.post(f"{API_BASE_URL}{model}", headers=headers, json=input_data, timeout=timeout)
-        response.raise_for_status()
-        return response.json()
+        # Enviar la solicitud
+        response = requests.post(f"{API_BASE_URL}{model}", headers=headers, json=input_data, timeout=timeout, stream=stream)
+
+        if stream:
+            # Si el stream está activado, procesamos la respuesta en fragmentos
+            if response.status_code == 200:
+                complete_response = ""
+                for chunk in response.iter_content(chunk_size=None):
+                    if chunk:
+                        try:
+                            clear_chunk=chunk.decode('utf-8')
+                            print(clear_chunk)
+                            #clear_chunk=json.loads(clear_chunk)
+                            #clean_text=clear_chunk.get("response","")
+                            complete_response += clear_chunk
+                            print(complete_response)  # Aquí podrías ir procesando los chunks si es necesario
+                        except (json.JSONDecodeError, UnicodeDecodeError) as e:
+                            print(f"error de decodificacion: {e}")
+                # Si quieres devolver el resultado completo como un JSON al final:
+                return {"result": {"response": complete_response}}
+
+            else:
+                return {"error": f"Error: {response.status_code} - {response.text}"}
+        else:
+            # Si el stream no está activado, devolvemos el JSON completo
+            response.raise_for_status()
+            return response.json()
+
     except requests.exceptions.Timeout:
         return {"error": f"La solicitud ha superado el tiempo máximo de {timeout} segundos"}
     except requests.exceptions.RequestException as e:
         return {"error": str(e)}
-
+    
 # Ruta para que el estudiante envíe el ensayo
 @app.route('/submit_essay', methods=['POST'])
 def submit_essay():
@@ -82,9 +112,9 @@ def process_evaluation():
         {"role": "user", "content": essay_text}
     ]
 
-    # Ejecutar el modelo de IA (usando tu función `run_model`)
-    result = run_model("@cf/meta/llama-3-8b-instruct", inputs, timeout=1200)
-    print("Resultado de la IA:", result)
+    # Ejecutar el modelo de IA 
+    result = run_model("@cf/meta/llama-3-8b-instruct", inputs, timeout=1200,stream=True)
+   # print("Resultado de la IA:", result)
 
   # Revisar el resultado
     if 'error' in result:
@@ -94,16 +124,14 @@ def process_evaluation():
         # Verificar si 'result' y 'response' están presentes
         if 'result' in result and 'response' in result['result']:
             ai_response = result['result']['response']
-            cleanText=tts_gcp2.procesar_texto(ai_response)
-            tts_gcp2.run_and_save(cleanText,"cleanOutput.mp3")
+            cleanText = tts_gcp2.procesar_texto(ai_response)
+            #tts_gcp2.run_and_save(cleanText, "cleanOutput.mp3")
             return jsonify({"message": "Revisión completada con éxito", "response": ai_response})
         else:
             # Si no está presente el campo esperado
             return jsonify({"message": "Error al procesar la respuesta de la IA: no se encontró 'response'."})
     except KeyError:
         return jsonify({"message": "Error al procesar la respuesta de la IA."})
-
-    # Devolver la evaluación al cliente
 # Iniciar la aplicación
 if __name__ == '__main__':
     app.run(debug=True)
