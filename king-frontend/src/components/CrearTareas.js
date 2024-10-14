@@ -1,54 +1,45 @@
-import React, { useState } from 'react';
-import { Box, TextField, Typography, Stack } from '@mui/material';
+import { useEffect } from 'react';
+import { TextField, Box, Typography } from '@mui/material';
 
-export const CrearTarea = () => {
-  const [nombreTarea, setNombreTarea] = useState('');
-  const [descripcion, setDescripcion] = useState('');
-  const [listaNombres, setListaNombres] = useState('');
+const CrearTareas = ({ parametrosTarea, setParametrosTarea }) => {
 
-  const handleEnvio = (e) => {
-    e.preventDefault();
-    console.log("Nombre de la Tarea:", nombreTarea);
-    console.log("Descripción:", descripcion);
-    console.log("Lista de Nombres:", listaNombres);
-    // Aquí puedes manejar el envío de datos
+  const cambiarParametros = (field, value) => {
+    // Actualiza el estado de parametrosTarea basado en el campo que se está editando
+    setParametrosTarea((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
+  // Este efecto se puede usar si necesitas ejecutar algún código cuando cambian los parámetros
+  useEffect(() => {
+    console.log("Parametros actualizados:", parametrosTarea);
+  }, [parametrosTarea]);
+
   return (
-    <Box >
+    <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
       <Typography variant="h5" component="h1" gutterBottom>
-        Crear Tarea
+        Crear tarea
       </Typography>
-      <form onSubmit={handleEnvio}>
-        <Stack spacing={3}>
-          <TextField
-            label="Nombre de la Tarea"
-            variant="outlined"
-            fullWidth
-            value={nombreTarea}
-            onChange={(e) => setNombreTarea(e.target.value)}
-          />
-          <TextField
-            label="Descripción"
-            variant="outlined"
-            fullWidth
-            multiline
-            rows={4}
-            value={descripcion}
-            onChange={(e) => setDescripcion(e.target.value)}
-          />
-          <TextField
-            label="Lista de Nombres"
-            variant="outlined"
-            fullWidth
-            value={listaNombres}
-            onChange={(e) => setListaNombres(e.target.value)}
-            placeholder="Separar nombres por comas"
-          />
-          </Stack>
-      </form>
-      
+      <TextField
+        label="Nombre de la tarea"
+        value={parametrosTarea.taskName}
+        onChange={(e) => cambiarParametros('taskName', e.target.value)}
+      />
+      <TextField
+        label="Descripción"
+        value={parametrosTarea.description}
+        onChange={(e) => cambiarParametros('description', e.target.value)}
+        multiline
+        rows={4}
+      />
+      <TextField
+        label="Lista de estudiantes"
+        value={parametrosTarea.studentList}
+        onChange={(e) => cambiarParametros('studentList', e.target.value)}
+      />
     </Box>
   );
 };
-export default CrearTarea 
+
+export default CrearTareas;
