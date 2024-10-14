@@ -7,8 +7,8 @@ app = Flask(__name__)
 
 # Rutas donde se almacenarán temporalmente los datos
 
-ESSAY_FILE = "queen-backend\\Func_AI\\essay.txt"
-CRITERIA_FILE = "queen-backend\\Func_AI\\criteria.txt"
+ESSAY_FILE = "queen-backend\\ia_response\\essay.txt"
+CRITERIA_FILE = "queen-backend\\ia_response\criteria.txt"
 
 
 # Cargar el token desde un archivo
