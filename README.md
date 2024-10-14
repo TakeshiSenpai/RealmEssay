@@ -2,7 +2,7 @@
 
 **RealmEssay** **_será_** una aplicación impulsada por inteligencia artificial diseñada para calificar ensayos automáticamente, proporcionando retroalimentación detallada.
 
-## Desarrolladores
+## Princesos
 
 <table>
   <tr style="vertical-align: top; text-align: center">
