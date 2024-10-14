@@ -65,7 +65,7 @@
 
 ### Backend
 
-En el backend, escrito en Python, seguiremos la convención **snake_case** para variables, funciones, archivos y carpetas, todo en minúsculas. Los comentarios de las funciones deben incluir un comentario superior que explique qué hace la función y cómo lo hace, especialmente si la función es compleja.
+En el backend, escrito en Python, seguiremos la convención **snake_case** para variables, funciones, archivos y carpetas, todo en minúsculas. Todo código debe estar escrito en inglés. Los comentarios de las funciones deben incluir un comentario superior en español que explique qué hace la función y cómo lo hace, especialmente si la función es compleja.
 
 ##### Comentarios
 - Los comentarios deben de estar en español, a menos que sea necesario usar un término técnico en inglés.
@@ -165,7 +165,7 @@ ia_authentication_test.py
 
 ### Frontend
 
-En el frontend, escrito en JavaScript y React, seguiremos la convención **camelCase** para las variables y funciones mientras que se utilizará **PascalCase** para los archivos y carpetas. Los comentarios de las funciones deben incluir un comentario superior que explique qué hace la función y cómo lo hace, especialmente si la función es compleja.
+En el frontend, escrito en JavaScript y React, seguiremos la convención **camelCase** para las variables y funciones mientras que se utilizará **PascalCase** para los archivos y carpetas. Todo código debe de estar en inglés. Los comentarios de las funciones deben incluir un comentario superior en español que explique qué hace la función y cómo lo hace, especialmente si la función es compleja.
 
 ##### Comentarios
 - Los comentarios deben de estar en español, a menos que sea necesario usar un término técnico en inglés.
@@ -271,10 +271,8 @@ function fetchData() {
 ```javascript
 // Do
 function authenticateUser(request) {
-    if (!request || !request.user || !request.user.isAuthenticated) {
+    if (!request || !request.user || !request.user.isAuthenticated)
         return errorResponse('User is not authenticated')
-    }
-    
     return request.user
 }
 
