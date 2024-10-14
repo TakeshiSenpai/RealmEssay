@@ -29,7 +29,7 @@ import MenuButton from '@mui/joy/MenuButton';
 import MenuItem from '@mui/joy/MenuItem';
 import MoreVert from '@mui/icons-material/MoreVert';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
-import {EditNote} from "@mui/icons-material";
+import {BluetoothAudio, EditNote} from "@mui/icons-material";
 
 const drawerWidth = 240;  // Define el a
 const Layout = () => {
@@ -37,8 +37,11 @@ const Layout = () => {
   const [openModal, setOpenModal] = React.useState(false);  
   const [userInfo, setUserInfo] = useState({ name: '', institution: '', picture: '' });
   const [arregloDeConversaciones,setArregloDeConversaciones] = useState(["Home"]);
+  const [arregloDeTareas,setArregloDeTareas] = useState(["Primera Tarea"]);
+  
   const navigate = useNavigate(); 
   const [dark, setDark] = React.useState(false);
+  const [esAlumno,setAlumno] = React.useState(true);
   useEffect(() => {
     const storedUserInfo = localStorage.getItem('userInfo');
     
@@ -59,9 +62,38 @@ const Layout = () => {
     setArregloDeConversaciones([...arregloDeConversaciones,codigo])
 
   }
-  
-  
+  const cambiarVista = ()=>{
+    setAlumno(!esAlumno);
+  }
+  const addArregloDeTareas = (nombre)=>{
+    setArregloDeConversaciones([...arregloDeConversaciones,nombre])
 
+  }
+
+
+  const mostrarContenidoEnSidebarListItem=()=>{
+    if(esAlumno){
+      return [
+        arregloDeConversaciones.map((_, index) => (
+          <ListItem key={index}>
+            <ListItemButton component={Link} to="/" >
+              {arregloDeConversaciones[index].length > 30?arregloDeConversaciones[index].slice(0,25)+"...":arregloDeConversaciones[index]  }
+            </ListItemButton>
+          </ListItem>
+        ))
+      ]
+    }
+    return [
+      arregloDeTareas.map((_, index) => (
+        <ListItem key={index}>
+          <ListItemButton component={Link} to="/" >
+            {arregloDeTareas[index].length > 30?arregloDeTareas[index].slice(0,25)+"...":arregloDeTareas[index]  }
+          </ListItemButton>
+        </ListItem>
+      ))
+    ]
+
+  }
   return (
     <Box sx={{ display: 'flex' }}>
       
@@ -88,7 +120,8 @@ const Layout = () => {
             </IconButton>
           </Tooltip>
           <Tooltip title= "Ingresar codigo de conversacion"> 
-            <IconButton sx={{ml:'auto'}}color="neutral" aria-label="delete" onClick={() => setOpenModal(true)}>
+            <IconButton sx={{ml:'auto'}}color="neutral" aria-label="delete" component={Link} to={esAlumno ? "" : "/Tarea"} onClick={esAlumno
+            ?() => setOpenModal(true) : () => setOpen(false)}>
             <AddIcon/>
             </IconButton>
 
@@ -119,16 +152,13 @@ const Layout = () => {
           </Box>
         <Divider/>
           <List>
-          {arregloDeConversaciones.map((_, index) => (
-              <ListItem key={index}>
-                <ListItemButton component={Link} to="/" onClick={() => setOpen(false)}>
-                  {arregloDeConversaciones[index].length > 30?arregloDeConversaciones[index].slice(0,25)+"...":arregloDeConversaciones[index]  }
-                </ListItemButton>
-              </ListItem>
-            ))}
+          {
+            mostrarContenidoEnSidebarListItem()
+            
+            }
             <ListItem>
-              <ListItemButton component={Link} to="/Rubrica" onClick={() => setOpen(false)}>
-                <ListItemDecorator><EditNote /></ListItemDecorator>
+              <ListItemButton component={Link} to="/Rubrica" >
+                <ListItemDecorator>  <EditNote/>  </ListItemDecorator>
                 <ListItemContent>Rúbrica</ListItemContent>
               </ListItemButton>
             </ListItem>
@@ -164,7 +194,7 @@ const Layout = () => {
         <MenuItem onClick={()=>{ 
           localStorage.clear(); 
             navigate('/auth'); }}>Cerrar sesión</MenuItem>
-        <MenuItem>Cambiar a profesor</MenuItem>
+        <MenuItem onClick={()=>{ cambiarVista() }}>{esAlumno ? "Cambiar a profesor" : "Cambiar a alumno"}</MenuItem>
       </Menu>
     </Dropdown>
         

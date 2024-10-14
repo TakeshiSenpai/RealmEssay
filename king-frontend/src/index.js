@@ -8,6 +8,7 @@ import Layout from "./pages/Layout";
 import Home from "./pages/Home";
 import Auth from './pages/Auth';
 import Rubrica from "./pages/Rubrica";
+import Tarea from "./pages/Tarea";
 
 function App3() {
   return (
@@ -16,6 +17,7 @@ function App3() {
         <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="/rubrica" element={<Rubrica />} />
+            <Route path="/tarea" element={<Tarea />}/>
         </Route>
 
         <Route path="/auth" element={<Auth />} />
