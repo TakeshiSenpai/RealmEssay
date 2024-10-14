@@ -7,8 +7,8 @@ app = Flask(__name__)
 
 # Rutas donde se almacenarán temporalmente los datos
 
-ESSAY_FILE = "queen-backend\\ia_response\\essay.txt"
-CRITERIA_FILE = "queen-backend\\ia_response\criteria.txt"
+ESSAY_FILE = pathlib.Path('queen-backend/ia_function/ia_response/essay.txt').resolve()
+CRITERIA_FILE = pathlib.Path('queen-backend/ia_function/ia_response/criteria.txt').resolve()
 
 
 # Cargar el token desde un archivo
