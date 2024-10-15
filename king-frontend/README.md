@@ -18,6 +18,5 @@ Para correr el proyecto, sigue estos pasos:
     npm run start
     ```
 # Contrseña del correo para apis 
-    ```sh
     ssoo epjf yzfd peya
-    ```
+
