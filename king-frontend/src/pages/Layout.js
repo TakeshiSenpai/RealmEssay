@@ -119,9 +119,9 @@ const Layout = () => {
             <ViewSidebarRoundedIcon/>
             </IconButton>
           </Tooltip>
-          <Tooltip title= "Ingresar codigo de conversacion"> 
-            <IconButton sx={{ml:'auto'}}color="neutral" aria-label="delete" component={Link} to={esAlumno ? "" : "/Tarea"} onClick={esAlumno
-            ?() => setOpenModal(true) : () => setOpen(false)}>
+          <Tooltip title= {esAlumno ? "Ingresar codigo de conversacion" : "Crear Tarea"}> 
+            <IconButton sx={{ml:'auto'}}color="neutral" aria-label="delete" component={Link} to={esAlumno ? "/" : "/Tarea"} onClick={esAlumno
+            ?() => setOpenModal(true) : () => setOpen(true)}>
             <AddIcon/>
             </IconButton>
 
@@ -194,7 +194,7 @@ const Layout = () => {
         <MenuItem onClick={()=>{ 
           localStorage.clear(); 
             navigate('/auth'); }}>Cerrar sesión</MenuItem>
-        <MenuItem onClick={()=>{ cambiarVista() }}>{esAlumno ? "Cambiar a profesor" : "Cambiar a alumno"}</MenuItem>
+        <MenuItem component={Link} to={!esAlumno ? "/" : "/Tarea"} onClick={()=>{ cambiarVista() }}>{esAlumno ? "Cambiar a profesor" : "Cambiar a alumno"}</MenuItem>
       </Menu>
     </Dropdown>
         

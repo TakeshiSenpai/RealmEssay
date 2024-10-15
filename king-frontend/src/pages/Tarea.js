@@ -12,6 +12,7 @@ import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import { FlashOnRounded } from '@mui/icons-material';
 import ComponenteRubrica from "../components/ComponenteRubrica.js"
+import ConfirmacionDeTarea from '../components/ConfirmacionDeTarea.js';
 
 
 //Aqui se supone que se creará la tarea, para esto llamará a los componentes necesarios
@@ -32,6 +33,7 @@ export const Tarea = ()=>{
       };
     const setTaskDataRubrica = (data) => {
       console.log("Datos recibidos desde rubrica:", data)
+      console.log("TaskName",data[0].taskName)
       setParameters(data)
       
     };
@@ -54,7 +56,7 @@ export const Tarea = ()=>{
     
           {indiceDeCreacion=== 0 &&(<CrearTareas parametrosTarea={parametrosTarea} setParametrosTarea={setParametrosTarea}/>)}
           {indiceDeCreacion=== 1 &&(<ComponenteRubrica parameters={parameters} setParameters={setParameters}/>)}
-          
+          {indiceDeCreacion === 2 && (<ConfirmacionDeTarea parametrosRubrica={ parameters} parametrosTarea={parametrosTarea}/>)}
 
         <Box sx ={{minHeight: '10vh'}}/>
 
@@ -90,7 +92,7 @@ export const Tarea = ()=>{
           borderWidth: 4,
         },
         [`& .${stepClasses.root}::after`]: {
-          height: 4,
+          height: 4,  
         },
         [`& .${stepClasses.completed}`]: {
           [`& .${stepIndicatorClasses.root}`]: {

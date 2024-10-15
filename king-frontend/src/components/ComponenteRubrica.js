@@ -60,13 +60,11 @@ export const Rubrica = ({parameters,setParameters }) => {
 
 
     return (
-        <Box sx={{ maxWidth: '600px', margin: '0 auto', padding: '2rem', border: '1px solid #ddd', borderRadius: '8px' }}>
-   
+        
         <Box sx={{paddingTop: -5, paddingX: 2}}>
             <h1>Rúbrica</h1>
 
             <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center',}}>
-                {console.log(parameters)}
                 {(parameters.length > 0) &&
                     <p>Total de puntos: <strong>{parameters.reduce((sum, param) => sum + param.totalValue, 0)}</strong>
                     </p>}
@@ -263,7 +261,7 @@ export const Rubrica = ({parameters,setParameters }) => {
 
             </Box>
         </Box>
-        </Box>
+        
     )
 }
 
