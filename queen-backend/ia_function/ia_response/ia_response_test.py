@@ -1,7 +1,7 @@
 
 import os, requests,json
 from flask import Flask, request, jsonify
-import pathlib 
+import pathlib
 from tts import tts_gcp2
 
 app = Flask(__name__)
@@ -32,7 +32,7 @@ import json
 def run_model(model, inputs, timeout=1200, stream=True):
     headers = {"Authorization": f"Bearer {api_token}"}
     input_data = {"messages": inputs, "stream": stream}
-    
+
     try:
         # Enviar la solicitud
         response = requests.post(f"{API_BASE_URL}{model}", headers=headers, json=input_data, timeout=timeout, stream=stream)
@@ -130,7 +130,7 @@ def process_evaluation():
         {"role": "user", "content": essay_text}
     ]
 
-    # Ejecutar el modelo de IA 
+    # Ejecutar el modelo de IA
     result = run_model("@cf/meta/llama-3-8b-instruct", inputs, timeout=1200,stream=True)
    # print("Resultado de la IA:", result)
 
