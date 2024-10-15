@@ -26,6 +26,9 @@ api_token = load_api_token(pathlib.Path('queen-backend\\ia_function\\model_authe
 
 
 #Función para ejecutar el modelo
+import requests
+import json
+
 def run_model(model, inputs, timeout=1200, stream=True):
     headers = {"Authorization": f"Bearer {api_token}"}
     input_data = {"messages": inputs, "stream": stream}
@@ -38,24 +41,39 @@ def run_model(model, inputs, timeout=1200, stream=True):
             # Si el stream está activado, procesamos la respuesta en fragmentos
             if response.status_code == 200:
                 complete_response = ""
+
                 for chunk in response.iter_content(chunk_size=None):
                     if chunk:
                         try:
-                            clear_chunk=chunk.decode('utf-8')
-                            print(clear_chunk)
-                            #clear_chunk=json.loads(clear_chunk)
-                            #clean_text=clear_chunk.get("response","")
-                            complete_response += clear_chunk
-                            print(complete_response)  # Aquí podrías ir procesando los chunks si es necesario
+                            # Decodificar el fragmento en string
+                            clear_chunk = chunk.decode('utf-8')
+
+                            # Verificar si contiene el campo "response"
+                            start = clear_chunk.find('"response":"')
+                            if start != -1:
+                                start += len('"response":"')  # Ajustamos la posición para después de "response":" 
+                                end = clear_chunk.find('"', start)
+
+                                if end != -1:
+                                    # Extraer y acumular el texto limpio
+                                    clean_text = clear_chunk[start:end]
+                                    complete_response += clean_text
+                                    print(f"Extracto: {clean_text}")
+                            
+                            # Depuración: Imprimir el chunk completo si es necesario
+                            # print(clear_chunk)
+
                         except (json.JSONDecodeError, UnicodeDecodeError) as e:
-                            print(f"error de decodificacion: {e}")
-                # Si quieres devolver el resultado completo como un JSON al final:
+                            print(f"Error de decodificación: {e}")
+
+                # Devolver el resultado completo al final del procesamiento de chunks
                 return {"result": {"response": complete_response}}
 
             else:
+                # Manejo de errores en la respuesta HTTP
                 return {"error": f"Error: {response.status_code} - {response.text}"}
         else:
-            # Si el stream no está activado, devolvemos el JSON completo
+            # Si el stream no está activado, devolvemos el JSON completo de una vez
             response.raise_for_status()
             return response.json()
 
@@ -63,7 +81,7 @@ def run_model(model, inputs, timeout=1200, stream=True):
         return {"error": f"La solicitud ha superado el tiempo máximo de {timeout} segundos"}
     except requests.exceptions.RequestException as e:
         return {"error": str(e)}
-    
+
 # Ruta para que el estudiante envíe el ensayo
 @app.route('/submit_essay', methods=['POST'])
 def submit_essay():

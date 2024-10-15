@@ -1,8 +1,18 @@
+import sys
+import pathlib
 from flask import Flask
 from flask_cors import CORS
 
-import authentication.google_auth as google_auth
+# Obtener la ruta al directorio raíz del proyecto (dos niveles hacia arriba)
+root_dir = pathlib.Path(__file__).parent.parent.resolve()
+
+# Agregar el directorio raíz al PYTHONPATH
+sys.path.append(str(root_dir))
+
+# Importaciones absolutas ahora son posibles
+from authentication import google_auth 
 from ia_function.process_rubric.process_rubric import process_rubric
+
 app = Flask(__name__)
 CORS(app)
 
