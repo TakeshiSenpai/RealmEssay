@@ -13,13 +13,16 @@ import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import { FlashOnRounded } from '@mui/icons-material';
 import ComponenteRubrica from "../components/ComponenteRubrica.js"
 import ConfirmacionDeTarea from '../components/ConfirmacionDeTarea.js';
+import { Link } from "react-router-dom";
+//import { sendEmail } from '../app/api/emails/envioCodigoDeTarea.jsx';
+
 
 
 //Aqui se supone que se creará la tarea, para esto llamará a los componentes necesarios
 export const Tarea = ()=>{
 
   const [indiceDeCreacion,setIndiceDeCreacion] = React.useState(0)
-  const [parameters, setParameters] = React.useState([])
+  const [parametrosRubrica, setParametrosRubrica] = React.useState([])
   const [parametrosTarea,setParametrosTarea] = React.useState({
     taskName:'',
     description:'',
@@ -34,7 +37,7 @@ export const Tarea = ()=>{
     const setTaskDataRubrica = (data) => {
       console.log("Datos recibidos desde rubrica:", data)
       console.log("TaskName",data[0].taskName)
-      setParameters(data)
+      setParametrosRubrica(data)
       
     };
   
@@ -43,20 +46,36 @@ export const Tarea = ()=>{
         console.log(parametrosTarea)
         console.log("Indice",indiceDeCreacion) //esto es como para comprobar cosas despues 
         if (numero ===1){
-          if (indiceDeCreacion!==2) setIndiceDeCreacion(indiceDeCreacion+1)
+          if (indiceDeCreacion!==2) setIndiceDeCreacion(indiceDeCreacion+1); 
+          else {
+            reiniciarParametros()
+            indiceDeCreacion = 0;
+            //sendEmail("hola@yopmail.com",12345)
+
+            //Ademas de hacer esto se deberia hacer un link para la tarea o algo asi, talvez un link para el home 
+          };
         }
         else{
           if (indiceDeCreacion!==0) setIndiceDeCreacion(indiceDeCreacion -1) 
         }
       }
-
+      //Borra las variables, se supone que antes de estoy deberia enviarlo al backend peor pues eso todavia (15oct) no 
+      const reiniciarParametros = ()=>{
+        
+        setParametrosRubrica([])
+        setParametrosTarea({
+          taskName:'',
+          description:'',
+          studentList:''
+        })
+      }
 
     return(
         <Box sx={{  maxWidth: '700px', margin: '0 auto', padding: '2rem', border: '1px solid #ddd', borderRadius: '8px' }}>
     
           {indiceDeCreacion=== 0 &&(<CrearTareas parametrosTarea={parametrosTarea} setParametrosTarea={setParametrosTarea}/>)}
-          {indiceDeCreacion=== 1 &&(<ComponenteRubrica parameters={parameters} setParameters={setParameters}/>)}
-          {indiceDeCreacion === 2 && (<ConfirmacionDeTarea parametrosRubrica={ parameters} parametrosTarea={parametrosTarea}/>)}
+          {indiceDeCreacion=== 1 &&(<ComponenteRubrica parameters={parametrosRubrica} setParameters={setParametrosRubrica}/>)}
+          {indiceDeCreacion >= 2 && (<ConfirmacionDeTarea parametrosRubrica={ parametrosRubrica} parametrosTarea={parametrosTarea}/>)}
 
         <Box sx ={{minHeight: '10vh'}}/>
 
@@ -68,13 +87,13 @@ export const Tarea = ()=>{
           </IconButton>
 
           {/* Botón derecho */}
-          { indiceDeCreacion !==2 &&(
-          <IconButton onClick={()=>{cambiarIndice(1) }} sx={{ml:'auto'}}>
+          { indiceDeCreacion <2 &&(
+          <IconButton onClick={()=>{cambiarIndice(1) }} sx={{ml:'auto'}}   >
           <ArrowForwardRoundedIcon/>
           </IconButton>)}
           {
-              indiceDeCreacion ===2 &&(
-              <Button onClick={()=>{cambiarIndice(1) }} sx={{ml:'auto'}}>
+              indiceDeCreacion >=2 &&(
+              <Button onClick={()=>{cambiarIndice(1) }} sx={{ml:'auto'}} component={Link} to = { indiceDeCreacion===2 ? "/Tarea" : ""}>
               Crear
               </Button>)
           }
