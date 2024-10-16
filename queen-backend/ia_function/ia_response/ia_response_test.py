@@ -143,7 +143,8 @@ def process_evaluation():
         if 'result' in result and 'response' in result['result']:
             ai_response = result['result']['response']
             cleanText = tts_gcp2.procesar_texto(ai_response)
-            #tts_gcp2.run_and_save(cleanText, "cleanOutput.mp3")
+            print(cleanText)
+            tts_gcp2.run_and_save(cleanText, "cleanOutput.mp3")
             return jsonify({"message": "Revisión completada con éxito", "response": ai_response})
         else:
             # Si no está presente el campo esperado
