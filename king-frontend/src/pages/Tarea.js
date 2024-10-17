@@ -15,7 +15,8 @@ import ComponenteRubrica from "../components/ComponenteRubrica.js"
 import ConfirmacionDeTarea from '../components/ConfirmacionDeTarea.js';
 import { Link } from "react-router-dom";
 //import { sendEmail } from '../app/api/emails/envioCodigoDeTarea.jsx';
-
+import CodigoDeTarea from "../app/emails/CodigoDeTarea.jsx"
+import { render } from '@react-email/components';
 
 
 //Aqui se supone que se creará la tarea, para esto llamará a los componentes necesarios
@@ -42,16 +43,17 @@ export const Tarea = ()=>{
     };
   
     //Cambia el indice por lo que se cambia entre, creartarea, rubrica y finalizar(Confirmar)
-      const cambiarIndice = (numero)=>{
+      const cambiarIndice = async (numero)=>{
         console.log(parametrosTarea)
         console.log("Indice",indiceDeCreacion) //esto es como para comprobar cosas despues 
         if (numero ===1){
           if (indiceDeCreacion!==2) setIndiceDeCreacion(indiceDeCreacion+1); 
           else {
             reiniciarParametros()
-            indiceDeCreacion = 0;
-            //sendEmail("hola@yopmail.com",12345)
-
+            setIndiceDeCreacion(0);
+            const html = await imprimirHtml() //Se obtiene el html a mandar 
+            await mandarCorreos(html)
+            //console.log(html)
             //Ademas de hacer esto se deberia hacer un link para la tarea o algo asi, talvez un link para el home 
           };
         }
@@ -69,7 +71,32 @@ export const Tarea = ()=>{
           studentList:''
         })
       }
+      const mandarCorreos= async (html)=>{
+        try {
+          const response = await fetch('http://127.0.0.1:5000/tarea/email/code', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({html: html, to: "hola@yopmail.com"})
+          })
 
+          const data = await response.json()
+          console.log(data.message)
+      } catch (error) {
+          console.log(`Error al enviar la rúbrica: ${error.message}`)
+      }
+      }
+      const imprimirHtml = async ()=>{
+        try{
+        const html = await render(<CodigoDeTarea validationCode={1234}/>)
+        return html
+      }
+        catch(error){
+          return ""
+        }
+
+      }
     return(
         <Box sx={{  maxWidth: '700px', margin: '0 auto', padding: '2rem', border: '1px solid #ddd', borderRadius: '8px' }}>
     
