@@ -24,6 +24,7 @@ export const Tarea = ()=>{
 
   const [indiceDeCreacion,setIndiceDeCreacion] = React.useState(0)
   const [parametrosRubrica, setParametrosRubrica] = React.useState([])
+  const [errorEnRubrica, setErrorEnRubrica] = React.useState(false)
   const [parametrosTarea,setParametrosTarea] = React.useState({
     taskName:'',
     description:'',
@@ -43,24 +44,31 @@ export const Tarea = ()=>{
     };
   
     //Cambia el indice por lo que se cambia entre, creartarea, rubrica y finalizar(Confirmar)
-      const cambiarIndice = async (numero)=>{
-        console.log(parametrosTarea)
-        console.log("Indice",indiceDeCreacion) //esto es como para comprobar cosas despues 
-        if (numero ===1){
-          if (indiceDeCreacion!==2) setIndiceDeCreacion(indiceDeCreacion+1); 
-          else {
-            reiniciarParametros()
-            setIndiceDeCreacion(0);
-            const html = await imprimirHtml() //Se obtiene el html a mandar 
-            await mandarCorreos(html)
-            //console.log(html)
-            //Ademas de hacer esto se deberia hacer un link para la tarea o algo asi, talvez un link para el home 
-          };
+    const cambiarIndice = async (numero) => {
+      console.log(parametrosTarea);
+      console.log("Indice", indiceDeCreacion); //esto es como para comprobar cosas despues 
+      
+      if (numero === 1) {
+        if (indiceDeCreacion === 1) {
+          let hayErrorEnContenido = comprobarSiNoHayErrorEnLaRubrica();
+          if (!(hayErrorEnContenido || errorEnRubrica)) {
+            setIndiceDeCreacion((prevIndice) => prevIndice + 1); // Usar la versión más reciente del estado
+          }
+        } else if (indiceDeCreacion === 2) {
+          reiniciarParametros();
+          setIndiceDeCreacion(0);
+          const html = await imprimirHtml(); //Se obtiene el html a mandar 
+          await mandarCorreos(html, obtenerArregloDeCorreos());
+        } else {
+          setIndiceDeCreacion((prevIndice) => prevIndice + 1); // Usar la versión más reciente del estado
         }
-        else{
-          if (indiceDeCreacion!==0) setIndiceDeCreacion(indiceDeCreacion -1) 
+      } else {
+        if (indiceDeCreacion !== 0) {
+          setIndiceDeCreacion((prevIndice) => prevIndice - 1); // Usar la versión más reciente del estado
         }
       }
+    };
+    
       //Borra las variables, se supone que antes de estoy deberia enviarlo al backend peor pues eso todavia (15oct) no 
       const reiniciarParametros = ()=>{
         
@@ -71,14 +79,14 @@ export const Tarea = ()=>{
           studentList:''
         })
       }
-      const mandarCorreos= async (html)=>{
+      const mandarCorreos= async (html,to)=>{
         try {
           const response = await fetch('http://127.0.0.1:5000/tarea/email/code', {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json'
               },
-              body: JSON.stringify({html: html, to: "hola@yopmail.com"})
+              body: JSON.stringify({html: html, to: to})
           })
 
           const data = await response.json()
@@ -97,11 +105,38 @@ export const Tarea = ()=>{
         }
 
       }
+      const obtenerArregloDeCorreos = ()=>{
+        let stringEmails = parametrosTarea.studentList
+        stringEmails = stringEmails.trim() //Quitar los espacios
+        return stringEmails.split(',') //Separar los correos
+      }
+      const comprobarSiNoHayErrorEnLaRubrica = ()=>{
+        let hayError = false
+        setErrorEnRubrica(parametrosRubrica.length ===0)
+        const newParameters = parametrosRubrica.map(param => {
+          if (param.totalValue === 0) {
+              hayError = true
+              return {...param, error: true}
+          }
+          return param
+      })
+
+      const updatedParameters = newParameters.map(param => {
+          const updatedCriterias = param.criterias.map(criteria => {
+            hayError = true
+              return {...criteria, error: !criteria.rating.trim() || !criteria.description.trim()}
+          })
+          return {...param, criterias: updatedCriterias}
+      })
+
+      setParametrosRubrica(updatedParameters)
+      return hayError
+      }
     return(
         <Box sx={{  maxWidth: '700px', margin: '0 auto', padding: '2rem', border: '1px solid #ddd', borderRadius: '8px' }}>
     
           {indiceDeCreacion=== 0 &&(<CrearTareas parametrosTarea={parametrosTarea} setParametrosTarea={setParametrosTarea}/>)}
-          {indiceDeCreacion=== 1 &&(<ComponenteRubrica parameters={parametrosRubrica} setParameters={setParametrosRubrica}/>)}
+          {indiceDeCreacion=== 1 &&(<ComponenteRubrica parameters={parametrosRubrica} setParameters={setParametrosRubrica} error={errorEnRubrica}/>)}
           {indiceDeCreacion >= 2 && (<ConfirmacionDeTarea parametrosRubrica={ parametrosRubrica} parametrosTarea={parametrosTarea}/>)}
 
         <Box sx ={{minHeight: '10vh'}}/>
