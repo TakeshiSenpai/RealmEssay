@@ -8,7 +8,6 @@ parent_dir=current_file.parent.parent
 #print(str(parent_dir))
 sys.path.append(str(parent_dir))
 from ia_function.ia_response import ia_response
-ia_response.run
 app = Flask(__name__)
 CORS(app)
 
@@ -36,7 +35,7 @@ def submit():
 @app.route('/response', methods=['GET'])
 def get_response():
     try:
-        result = ia_response.Response()
+        result = ia_response.process_response()
         return jsonify({"response": result}), 200
     except Exception as e:
         return jsonify({"error": f"Error al obtener la respuesta: {str(e)}"}), 500
