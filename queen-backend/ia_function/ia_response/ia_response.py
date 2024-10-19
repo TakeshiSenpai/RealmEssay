@@ -34,8 +34,7 @@ def run_model(model, inputs, timeout=1200, stream=True):
         if stream:
             # Si el stream está activado, procesamos la respuesta en fragmentos
             if response.status_code == 200:
-                complete_response = ""  # Para almacenar todo el texto completo
-
+                
                 # Streaming de datos al frontend
                 for chunk in response.iter_content(chunk_size=None):
                     if chunk:
@@ -54,12 +53,8 @@ def run_model(model, inputs, timeout=1200, stream=True):
                                     clean_text = clear_chunk[start:end]
                                     complete_response += clean_text  # Guardar para el TTS
                                     print(f"Extracto: {clean_text}")
-
-                            
-                        except (json.JSONDecodeError, UnicodeDecodeError) as e:
+                        except (UnicodeDecodeError) as e:
                             print(f"Error de decodificación: {e}")
-
-               
                 # Devolver el resultado completo al final para hacer TTS
                 return {"result": {"response": complete_response}}
 
@@ -69,7 +64,7 @@ def run_model(model, inputs, timeout=1200, stream=True):
         else:
             # Si el stream no está activado, devolvemos el JSON completo de una vez
             response.raise_for_status()
-            yield response.json()
+            yield response
 
     except requests.exceptions.Timeout:
         yield f"data: Error: La solicitud ha superado el tiempo máximo de {timeout} segundos\n\n"
