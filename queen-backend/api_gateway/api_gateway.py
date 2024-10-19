@@ -8,7 +8,9 @@ parent_dir=current_file.parent.parent
 #print(str(parent_dir))
 sys.path.append(str(parent_dir))
 from ia_function.ia_response import ia_response
-ia_response.run
+from send_emails.send_email_validation_code import send_email_validation_code
+
+#ia_response.run
 app = Flask(__name__)
 CORS(app)
 
@@ -51,6 +53,10 @@ def submit_criteria():
     except Exception as e:
         return jsonify({"error": f"Error al enviar los criterios: {str(e)}"}), 500
 
+
+@app.route('/tarea/email/code', methods = ['POST'])
+def send_email():
+    return send_email_validation_code()
 
 @app.after_request
 def add_header(response):

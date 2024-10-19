@@ -15,6 +15,7 @@ export const ConfirmacionDeTarea = ({ parametrosRubrica, parametrosTarea }) => {
   };
 
 
+  //Esto es para crear el row, tambien se hace el de colapse para los criterios
   const row = (rubrica,indice)=>{
     return(
    <React.Fragment>
@@ -34,7 +35,7 @@ export const ConfirmacionDeTarea = ({ parametrosRubrica, parametrosTarea }) => {
         </TableRow>
     <TableRow>
         <TableCell>
-            <Collapse in = {open[indice]} timeout='auto' unmountOnExit >
+            <Collapse in = {open[indice] && rubrica.criterias.length>indice} timeout='auto' unmountOnExit >
                 <Box>
                     <Typography variant="body2"><strong>Criterios:</strong> </Typography>
                     <Table size="small" aria-label="purchases">

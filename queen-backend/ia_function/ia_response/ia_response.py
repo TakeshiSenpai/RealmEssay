@@ -1,6 +1,7 @@
 
 import os, requests,json,pathlib
 from flask import request, jsonify,Response
+from pathlib import Path
 #from tts import tts_gcp2
 
 
@@ -19,8 +20,8 @@ def load_api_token(file_path):
 API_BASE_URL = "https://api.cloudflare.com/client/v4/accounts/a71faaf431a55b28fbf7c2bfbe9c1fba/ai/run/"
 
 # Cargar el token de la API desde el archivo
-
-api_token = load_api_token(pathlib.Path('C:\\Users\\Gmvsv\\Desktop\\proyectos escolares 9.0\\test\\ia_response\\model_authentication\\api_token.txt'))
+directorio_raiz = Path(__file__).parent
+api_token = load_api_token(pathlib.Path(directorio_raiz / 'model_authentication'/ 'api_token.txt'))
 
 
 def run_model(model, inputs, timeout=1200, stream=True):
