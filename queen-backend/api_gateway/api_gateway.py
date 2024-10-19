@@ -1,18 +1,14 @@
-import sys
-import pathlib
 from flask import Flask
 from flask_cors import CORS
-
-# Obtener la ruta al directorio raíz del proyecto (dos niveles hacia arriba)
-root_dir = pathlib.Path(__file__).parent.parent.resolve()
-
-# Agregar el directorio raíz al PYTHONPATH
-sys.path.append(str(root_dir))
-
+import pathlib,sys
 # Importaciones absolutas ahora son posibles
 from authentication import google_auth 
-from ia_function.process_rubric.process_rubric import process_rubric
-
+current_file=pathlib.Path(__file__)
+parent_dir=current_file.parent.parent
+print(str(parent_dir))
+sys.path.append(str(parent_dir))
+from ia_function.ia_response import ia_response
+ia_response.run
 app = Flask(__name__)
 CORS(app)
 
@@ -22,7 +18,12 @@ def login_google():
 
 @app.route('/tarea/rubrica', methods=['POST'])
 def get_rubric():
-    return process_rubric()
+    pass
+    #return process_rubric()
+
+@app.route('/submit',methods=['POST'])
+def submit():
+    return
 
 @app.after_request
 def add_header(response):
@@ -31,4 +32,4 @@ def add_header(response):
     return response
 
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(debug=True)
