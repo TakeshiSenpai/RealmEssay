@@ -10,7 +10,7 @@ sys.path.append(str(parent_dir))
 from ia_function.ia_response import ia_response
 from send_emails.send_email_validation_code import send_email_validation_code
 
-ia_response.run
+#ia_response.run
 app = Flask(__name__)
 CORS(app)
 
