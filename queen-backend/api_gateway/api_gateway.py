@@ -1,4 +1,4 @@
-from flask import Flask,request,jsonify
+from flask import Flask,request,jsonify,Response
 from flask_cors import CORS
 import pathlib,sys
 # Importaciones absolutas ahora son posibles
@@ -31,12 +31,13 @@ def submit():
     except Exception as e:
         return jsonify({"error": f"Error al procesar los datos: {str(e)}"}), 500
 
+
 # Ruta para obtener la respuesta de la IA
 @app.route('/response', methods=['GET'])
 def get_response():
     try:
-        result = ia_response.process_response()
-        return jsonify({"response": result}), 200
+        # Procesar la respuesta como un stream de datos
+        return Response(ia_response.process_response(), content_type='text/event-stream')
     except Exception as e:
         return jsonify({"error": f"Error al obtener la respuesta: {str(e)}"}), 500
 
