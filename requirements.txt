@@ -32,3 +32,4 @@ rsa
 soupsieve
 urllib3
 Werkzeug
+python-dotenv

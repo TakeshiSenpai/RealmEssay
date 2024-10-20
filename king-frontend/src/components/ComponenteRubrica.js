@@ -5,10 +5,9 @@ import {TextField} from "@mui/material";
 import {grey} from "@mui/material/colors";
 import {Delete, Add} from "@mui/icons-material";
 
-export const Rubrica = ({parameters,setParameters }) => {
-
-    //const [parameters, setParameters] = useState([])
-    const [error, setError] = useState(false)
+export const Rubrica = ({parameters,setParameters,error}) => {
+     
+    console.log(error)
 
     const addNewParameter = () => {
         setParameters([...parameters, {
@@ -69,7 +68,8 @@ export const Rubrica = ({parameters,setParameters }) => {
                     <p>Total de puntos: <strong>{parameters.reduce((sum, param) => sum + param.totalValue, 0)}</strong>
                     </p>}
             </Box>
-
+            
+            
             {parameters.map((parameter, index) => (
                 <Box
                     key={index}
@@ -247,9 +247,8 @@ export const Rubrica = ({parameters,setParameters }) => {
                     </Box>
                 </Box>
             ))}
-
-            {(error && !parameters.length > 0) &&
-                <p style={{color: 'red'}}>Debe añadir al menos un criterio antes de enviar.</p>}
+            
+            {(error&&!parameters.length>0) && <p style={{color: 'red'}}>Debe añadir al menos un criterio antes de enviar.</p>}
 
             <Box sx={{display: 'flex', justifyContent: 'space-between', marginY: 2}}>
                 <Button
