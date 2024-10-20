@@ -53,6 +53,7 @@ def run_model(model, inputs, timeout=1200, stream=True):
                                     # Extraer y acumular el texto limpio
                                     clean_text = clear_chunk[start:end]
                                     print(f"Extracto: {clean_text}")
+                                    yield f"data:{clean_text}\n\n"
                         except (UnicodeDecodeError) as e:
                             print(f"Error de decodificación: {e}")
             else:
@@ -69,7 +70,7 @@ def run_model(model, inputs, timeout=1200, stream=True):
         yield f"data: Error: {str(e)}\n\n"
 
 # Ruta para que el profesor envíe los criterios de evaluación
-def submit_criteria():
+def submit_criteria(data):
     data=request.json
     criteria = data.get('criteria')  # Criterios proporcionados por el profesor
 
@@ -79,15 +80,18 @@ def submit_criteria():
 
     return jsonify({"message": "Criterios enviados con éxito. Procesando la revisión."})
 # Ruta para que el estudiante envíe el ensayo o sus preguntas hacia la IA
-def submit():
-    data=request.json
-    input_text = data.get('input')  # Obtenemos el texto enviado por el estudiante
+# En ia_response.py
 
-    # Guardar el ensayo en un archivo temporal
+def submit(data):
+    # Procesar el data como sea necesario
+    input_text = data.get('input')  # Asegúrate de que 'input' esté en los datos
+
+    # Guardar el ensayo en un archivo temporal o procesarlo
     with open(INPUT_FILE, 'w') as f:
         f.write(input_text)
 
-    return jsonify({"message": "Ensayo enviado con éxito. Esperando criterios del profesor."})
+    return {"message": "Ensayo enviado con éxito."}
+
 # Función para ejecutar la IA una vez que ambos, ensayo y criterios, estén listos
 def process_response():
     # Verificar que tanto el ensayo como los criterios existan
@@ -133,5 +137,4 @@ def process_response():
         #tts_gcp2.run_and_save(complete_response, "output.mp3")
 
     # Crear la respuesta como un stream y enviarla al frontend
-    return Response(generate_response(), content_type='text/event-stream')
 
