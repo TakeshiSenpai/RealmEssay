@@ -41,6 +41,7 @@ def get_response():
     try:
         # Procesar la respuesta como un stream de datos
         return Response(ia_response.process_response(), content_type='text/event-stream')
+
     except Exception as e:
         return jsonify({"error": f"Error al obtener la respuesta: {str(e)}"}), 500
 
