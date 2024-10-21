@@ -1,5 +1,5 @@
 
-import os, requests,json,pathlib
+import os, requests,json,pathlib,sys
 from flask import request, jsonify,Response
 from pathlib import Path
 #from tts import tts_gcp2
@@ -27,47 +27,37 @@ api_token = load_api_token(pathlib.Path(directorio_raiz / 'model_authentication'
 def run_model(model, inputs, timeout=1200, stream=True):
     headers = {"Authorization": f"Bearer {api_token}"}
     input_data = {"messages": inputs, "stream": stream}
-
+    
     try:
         # Enviar la solicitud
         response = requests.post(f"{API_BASE_URL}{model}", headers=headers, json=input_data, timeout=timeout, stream=stream)
-
         if stream:
             # Si el stream está activado, procesamos la respuesta en fragmentos
             if response.status_code == 200:
-                
-                # Streaming de datos al frontend
+                complete_response = ""
                 for chunk in response.iter_content(chunk_size=None):
                     if chunk:
                         try:
-                            # Decodificar el fragmento en string
-                            clear_chunk = chunk.decode('utf-8')
-
-                            # Verificar si contiene el campo "response"
-                            start = clear_chunk.find('"response":"')
-                            if start != -1:
-                                start += len('"response":"')  # Ajustamos la posición para después de "response":" 
-                                end = clear_chunk.find('"', start)
-
-                                if end != -1:
-                                    # Extraer y acumular el texto limpio
-                                    clean_text = clear_chunk[start:end]
-                                    print(f"Extracto: {clean_text}")
-                                    yield f"data:{clean_text}\n\n"
-                        except (UnicodeDecodeError) as e:
-                            print(f"Error de decodificación: {e}")
+                            clear_chunk=chunk.decode('utf-8')
+                            print(clear_chunk)
+                            #clear_chunk=json.loads(clear_chunk)
+                            #clean_text=clear_chunk.get("response","")
+                            complete_response += clear_chunk
+                            print(complete_response)  # Aquí podrías ir procesando los chunks si es necesario
+                        except (json.JSONDecodeError, UnicodeDecodeError) as e:
+                            print(f"error de decodificacion: {e}")
+                # Si quieres devolver el resultado completo como un JSON al final:
+                return {"result": {"response": complete_response}}
             else:
-                # Manejo de errores en la respuesta HTTP
-                yield f"data: Error: {response.status_code} - {response.text}\n\n"
+                return {"error": f"Error: {response.status_code} - {response.text}"}
         else:
-            # Si el stream no está activado, devolvemos el JSON completo de una vez
+            # Si el stream no está activado, devolvemos el JSON completo
             response.raise_for_status()
-            yield response
-
+            return response.json()
     except requests.exceptions.Timeout:
-        yield f"data: Error: La solicitud ha superado el tiempo máximo de {timeout} segundos\n\n"
+        return {"error": f"La solicitud ha superado el tiempo máximo de {timeout} segundos"}
     except requests.exceptions.RequestException as e:
-        yield f"data: Error: {str(e)}\n\n"
+        return {"error": str(e)}
 
 # Ruta para que el profesor envíe los criterios de evaluación
 def submit_criteria(data):
@@ -93,48 +83,48 @@ def submit(data):
     return {"message": "Ensayo enviado con éxito."}
 
 # Función para ejecutar la IA una vez que ambos, ensayo y criterios, estén listos
+import os
+import json
+
 def process_response():
     # Verificar que tanto el ensayo como los criterios existan
     if not os.path.exists(INPUT_FILE) or not os.path.exists(CRITERIA_FILE):
-        return jsonify({"message": "Aún faltan datos. Asegúrate de que el estudiante haya enviado el ensayo y el profesor los criterios."})
+        yield json.dumps({"message": "Aún faltan datos. Asegúrate de que el estudiante haya enviado el ensayo y el profesor los criterios."})
+        return
 
     # Leer el ensayo y los criterios
     with open(INPUT_FILE, 'r') as f:
         input_text = f.read()
+        #yield f"Texto del ensayo leído: {input_text}\n"
 
     with open(CRITERIA_FILE, 'r') as f:
         criteria = f.read()
+        #yield f"Criterios leídos: {criteria}\n"
 
     # Asignar el rol y construir los inputs para la IA
-    role_text = "Usted es un asistente de redacción académica. Por favor, evalúe el ensayo centrándose en los siguientes aspectos y puntúe los ensayos de 0 a 10 y responda las posibles preguntas de los alumnos hagan sobre su evaluacion."
+    role_text = "Usted es un asistente de redacción académica..."
     system_instructions = f"{role_text} {criteria}"
 
-    # Inputs para la IA
     inputs = [
         {"role": "system", "content": system_instructions},
         {"role": "user", "content": input_text}
     ]
 
-    # Crear una función generadora que procese y envíe fragmentos de datos
-    def generate_response():
-        result_gen = run_model("@cf/meta/llama-3-8b-instruct", inputs, timeout=1200, stream=True)
-        
-        complete_response = ""  # Variable para almacenar el texto completo
+    # Simulación de llamada al modelo de IA (debe cambiarse por la real)
+    result = run_model("@cf/meta/llama-3-8b-instruct", inputs, timeout=1200, stream=True)
 
-        # Iterar sobre el generador y enviar los fragmentos al frontend
-        for chunk in result_gen:
-            if chunk:  # Asegúrate de no enviar fragmentos vacíos
-                complete_response += chunk  # Acumular el texto completo
-                yield f"data: {chunk}\n\n"  # Enviar los fragmentos al frontend
+    if 'error' in result:
+        yield json.dumps({"message": "Error al procesar la solicitud: " + result['error']})
+        return
 
-        # Al final del stream, enviar el mensaje de finalización
-        yield "data: [DONE]\n\n"
+    try:
+        if 'result' in result and 'response' in result['result']:
+            ai_response = result['result']['response']
+            yield f"Respuesta de la IA: {ai_response}\n"
+        else:
+            yield json.dumps({"message": "Error al procesar la respuesta de la IA: no se encontró 'response'."})
+    except KeyError:
+        yield json.dumps({"message": "Error al procesar la respuesta de la IA."})
 
-        # Aquí puedes realizar el TTS con el texto completo
-        # Por ejemplo, pasarlo a una función TTS para generar el archivo de audio
-        print("Texto completo para TTS:", complete_response)
-        # Supongamos que tienes una función `generate_tts` para procesar el texto completo
-        #tts_gcp2.run_and_save(complete_response, "output.mp3")
-
-    # Crear la respuesta como un stream y enviarla al frontend
-
+    
+#process_response()
