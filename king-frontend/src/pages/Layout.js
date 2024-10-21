@@ -252,6 +252,7 @@ const Layout = ({theme, setTheme, isAuto}) => {
                                     ml: 'auto',
                                     width: '100%',
                                     justifyContent: 'flex-start',
+                                    color: (theme) => theme.palette.mode === 'dark' ? '#fff' : '#000',
                                 }}
                                 slotProps={{root: {variant: 'outlined', color: 'neutral'}}}
                                 onClick={(e) => {
