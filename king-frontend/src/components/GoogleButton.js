@@ -2,7 +2,6 @@ import React from 'react'
 import {GoogleOAuthProvider, GoogleLogin} from '@react-oauth/google'
 import Button from '@mui/material/Button'
 import GoogleIcon from '@mui/icons-material/Google'
-import Typography from '@mui/material/Typography'
 import {useNavigate} from 'react-router-dom'
 
 export const GoogleButton = () => {
@@ -40,28 +39,22 @@ export const GoogleButton = () => {
 
     return (
         <GoogleOAuthProvider clientId="496696206304-fsqr77k8ao63rv6tuskh5lu4ph5p4fo3.apps.googleusercontent.com">
-            <div style={{textAlign: 'center', marginTop: '50px'}}>
-                <Typography variant="h5" gutterBottom>
-                    Sign in with Google
-                </Typography>
-
-                <GoogleLogin
-                    onSuccess={handleLoginSuccess}
-                    onError={handleLoginFailure}
-                    render={(renderProps) => (
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            startIcon={<GoogleIcon/>}
-                            onClick={renderProps.onClick}
-                            disabled={renderProps.disabled}
-                            style={{textTransform: 'none'}}
-                        >
-                            Sign in with Google
-                        </Button>
-                    )}
-                />
-            </div>
+            <GoogleLogin
+                onSuccess={handleLoginSuccess}
+                onError={handleLoginFailure}
+                render={(renderProps) => (
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<GoogleIcon/>}
+                        onClick={renderProps.onClick}
+                        disabled={renderProps.disabled}
+                        style={{textTransform: 'none'}}
+                    >
+                        Sign in with Google
+                    </Button>
+                )}
+            />
         </GoogleOAuthProvider>
     )
 }

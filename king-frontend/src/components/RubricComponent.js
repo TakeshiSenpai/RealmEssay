@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import {TextField} from "@mui/material";
 import {grey} from "@mui/material/colors";
 import {Delete, Add} from "@mui/icons-material";
+import Typography from "@mui/material/Typography";
 
 export const RubricComponent = ({parameters, setParameters, error}) => {
 
@@ -249,7 +250,14 @@ export const RubricComponent = ({parameters, setParameters, error}) => {
             ))}
 
             {(error && !parameters.length > 0) &&
-                <p style={{color: 'red'}}>Debe añadir al menos un criterio antes de enviar.</p>}
+                <Typography
+                    sx={{
+                        color: (theme) => theme.palette.colors.errorText
+                    }}
+                >
+                    Debe añadir al menos un criterio antes de enviar.
+                </Typography>
+            }
 
             <Box sx={{display: 'flex', justifyContent: 'space-between', marginY: 2}}>
                 <Button

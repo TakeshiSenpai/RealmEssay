@@ -28,8 +28,8 @@ import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded'
 import {AutoAwesomeRounded, EditNote, PaletteRounded} from "@mui/icons-material"
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 
-const Layout = () => {
-    const [open, setOpen] = useState(false)
+const Layout = ({theme, setTheme, isAuto}) => {
+    const [open, setOpen] = useState(true)
     const [openModal, setOpenModal] = useState(false)
     const [userInfo, setUserInfo] = useState({name: '', institution: '', picture: ''})
     const [arregloDeConversaciones, setArregloDeConversaciones] = useState(["Home"])
@@ -38,7 +38,6 @@ const Layout = () => {
     const navigate = useNavigate()
     const [esAlumno, setAlumno] = useState(true)
 
-    const [theme, setTheme] = useState('auto') // auto, light, dark
     const [menuOpen, setMenuOpen] = useState(false)
     const [themeMenuOpen, setThemeMenuOpen] = useState(false)
     const menuRef = useRef(null)
@@ -160,7 +159,7 @@ const Layout = () => {
                                     <FormControl>
                                         <Input autoFocus required name="codigo"/>
                                     </FormControl>
-                                    <Button type="submit">Enviar</Button>
+                                    <Button type="submit" variant='contained'>Enviar</Button>
                                 </Stack>
                             </form>
                         </DialogContent>
@@ -248,13 +247,17 @@ const Layout = () => {
                                 aria-haspopup={true}
                                 aria-controls={themeMenuOpen ? 'theme-menu' : undefined}
                                 aria-expanded={themeMenuOpen ? 'true' : undefined}
-                                sx={{ml: 'auto'}}
+                                disableRipple
+                                sx={{
+                                    ml: 'auto',
+                                    width: '100%',
+                                    justifyContent: 'flex-start',
+                                }}
                                 slotProps={{root: {variant: 'outlined', color: 'neutral'}}}
                                 onClick={(e) => {
                                     e.stopPropagation()
                                     setThemeMenuOpen(!themeMenuOpen)
-                                }
-                                }
+                                }}
                             >
                                 <PaletteRounded/>
                                 <Typography variant="body1" sx={{marginLeft: 1}}>
@@ -269,7 +272,7 @@ const Layout = () => {
                                 }}>
                                     <AutoAwesomeRounded/>
                                     <span style={{marginLeft: '8px', flexGrow: 1}}>Auto</span>
-                                    {theme === 'auto' && <CheckCircleRoundedIcon/>}
+                                    {(theme === 'auto' || isAuto) && <CheckCircleRoundedIcon/>}
                                 </MenuItem>
                                 <MenuItem onClick={(e) => {
                                     handleThemeChange('light')
@@ -277,7 +280,7 @@ const Layout = () => {
                                 }}>
                                     <LightModeRoundedIcon/>
                                     <span style={{marginLeft: '8px', flexGrow: 1}}>Claro</span>
-                                    {theme === 'light' && <CheckCircleRoundedIcon/>}
+                                    {theme === 'light' && !isAuto && <CheckCircleRoundedIcon/>}
                                 </MenuItem>
                                 <MenuItem onClick={(e) => {
                                     e.stopPropagation()
@@ -285,7 +288,7 @@ const Layout = () => {
                                 }}>
                                     <DarkModeRoundedIcon/>
                                     <span style={{marginLeft: '8px', flexGrow: 1}}>Oscuro</span>
-                                    {theme === 'dark' && <CheckCircleRoundedIcon/>}
+                                    {theme === 'dark' && !isAuto && <CheckCircleRoundedIcon/>}
                                 </MenuItem>
                             </Menu>
                         </Menu>
@@ -299,7 +302,7 @@ const Layout = () => {
                     flexGrow: 1,
                     padding: 3,
                     transition: 'margin 0.3s ease',
-                    marginLeft: open ? `0px` : '-250px', // Ajusta el contenido cuando el Drawer está abierto o cerrado
+                    marginLeft: open ? `0px` : '-250px',
                 }}
             >
                 {!open && (
@@ -307,7 +310,7 @@ const Layout = () => {
                     <Tooltip title="Abrir menú">
                         <IconButton sx={{
                             position: 'absolute',
-                            top: 6, // ajusta el valor para más o menos separación
+                            top: 6,
                             left: 6,
                         }} color="neutral" onClick={() => setOpen(true)}>
                             <ViewSidebarRoundedIcon/>
