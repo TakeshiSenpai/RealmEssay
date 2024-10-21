@@ -8,7 +8,7 @@ parent_dir=current_file.parent.parent
 #print(str(parent_dir))
 sys.path.append(str(parent_dir))
 from ia_function.ia_response import ia_response
-from send_emails.send_email_validation_code import send_email_validation_code
+#from send_emails.send_email_validation_code import send_email_validation_code
 
 #ia_response.run
 app = Flask(__name__)
@@ -35,12 +35,18 @@ def submit():
         return jsonify({"error": f"Error al procesar los datos: {str(e)}"}), 500
 
 
-# Ruta para obtener la respuesta de la IA
 @app.route('/response', methods=['GET'])
 def get_response():
     try:
         # Procesar la respuesta como un stream de datos
-        return Response(ia_response.process_response(), content_type='text/event-stream')
+        def stream_response():
+            for fragment in ia_response.process_response():
+                yield fragment  # Enviar cada fragmento al cliente progresivamente
+                import sys
+                sys.stdout.flush()  # Asegurarnos de que se "flushee" el buffer
+
+        # Retornamos el stream usando la función generadora
+        return Response(stream_response(), content_type='text/event-stream')
 
     except Exception as e:
         return jsonify({"error": f"Error al obtener la respuesta: {str(e)}"}), 500
