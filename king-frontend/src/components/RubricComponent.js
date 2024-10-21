@@ -1,14 +1,14 @@
-import React, {useState} from 'react'
-import Box from "@mui/joy/Box"
+import React from 'react'
+import Box from "@mui/material/Box"
 import Button from "@mui/material/Button";
 import {TextField} from "@mui/material";
 import {grey} from "@mui/material/colors";
 import {Delete, Add} from "@mui/icons-material";
+import Typography from "@mui/material/Typography";
 
-export const Rubrica = () => {
+export const RubricComponent = ({parameters, setParameters, error}) => {
 
-    const [parameters, setParameters] = useState([])
-    const [error, setError] = useState(false)
+    console.log(error)
 
     const addNewParameter = () => {
         setParameters([...parameters, {
@@ -21,7 +21,10 @@ export const Rubrica = () => {
     }
 
     const handleParameterChange = (index, field, value) => {
-        const newParameters = [...parameters]
+        //const newParameters = [...parameters]
+        const newParameters = parameters.map((param, i) =>
+            i === index ? {...param, [field]: field === 'totalValue' ? parseInt(value, 10) || 0 : value} : param
+        );
 
         if (field === 'totalValue') {
             const intValue = parseInt(value, 10)
@@ -55,76 +58,24 @@ export const Rubrica = () => {
         setParameters(newParameters)
     }
 
-    const handleSubmit = async () => {
-        if (parameters.length === 0) {
-            setError(true)
-            return
-        }
-
-        const newParameters = parameters.map(param => {
-            if (param.totalValue === 0) {
-                return {...param, error: true}
-            }
-            return param
-        })
-
-        const updatedParameters = newParameters.map(param => {
-            const updatedCriterias = param.criterias.map(criteria => {
-                return {...criteria, error: !criteria.rating.trim() || !criteria.description.trim()}
-            })
-            return {...param, criterias: updatedCriterias}
-        })
-
-        setParameters(updatedParameters)
-
-        if (updatedParameters.some(param => param.error)) return
-        if (updatedParameters.some(param => param.criterias.some(criteria => criteria.error))) return
-
-        // Parámetros sin la propiedad error
-        const sentParameters = updatedParameters.map(param => {
-            const {error, ...rest} = param
-            const newCriterias = rest.criterias.map(criteria => {
-                const {error, ...rest} = criteria
-                return rest
-            })
-            return {...rest, criterias: newCriterias}
-        })
-
-        // Todo bien, enviar rúbrica
-        try {
-            const response = await fetch('http://127.0.0.1:5000/tarea/rubrica', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({rubrica: sentParameters})
-            })
-
-            const data = await response.json()
-            alert(data.message)
-        } catch (error) {
-            alert(`Error al enviar la rúbrica: ${error.message}`)
-        }
-    }
 
     return (
-        <Box sx={{ maxWidth: '600px', margin: '0 auto', padding: '2rem', border: '1px solid #ddd', borderRadius: '8px' }}>
-   
+
         <Box sx={{paddingTop: -5, paddingX: 2}}>
             <h1>Rúbrica</h1>
 
             <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center',}}>
-                <p>Prueba del envío de rúbrica</p>
                 {(parameters.length > 0) &&
                     <p>Total de puntos: <strong>{parameters.reduce((sum, param) => sum + param.totalValue, 0)}</strong>
                     </p>}
             </Box>
 
+
             {parameters.map((parameter, index) => (
                 <Box
                     key={index}
                     sx={{
-                        borderRadius: 8,
+                        borderRadius: 3,
                         border: '1px solid',
                         borderColor: grey[500],
                         paddingX: 2,
@@ -154,7 +105,10 @@ export const Rubrica = () => {
                         <TextField
                             label="Título"
                             value={parameter.title}
-                            onChange={(e) => handleParameterChange(index, 'title', e.target.value)}
+                            onChange={(e) => {
+                                handleParameterChange(index, 'title', e.target.value)
+
+                            }}
                             sx={{flex: 7}}
                             margin="normal"
                             error={parameter.error && !parameter.title.trim()}
@@ -165,7 +119,10 @@ export const Rubrica = () => {
                         <TextField
                             label="Valor Total"
                             value={parameter.totalValue}
-                            onChange={(e) => handleParameterChange(index, 'totalValue', e.target.value)}
+                            onChange={(e) => {
+                                handleParameterChange(index, 'totalValue', e.target.value)
+
+                            }}
                             sx={{flex: 3}}
                             margin="normal"
                             size="small"
@@ -178,7 +135,10 @@ export const Rubrica = () => {
                     <TextField
                         label="Descripción"
                         value={parameter.description}
-                        onChange={(e) => handleParameterChange(index, 'description', e.target.value)}
+                        onChange={(e) => {
+                            handleParameterChange(index, 'description', e.target.value)
+
+                        }}
                         fullWidth
                         margin="normal"
                         size="small"
@@ -201,7 +161,7 @@ export const Rubrica = () => {
                             <Box
                                 key={criteriaIndex}
                                 sx={{
-                                    borderRadius: 8,
+                                    borderRadius: 2,
                                     border: '1px solid',
                                     borderColor: grey[400],
                                     paddingX: 2,
@@ -217,6 +177,7 @@ export const Rubrica = () => {
                                             const newParameters = [...parameters]
                                             newParameters[index].criterias[criteriaIndex].rating = e.target.value
                                             setParameters(newParameters)
+
                                         }}
                                         sx={{flex: 6}}
                                         fullWidth
@@ -233,6 +194,7 @@ export const Rubrica = () => {
                                             const newParameters = [...parameters]
                                             newParameters[index].criterias[criteriaIndex].partialValue = parseInt(e.target.value, 10) || 0
                                             setParameters(newParameters)
+
                                         }}
                                         onBlur={(e) => {
                                             if (parseInt(e.target.value, 10) > parameter.totalValue) {
@@ -256,6 +218,7 @@ export const Rubrica = () => {
                                         const newParameters = [...parameters]
                                         newParameters[index].criterias[criteriaIndex].description = e.target.value
                                         setParameters(newParameters)
+
                                     }}
                                     fullWidth
                                     margin="normal"
@@ -287,7 +250,14 @@ export const Rubrica = () => {
             ))}
 
             {(error && !parameters.length > 0) &&
-                <p style={{color: 'red'}}>Debe añadir al menos un criterio antes de enviar.</p>}
+                <Typography
+                    sx={{
+                        color: (theme) => theme.palette.colors.errorText
+                    }}
+                >
+                    Debe añadir al menos un criterio antes de enviar.
+                </Typography>
+            }
 
             <Box sx={{display: 'flex', justifyContent: 'space-between', marginY: 2}}>
                 <Button
@@ -297,17 +267,10 @@ export const Rubrica = () => {
                     Añadir Parámetro
                 </Button>
 
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleSubmit}
-                >
-                    Enviar Rúbrica
-                </Button>
             </Box>
         </Box>
-        </Box>
+
     )
 }
 
-export default Rubrica
+export default RubricComponent
