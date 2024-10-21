@@ -18,6 +18,6 @@ if response.status_code == 200:
             if decoded_chunk == "[DONE]":
                 print("Stream completado.")
                 break
-            print(decoded_chunk)
+            print("Fragmento recibido:", decoded_chunk)
 else:
     print(f"Error: {response.status_code} - {response.text}")
