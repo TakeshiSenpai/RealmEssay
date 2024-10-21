@@ -28,7 +28,6 @@ def get_rubric():
 def submit():
     try:
         data = request.json
-        print("Si entro con la siguiente data",data)
         # Enviamos los datos a la función submit() de ia_response
         result = ia_response.submit(data)
         return jsonify({"message": "Datos procesados exitosamente", "result": result}), 200
@@ -41,7 +40,14 @@ def submit():
 def get_response():
     try:
         # Procesar la respuesta como un stream de datos
-        return Response(ia_response.process_response(), content_type='text/event-stream')
+        def stream_response():
+            for fragment in ia_response.process_response():
+                yield fragment  # Enviar cada fragmento al cliente progresivamente
+                import sys
+                sys.stdout.flush()  # Asegurarnos de que se "flushee" el buffer
+
+        # Retornamos el stream usando la función generadora
+        return Response(stream_response(), content_type='text/event-stream')
 
     except Exception as e:
         return jsonify({"error": f"Error al obtener la respuesta: {str(e)}"}), 500
