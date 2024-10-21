@@ -1,19 +1,19 @@
-import React, {useEffect} from 'react';
-import ReactDOM from 'react-dom/client';
+import React, {useEffect} from 'react'
+import ReactDOM from 'react-dom/client'
 
-import {BrowserRouter, Routes, Route} from "react-router-dom";
-import reportWebVitals from './reportWebVitals';
-import Layout from "./pages/Layout";
-import Home from "./pages/Home";
-import Auth from './pages/Auth';
-import Tarea from "./pages/Tarea";
-import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
+import {BrowserRouter, Routes, Route} from "react-router-dom"
+import reportWebVitals from './reportWebVitals'
+import Layout from "./pages/Layout"
+import Home from "./pages/Home"
+import Auth from './pages/Auth'
+import Tarea from "./pages/Tarea"
+import {createTheme, CssBaseline, ThemeProvider} from "@mui/material"
 
 import './index.css'
 
 function App3() {
-    const [theme, setTheme] = React.useState(localStorage.getItem('theme') || 'auto');
-    const [isAuto, setIsAuto] = React.useState(theme === 'auto');
+    const [theme, setTheme] = React.useState(localStorage.getItem('theme') || 'auto')
+    const [isAuto, setIsAuto] = React.useState(theme === 'auto')
 
     const lightTheme = createTheme({
         palette: {
@@ -50,28 +50,25 @@ function App3() {
     })
 
     const getTheme = () => {
-        if (isAuto) {
-            return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? darkTheme : lightTheme
-        }
-
+        if (isAuto) return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? darkTheme : lightTheme
         return theme === 'dark' ? darkTheme : lightTheme
     }
 
     useEffect(() => {
-        localStorage.setItem('theme', theme);
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        localStorage.setItem('theme', theme)
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
         const handleChange = () => {
             if (isAuto) {
-                setTheme(mediaQuery.matches ? 'dark' : 'light');
+                setTheme(mediaQuery.matches ? 'dark' : 'light')
             }
         }
-        mediaQuery.addEventListener('change', handleChange);
-        return () => mediaQuery.removeEventListener('change', handleChange);
-    }, [isAuto, theme]);
+        mediaQuery.addEventListener('change', handleChange)
+        return () => mediaQuery.removeEventListener('change', handleChange)
+    }, [isAuto, theme])
 
     const handleThemeChange = (newTheme) => {
-        setIsAuto(newTheme === 'auto');
-        setTheme(newTheme);
+        setIsAuto(newTheme === 'auto')
+        setTheme(newTheme)
     }
 
     return (
@@ -90,6 +87,6 @@ function App3() {
     )
 }
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App3/>);
-reportWebVitals();
+const root = ReactDOM.createRoot(document.getElementById('root'))
+root.render(<App3/>)
+reportWebVitals()
