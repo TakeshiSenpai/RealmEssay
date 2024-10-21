@@ -1,12 +1,12 @@
 import { Box } from '@mui/material';
 import React from 'react'
-import { ComponenteDeChat } from '../components/ComponenteDeChat';
+import { ChatComponent } from '../components/ChatComponent';
 
 export const Home = () => {
     console.log("Estas en home")
     return (
         <Box>
-            <ComponenteDeChat/>
+            <ChatComponent/>
         </Box>
     )
 }

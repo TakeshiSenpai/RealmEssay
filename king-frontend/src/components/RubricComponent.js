@@ -1,12 +1,12 @@
-import React, {useState} from 'react'
-import Box from "@mui/joy/Box"
+import React from 'react'
+import Box from "@mui/material/Box"
 import Button from "@mui/material/Button";
 import {TextField} from "@mui/material";
 import {grey} from "@mui/material/colors";
 import {Delete, Add} from "@mui/icons-material";
 
-export const Rubrica = ({parameters,setParameters,error}) => {
-     
+export const RubricComponent = ({parameters, setParameters, error}) => {
+
     console.log(error)
 
     const addNewParameter = () => {
@@ -22,7 +22,7 @@ export const Rubrica = ({parameters,setParameters,error}) => {
     const handleParameterChange = (index, field, value) => {
         //const newParameters = [...parameters]
         const newParameters = parameters.map((param, i) =>
-            i === index ? { ...param, [field]: field === 'totalValue' ? parseInt(value, 10) || 0 : value } : param
+            i === index ? {...param, [field]: field === 'totalValue' ? parseInt(value, 10) || 0 : value} : param
         );
 
         if (field === 'totalValue') {
@@ -59,7 +59,7 @@ export const Rubrica = ({parameters,setParameters,error}) => {
 
 
     return (
-        
+
         <Box sx={{paddingTop: -5, paddingX: 2}}>
             <h1>Rúbrica</h1>
 
@@ -68,13 +68,13 @@ export const Rubrica = ({parameters,setParameters,error}) => {
                     <p>Total de puntos: <strong>{parameters.reduce((sum, param) => sum + param.totalValue, 0)}</strong>
                     </p>}
             </Box>
-            
-            
+
+
             {parameters.map((parameter, index) => (
                 <Box
                     key={index}
                     sx={{
-                        borderRadius: 8,
+                        borderRadius: 3,
                         border: '1px solid',
                         borderColor: grey[500],
                         paddingX: 2,
@@ -120,7 +120,7 @@ export const Rubrica = ({parameters,setParameters,error}) => {
                             value={parameter.totalValue}
                             onChange={(e) => {
                                 handleParameterChange(index, 'totalValue', e.target.value)
-                                
+
                             }}
                             sx={{flex: 3}}
                             margin="normal"
@@ -136,7 +136,7 @@ export const Rubrica = ({parameters,setParameters,error}) => {
                         value={parameter.description}
                         onChange={(e) => {
                             handleParameterChange(index, 'description', e.target.value)
-                            
+
                         }}
                         fullWidth
                         margin="normal"
@@ -160,7 +160,7 @@ export const Rubrica = ({parameters,setParameters,error}) => {
                             <Box
                                 key={criteriaIndex}
                                 sx={{
-                                    borderRadius: 8,
+                                    borderRadius: 2,
                                     border: '1px solid',
                                     borderColor: grey[400],
                                     paddingX: 2,
@@ -176,7 +176,7 @@ export const Rubrica = ({parameters,setParameters,error}) => {
                                             const newParameters = [...parameters]
                                             newParameters[index].criterias[criteriaIndex].rating = e.target.value
                                             setParameters(newParameters)
-                                            
+
                                         }}
                                         sx={{flex: 6}}
                                         fullWidth
@@ -193,7 +193,7 @@ export const Rubrica = ({parameters,setParameters,error}) => {
                                             const newParameters = [...parameters]
                                             newParameters[index].criterias[criteriaIndex].partialValue = parseInt(e.target.value, 10) || 0
                                             setParameters(newParameters)
-                                            
+
                                         }}
                                         onBlur={(e) => {
                                             if (parseInt(e.target.value, 10) > parameter.totalValue) {
@@ -217,7 +217,7 @@ export const Rubrica = ({parameters,setParameters,error}) => {
                                         const newParameters = [...parameters]
                                         newParameters[index].criterias[criteriaIndex].description = e.target.value
                                         setParameters(newParameters)
-                                        
+
                                     }}
                                     fullWidth
                                     margin="normal"
@@ -247,8 +247,9 @@ export const Rubrica = ({parameters,setParameters,error}) => {
                     </Box>
                 </Box>
             ))}
-            
-            {(error&&!parameters.length>0) && <p style={{color: 'red'}}>Debe añadir al menos un criterio antes de enviar.</p>}
+
+            {(error && !parameters.length > 0) &&
+                <p style={{color: 'red'}}>Debe añadir al menos un criterio antes de enviar.</p>}
 
             <Box sx={{display: 'flex', justifyContent: 'space-between', marginY: 2}}>
                 <Button
@@ -260,8 +261,8 @@ export const Rubrica = ({parameters,setParameters,error}) => {
 
             </Box>
         </Box>
-        
+
     )
 }
 
-export default Rubrica
+export default RubricComponent

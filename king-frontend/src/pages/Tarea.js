@@ -1,22 +1,22 @@
 import React from 'react'
 import CrearTareas from "../components/CrearTareas.js"
-import {Box, Button, IconButton} from '@mui/material';
+import {Box, Button, IconButton} from '@mui/material'
 import Stepper from '@mui/material/Stepper'
 import Tooltip from '@mui/material/Tooltip'
-import {stepClasses} from '@mui/joy/Step';
+import {stepClasses} from '@mui/joy/Step'
 import Step from '@mui/material/Step'
-import StepIndicator, {stepIndicatorClasses} from '@mui/joy/StepIndicator';
-import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
-import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
-import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
-import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
-import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
-import ComponenteRubrica from "../components/ComponenteRubrica.js"
-import ConfirmacionDeTarea from '../components/ConfirmacionDeTarea.js';
-import {Link} from "react-router-dom";
-//import { sendEmail } from '../app/api/emails/envioCodigoDeTarea.jsx';
+import StepIndicator, {stepIndicatorClasses} from '@mui/joy/StepIndicator'
+import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded'
+import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded'
+import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded'
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded'
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
+import ComponenteRubrica from "../components/RubricComponent.js"
+import HomeworkConfirmation from '../components/HomeworkConfirmation.js'
+import {Link} from "react-router-dom"
+//import { sendEmail } from '../app/api/emails/envioCodigoDeTarea.jsx'
 import CodigoDeTarea from "../app/emails/CodigoDeTarea.jsx"
-import {render} from '@react-email/components';
+import {render} from '@react-email/components'
 
 
 //Aqui se supone que se creará la tarea, para esto llamará a los componentes necesarios
@@ -35,39 +35,39 @@ export const Tarea = () => {
         console.log("Datos recibidos desde CrearTareas:", data)
 
 
-    };
+    }
     const setTaskDataRubrica = (data) => {
         console.log("Datos recibidos desde rubrica:", data)
         console.log("TaskName", data[0].taskName)
         setParametrosRubrica(data)
 
-    };
+    }
 
     //Cambia el indice por lo que se cambia entre, creartarea, rubrica y finalizar(Confirmar)
     const cambiarIndice = async (numero) => {
-        console.log(parametrosTarea);
-        console.log("Indice", indiceDeCreacion); //esto es como para comprobar cosas despues
+        console.log(parametrosTarea)
+        console.log("Indice", indiceDeCreacion) //esto es como para comprobar cosas despues
 
         if (numero === 1) {
             if (indiceDeCreacion === 1) {
-                let hayErrorEnContenido = comprobarSiNoHayErrorEnLaRubrica();
+                let hayErrorEnContenido = comprobarSiNoHayErrorEnLaRubrica()
                 if (!(hayErrorEnContenido || errorEnRubrica)) {
-                    setIndiceDeCreacion((prevIndice) => prevIndice + 1); // Usar la versión más reciente del estado
+                    setIndiceDeCreacion((prevIndice) => prevIndice + 1) // Usar la versión más reciente del estado
                 }
             } else if (indiceDeCreacion === 2) {
-                reiniciarParametros();
-                setIndiceDeCreacion(0);
-                const html = await imprimirHtml(); //Se obtiene el html a mandar
-                await mandarCorreos(html, obtenerArregloDeCorreos());
+                reiniciarParametros()
+                setIndiceDeCreacion(0)
+                const html = await imprimirHtml() //Se obtiene el html a mandar
+                await mandarCorreos(html, obtenerArregloDeCorreos())
             } else {
-                setIndiceDeCreacion((prevIndice) => prevIndice + 1); // Usar la versión más reciente del estado
+                setIndiceDeCreacion((prevIndice) => prevIndice + 1) // Usar la versión más reciente del estado
             }
         } else {
             if (indiceDeCreacion !== 0) {
-                setIndiceDeCreacion((prevIndice) => prevIndice - 1); // Usar la versión más reciente del estado
+                setIndiceDeCreacion((prevIndice) => prevIndice - 1) // Usar la versión más reciente del estado
             }
         }
-    };
+    }
 
     //Borra las variables, se supone que antes de estoy deberia enviarlo al backend peor pues eso todavia (15oct) no
     const reiniciarParametros = () => {
@@ -139,7 +139,7 @@ export const Tarea = () => {
                 <ComponenteRubrica parameters={parametrosRubrica} setParameters={setParametrosRubrica}
                                    error={errorEnRubrica}/>)}
             {indiceDeCreacion >= 2 && (
-                <ConfirmacionDeTarea parametrosRubrica={parametrosRubrica} parametrosTarea={parametrosTarea}/>)}
+                <HomeworkConfirmation parametrosRubrica={parametrosRubrica} parametrosTarea={parametrosTarea}/>)}
 
             <Box sx={{minHeight: '10vh'}}/>
 
@@ -245,6 +245,6 @@ export const Tarea = () => {
         </Box>
     )
 }
-export default Tarea;
+export default Tarea
 
 

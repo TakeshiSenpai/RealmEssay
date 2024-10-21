@@ -5,7 +5,7 @@ import {Navigate} from 'react-router-dom'
 import {styled} from '@mui/joy';
 import {IconButton, TextField} from '@mui/material'
 
-export const ComponenteDeChat = () => {
+export const ChatComponent = () => {
     const token = localStorage.getItem('token')
 
     const [mensaje, setMensaje] = React.useState('')
@@ -47,7 +47,7 @@ export const ComponenteDeChat = () => {
                     padding: '0px'
                 }}
             >
-                 {/*Botón a la izquierda*/}
+                {/*Botón a la izquierda*/}
                 <IconButton
                     variant="outlined"
                     component="label"
@@ -59,8 +59,8 @@ export const ComponenteDeChat = () => {
                     <VisuallyHiddenInput type="file" accept=".pdf, .txt"/>
                 </IconButton>
 
-                 {/*Área de texto en el centro*/}
-                 <TextField
+                {/*Área de texto en el centro*/}
+                <TextField
                     multiline
                     maxRows={4}
                     placeholder="Escribe aquí..."
@@ -68,7 +68,7 @@ export const ComponenteDeChat = () => {
                     onChange={handleChange}
                     variant="outlined"
                     fullWidth
-                    sx={{ flexGrow: 1 }}
+                    sx={{flexGrow: 1}}
                 />
 
 
