@@ -1,13 +1,13 @@
 import * as React from 'react'
-import Button from '@mui/joy/Button'
+import Button from '@mui/material/Button'
 import Textarea from '@mui/joy/Textarea'
 import {Box} from '@mui/joy'
 import { AttachFile, Send } from '@mui/icons-material'
 import { Navigate } from 'react-router-dom'
-import { styled } from '@mui/joy';
+import { styled } from '@mui/material';
 import { IconButton } from '@mui/material'
 
-export const ComponenteDeChat = ({arregloDeConversacionAlumno, setArregloDeConversacionAlumno}) => {
+export const ChatComponent = ({arregloDeConversacionAlumno, setArregloDeConversacionAlumno}) => {
 
     const token = localStorage.getItem('token') 
 

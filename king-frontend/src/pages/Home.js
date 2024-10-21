@@ -1,8 +1,7 @@
 import { Box } from '@mui/material';
 import React from 'react'
-import { ComponenteDeChat } from '../components/ComponenteDeChat';
-import ComponenteDeConversacion from'../components/ComponenteDeConversacion';
-
+import { ChatComponent } from '../components/ChatComponent';
+import ComponenteDeConversacion from '../components/ComponenteDeConversacion'
 
 //Nota: Se debe renombrar a algo relacionado a la vista del alumno y sobre enviar tarea 
 export const Home = () => {
@@ -30,10 +29,11 @@ export const Home = () => {
         borderTop: '1px solid #ddd', 
         padding: 2 
     }}>
-      <ComponenteDeChat arregloDeConversacionAlumno={arregloDeConversacionAlumno} setArregloDeConversacionAlumno= {setArregloDeConversacioensAlumno} />
+      <ChatComponent arregloDeConversacionAlumno={arregloDeConversacionAlumno} setArregloDeConversacionAlumno= {setArregloDeConversacioensAlumno} />
     </Box>
   </Box>
 
   )
 }
-export default Home;
+
+export default Home
