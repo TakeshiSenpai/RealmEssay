@@ -5,7 +5,7 @@ import Stepper from '@mui/joy/Stepper';
 import Tooltip from '@mui/joy/Tooltip';
 import Step, { stepClasses } from '@mui/joy/Step';
 import StepIndicator, { stepIndicatorClasses } from '@mui/joy/StepIndicator';
-import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
+import TextSnippetRoundedIcon from '@mui/icons-material/TextSnippetRounded';
 import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
@@ -24,7 +24,7 @@ export const Tarea = ()=>{
 
   const [indiceDeCreacion,setIndiceDeCreacion] = React.useState(0)
   const [parametrosRubrica, setParametrosRubrica] = React.useState([])
-  const [errorEnRubrica, setErrorEnRubrica] = React.useState(false)
+  const [errorEnRubrica, setErrorEnRubrica] = React.useState(true)
   const [parametrosTarea,setParametrosTarea] = React.useState({
     taskName:'',
     description:'',
@@ -44,31 +44,31 @@ export const Tarea = ()=>{
     };
   
     //Cambia el indice por lo que se cambia entre, creartarea, rubrica y finalizar(Confirmar)
-    const cambiarIndice = async (numero) => {
-      console.log(parametrosTarea);
-      console.log("Indice", indiceDeCreacion); //esto es como para comprobar cosas despues 
-      
-      if (numero === 1) {
-        if (indiceDeCreacion === 1) {
-          let hayErrorEnContenido = comprobarSiNoHayErrorEnLaRubrica();
-          if (!(hayErrorEnContenido || errorEnRubrica)) {
-            setIndiceDeCreacion((prevIndice) => prevIndice + 1); // Usar la versión más reciente del estado
+      const cambiarIndice = async (numero)=>{
+        console.log(parametrosTarea)
+        console.log("Indice",indiceDeCreacion) //esto es como para comprobar cosas despues 
+        if (numero ===1){
+          if(indiceDeCreacion===1){
+            let hayErrorEnContenido=comprobarSiNoHayErrorEnLaRubrica()
+            if(!(hayErrorEnContenido || errorEnRubrica)) setIndiceDeCreacion((prevIndice) => prevIndice + 1)
+            
           }
-        } else if (indiceDeCreacion === 2) {
-          reiniciarParametros();
-          setIndiceDeCreacion(0);
-          const html = await imprimirHtml(); //Se obtiene el html a mandar 
-          await mandarCorreos(html, obtenerArregloDeCorreos());
-        } else {
-          setIndiceDeCreacion((prevIndice) => prevIndice + 1); // Usar la versión más reciente del estado
+          else
+          if (indiceDeCreacion===2) {
+            reiniciarParametros()
+            setIndiceDeCreacion(0);
+            const html = await imprimirHtml() //Se obtiene el html a mandar 
+            
+            await mandarCorreos(html,obtenerArregloDeCorreos())
+            //console.log(html)
+            //Ademas de hacer esto se deberia hacer un link para la tarea o algo asi, talvez un link para el home 
+          }
+          else{setIndiceDeCreacion((prevIndice) => prevIndice + 1)}
         }
-      } else {
-        if (indiceDeCreacion !== 0) {
-          setIndiceDeCreacion((prevIndice) => prevIndice - 1); // Usar la versión más reciente del estado
+        else{
+          if (indiceDeCreacion!==0) setIndiceDeCreacion((prevIndice) => prevIndice - 1) 
         }
       }
-    };
-    
       //Borra las variables, se supone que antes de estoy deberia enviarlo al backend peor pues eso todavia (15oct) no 
       const reiniciarParametros = ()=>{
         
@@ -136,8 +136,8 @@ export const Tarea = ()=>{
         <Box sx={{  maxWidth: '700px', margin: '0 auto', padding: '2rem', border: '1px solid #ddd', borderRadius: '8px' }}>
     
           {indiceDeCreacion=== 0 &&(<CrearTareas parametrosTarea={parametrosTarea} setParametrosTarea={setParametrosTarea}/>)}
-          {indiceDeCreacion=== 1 &&(<ComponenteRubrica parameters={parametrosRubrica} setParameters={setParametrosRubrica} error={errorEnRubrica}/>)}
-          {indiceDeCreacion >= 2 && (<ConfirmacionDeTarea parametrosRubrica={ parametrosRubrica} parametrosTarea={parametrosTarea}/>)}
+          {((indiceDeCreacion=== 1 || errorEnRubrica ) && indiceDeCreacion ===1 ) &&(<ComponenteRubrica parameters={parametrosRubrica} setParameters={setParametrosRubrica} error={errorEnRubrica}/>)}
+          {(indiceDeCreacion >= 2 && !errorEnRubrica) && (<ConfirmacionDeTarea parametrosRubrica={ parametrosRubrica} parametrosTarea={parametrosTarea}/>)}
 
         <Box sx ={{minHeight: '10vh'}}/>
 
@@ -154,7 +154,7 @@ export const Tarea = ()=>{
           <ArrowForwardRoundedIcon/>
           </IconButton>)}
           {
-              indiceDeCreacion >=2 &&(
+              (indiceDeCreacion >=2 && !errorEnRubrica)&&(
               <Button onClick={()=>{cambiarIndice(1) }} sx={{ml:'auto'}} component={Link} to = { indiceDeCreacion===2 ? "/Tarea" : ""}>
               Crear
               </Button>)
@@ -201,7 +201,7 @@ export const Tarea = ()=>{
         orientation="vertical"
         indicator={
           <StepIndicator variant="outlined" color="primary">
-            <ShoppingCartRoundedIcon />
+            <TextSnippetRoundedIcon />
           </StepIndicator>
         }
       />

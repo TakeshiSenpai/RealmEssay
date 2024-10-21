@@ -7,8 +7,8 @@ from pathlib import Path
 
 # Rutas donde se almacenarán temporalmente los datos
 
-INPUT_FILE = pathlib.Path('queen-backend/ia_function/ia_response/input.txt').resolve()
-CRITERIA_FILE = pathlib.Path('queen-backend/ia_function/ia_response/criteria.txt').resolve()
+INPUT_FILE = pathlib.Path('input.txt').resolve()
+CRITERIA_FILE = pathlib.Path('criteria.txt').resolve()
 
 
 # Cargar el token desde un archivo
@@ -85,7 +85,7 @@ def submit_criteria(data):
 def submit(data):
     # Procesar el data como sea necesario
     input_text = data.get('input')  # Asegúrate de que 'input' esté en los datos
-
+    print(INPUT_FILE)
     # Guardar el ensayo en un archivo temporal o procesarlo
     with open(INPUT_FILE, 'w') as f:
         f.write(input_text)

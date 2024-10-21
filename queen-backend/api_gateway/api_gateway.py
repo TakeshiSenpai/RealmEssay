@@ -9,6 +9,7 @@ parent_dir=current_file.parent.parent
 sys.path.append(str(parent_dir))
 from ia_function.ia_response import ia_response
 from send_emails.send_email_validation_code import send_email_validation_code
+from ia_function.process_rubric.process_rubric import  process_rubric
 
 #ia_response.run
 app = Flask(__name__)
@@ -20,14 +21,14 @@ def login_google():
 
 @app.route('/tarea/rubrica', methods=['POST'])
 def get_rubric():
-    pass
-    #return process_rubric()
+    return process_rubric()
 
 # Ruta para enviar datos de la IA
 @app.route('/submit', methods=['POST'])
 def submit():
     try:
         data = request.json
+        print("Si entro con la siguiente data",data)
         # Enviamos los datos a la función submit() de ia_response
         result = ia_response.submit(data)
         return jsonify({"message": "Datos procesados exitosamente", "result": result}), 200

@@ -102,6 +102,7 @@ export const Rubrica = () => {
 
             const data = await response.json()
             alert(data.message)
+            console.log(data.message)
         } catch (error) {
             alert(`Error al enviar la rúbrica: ${error.message}`)
         }

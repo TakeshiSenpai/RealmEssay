@@ -2,7 +2,6 @@ from flask import request, jsonify
 
 def process_rubric():
     rubric = request.json.get('rubrica')
-
     if rubric is None:
         return jsonify({'success': False, 'message': 'Rúbrica no recibida'}), 400
 
@@ -31,4 +30,5 @@ def process_rubric():
                 f"\n\tValor parcial: {criteria['partialValue']}"
             )
 
+    print(message)
     return jsonify({'success': True, 'message': message}), 200
