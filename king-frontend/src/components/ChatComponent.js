@@ -1,10 +1,8 @@
 import * as React from 'react'
-import Button from '@mui/material/Button'
-import Textarea from '@mui/joy/Textarea'
-import {Box} from '@mui/joy'
+import {Box,  TextField} from '@mui/material'
 import { AttachFile, Send } from '@mui/icons-material'
 import { Navigate } from 'react-router-dom'
-import { styled } from '@mui/material';
+import { styled } from '@mui/joy';
 import { IconButton } from '@mui/material'
 
 export const ChatComponent = ({arregloDeConversacionAlumno, setArregloDeConversacionAlumno}) => {
@@ -98,7 +96,7 @@ export const ChatComponent = ({arregloDeConversacionAlumno, setArregloDeConversa
       </IconButton>
 
       {/* Área de texto en el centro */}
-      <Textarea
+      <TextField
         multiline
         maxRows={4}
         placeholder="Escribe aquí..."

@@ -137,7 +137,7 @@ export const Tarea = () => {
                 <CrearTareas parametrosTarea={parametrosTarea} setParametrosTarea={setParametrosTarea}/>)}
             {indiceDeCreacion === 1 && (
                 <ComponenteRubrica parameters={parametrosRubrica} setParameters={setParametrosRubrica}
-                                   error={errorEnRubrica}/>)}
+                                   error={errorEnRubrica} setError={setErrorEnRubrica}/>)}
             {indiceDeCreacion >= 2 && (
                 <HomeworkConfirmation parametrosRubrica={parametrosRubrica} parametrosTarea={parametrosTarea}/>)}
 
