@@ -63,6 +63,10 @@ function App3() {
             }
         }
         mediaQuery.addEventListener('change', handleChange)
+
+        const themeColor = theme === 'dark' ? '#6a55af' : 'rgb(248,246,252)'
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', themeColor)
+
         return () => mediaQuery.removeEventListener('change', handleChange)
     }, [isAuto, theme])
 
