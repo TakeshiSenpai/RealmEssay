@@ -6,7 +6,7 @@ import {grey} from "@mui/material/colors";
 import {Delete, Add} from "@mui/icons-material";
 import Typography from "@mui/material/Typography";
 
-export const RubricComponent = ({parameters, setParameters, error}) => {
+export const RubricComponent = ({parameters, setParameters, error,setError}) => {
 
     console.log(error)
 
@@ -58,6 +58,58 @@ export const RubricComponent = ({parameters, setParameters, error}) => {
         setParameters(newParameters)
     }
 
+    const handleSubmit = async () => {
+        if (parameters.length === 0) {
+            setError(true)
+            return
+        }
+
+        const newParameters = parameters.map(param => {
+            if (param.totalValue === 0) {
+                return {...param, error: true}
+            }
+            return param
+        })
+
+        const updatedParameters = newParameters.map(param => {
+            const updatedCriterias = param.criterias.map(criteria => {
+                return {...criteria, error: !criteria.rating.trim() || !criteria.description.trim()}
+            })
+            return {...param, criterias: updatedCriterias}
+        })
+
+        setParameters(updatedParameters)
+
+        if (updatedParameters.some(param => param.error)) return
+        if (updatedParameters.some(param => param.criterias.some(criteria => criteria.error))) return
+
+        // Parámetros sin la propiedad error
+        const sentParameters = updatedParameters.map(param => {
+            const {error, ...rest} = param
+            const newCriterias = rest.criterias.map(criteria => {
+                const {error, ...rest} = criteria
+                return rest
+            })
+            return {...rest, criterias: newCriterias}
+        })
+
+        // Todo bien, enviar rúbrica
+        try {
+            const response = await fetch('http://127.0.0.1:5000/tarea/rubrica', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({rubrica: sentParameters})
+            })
+
+            const data = await response.json()
+            alert(data.message)
+            console.log(data.message)
+        } catch (error) {
+            alert(`Error al enviar la rúbrica: ${error.message}`)
+        }
+    }
 
     return (
 
