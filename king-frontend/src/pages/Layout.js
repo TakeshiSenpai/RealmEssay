@@ -167,7 +167,13 @@ const Layout = ({theme, setTheme, isAuto}) => {
                         mostrarContenidoEnSidebarListItem()
 
                     }
-                    </List>
+                    <ListItem>
+                        <ListItemButton component={Link} to="/Rubrica">
+                            <EditNote/>
+                            Rúbrica
+                        </ListItemButton>
+                    </ListItem>
+                </List>
 
                 <Box
                     sx={{
