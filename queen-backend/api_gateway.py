@@ -1,28 +1,39 @@
 from flask import Flask,request,jsonify,Response
 from flask_cors import CORS
 import pathlib,sys
+import requests
 # Importaciones absolutas ahora son posibles
-from authentication import google_auth 
 current_file=pathlib.Path(__file__)
 parent_dir=current_file.parent.parent
 #print(str(parent_dir))
 sys.path.append(str(parent_dir))
-from ia_function.ia_response import ia_response
-from send_emails.send_email_validation_code import send_email_validation_code
-from ia_function.process_rubric.process_rubric import  process_rubric
 
-#ia_response.run
 app = Flask(__name__)
 CORS(app)
 
 @app.route('/login/google', methods=['POST'])
 def login_google():
-    return google_auth.login_google()
+    google_token = request.json.get('token')
+    response = requests.post("http://127.0.0.1:2001/login/google", json={"token": google_token})
+    return jsonify(response.json()), 200 
+
+@app.route('/tarea/email/code', methods = ['POST'])
+def send_email():
+    rubrica = request.json.get('rubrica')
+    response = requests.post("http://127.0.0.1:2002/tarea/email/code", json={"rubrica": rubrica})
+
+    return jsonify(response.json()), 200 
 
 @app.route('/tarea/rubrica', methods=['POST'])
 def get_rubric():
-    return process_rubric()
+    rubrica = request.json.get('rubrica')
+    response = requests.post("http://127.0.0.1:2003/tarea/rubrica", json={"rubrica": rubrica})
 
+    return jsonify(response.json()), 200 
+
+
+
+"""
 # Ruta para enviar datos de la IA
 @app.route('/submit', methods=['POST'])
 def submit():
@@ -62,10 +73,7 @@ def submit_criteria():
     except Exception as e:
         return jsonify({"error": f"Error al enviar los criterios: {str(e)}"}), 500
 
-
-@app.route('/tarea/email/code', methods = ['POST'])
-def send_email():
-    return send_email_validation_code()
+"""
 
 @app.after_request
 def add_header(response):
@@ -74,4 +82,5 @@ def add_header(response):
     return response
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='127.0.0.1', port=2000)
+

@@ -13,8 +13,10 @@ export const ChatComponent = ({arregloDeConversacionAlumno, setArregloDeConversa
         
         setMensaje(event.target.value) // Actualiza el estado con el valor actual
     }
+    
+
     const handleSubmit = async () => {
-        const rubricaPrueba = "Se te presenta la rúbrica para evaluar el ensayo. Consta de 2 parámetros, cada uno con un título, descripción, valor máximo y un conjunto de niveles de desempeño (criterios). Cada nivel tiene una descripción y un puntaje asociado. Selecciona el nivel de desempeño más adecuado para cada parámetro del ensayo. Al final, deberás presentar el puntaje total, indicando el puntaje de cada parámetro y proporcionando una breve justificación. Parámetro 1: Ortografia" + "Descripción: Se revisara el trabajao con respecto a palabras bien escritas y que tengan acento donde deberian Valor total: 40 Criterios: Criterio 1: Si no tiene ninguno entonces no hay puntos que restar Valor parcial: 40 Criterio 2: Si tiene 4 faltas de ortografia deberia ser 0 en este parametro, es decir, - 40 puntos Valor parcial: 0"
+        /*const rubricaPrueba = "Se te presenta la rúbrica para evaluar el ensayo. Consta de 2 parámetros, cada uno con un título, descripción, valor máximo y un conjunto de niveles de desempeño (criterios). Cada nivel tiene una descripción y un puntaje asociado. Selecciona el nivel de desempeño más adecuado para cada parámetro del ensayo. Al final, deberás presentar el puntaje total, indicando el puntaje de cada parámetro y proporcionando una breve justificación. Parámetro 1: Ortografia" + "Descripción: Se revisara el trabajao con respecto a palabras bien escritas y que tengan acento donde deberian Valor total: 40 Criterios: Criterio 1: Si no tiene ninguno entonces no hay puntos que restar Valor parcial: 40 Criterio 2: Si tiene 4 faltas de ortografia deberia ser 0 en este parametro, es decir, - 40 puntos Valor parcial: 0"
             + "Parámetro 2: Contenido"
             + "Descripción: En el contenido habla sobre el creador del rubik y la importancia del cubo"
             + "Valor total: 60"
@@ -52,12 +54,14 @@ export const ChatComponent = ({arregloDeConversacionAlumno, setArregloDeConversa
                 'Content-Type': 'application/json'
             }
         })
+        
 
         data = response3
         console.log(data)
 
         setMensaje("")
         setArregloDeConversacionAlumno([...arregloDeConversacionAlumno, mensaje])
+        */
 
     }
 
