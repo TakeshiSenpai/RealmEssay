@@ -1,11 +1,11 @@
-from flask import Flask,request,jsonify,Response
-from flask_cors import CORS
-import pathlib,sys
+import pathlib
 import requests
-# Importaciones absolutas ahora son posibles
+import sys
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+
 current_file=pathlib.Path(__file__)
 parent_dir=current_file.parent.parent
-#print(str(parent_dir))
 sys.path.append(str(parent_dir))
 
 app = Flask(__name__)
