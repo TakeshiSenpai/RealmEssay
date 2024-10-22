@@ -1,4 +1,4 @@
-import {Button} from '@mui/material'
+import {Button, Dialog, Divider, ListItemButton} from '@mui/material'
 import Drawer from '@mui/material/Drawer'
 import React, {useEffect, useRef, useState} from 'react'
 import List from '@mui/material/List'
@@ -10,15 +10,11 @@ import DialogContent from '@mui/material/DialogContent'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import ViewSidebarRoundedIcon from '@mui/icons-material/ViewSidebarRounded'
-import {Outlet, Link} from "react-router-dom"
-import {ListItemButton} from '@mui/material'
-import {useNavigate} from 'react-router-dom'
+import {Link, Outlet, useNavigate} from "react-router-dom"
 import Tooltip from '@mui/material/Tooltip'
-import {Divider} from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import FormControl from '@mui/material/FormControl'
 import Input from '@mui/material/Input'
-import {Dialog} from "@mui/material";
 import Stack from '@mui/material/Stack'
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded'
 import Menu from '@mui/material/Menu'
@@ -217,25 +213,6 @@ const Layout = ({theme, setTheme, isAuto}) => {
                             sx={{zIndex: 1300}}
                             open={menuOpen}
                         >
-                            <MenuItem onClick={() => {
-                                setMenuOpen(false)
-                                localStorage.clear()
-                                navigate('/auth')
-                            }}
-                            >
-                                Cerrar sesión
-                            </MenuItem>
-
-                            <MenuItem
-                                component={Link}
-                                to={!esAlumno ? "/" : "/Tarea"}
-                                onClick={() => {
-                                    setMenuOpen(false)
-                                    cambiarVista()
-                                }}
-                            >
-                                {esAlumno ? "Cambiar a profesor" : "Cambiar a alumno"}
-                            </MenuItem>
 
                             <IconButton
                                 aria-haspopup={true}
@@ -259,6 +236,7 @@ const Layout = ({theme, setTheme, isAuto}) => {
                                     Tema
                                 </Typography>
                             </IconButton>
+
 
                             <Menu sx={{zIndex: 1500}} open={themeMenuOpen}>
                                 <MenuItem onClick={(e) => {
@@ -286,8 +264,27 @@ const Layout = ({theme, setTheme, isAuto}) => {
                                     {theme === 'dark' && !isAuto && <CheckCircleRoundedIcon/>}
                                 </MenuItem>
                             </Menu>
-                        </Menu>
 
+                            <MenuItem
+                                component={Link}
+                                to={!esAlumno ? "/" : "/Tarea"}
+                                onClick={() => {
+                                    setMenuOpen(false)
+                                    cambiarVista()
+                                }}
+                            >
+                                {esAlumno ? "Cambiar a profesor" : "Cambiar a alumno"}
+                            </MenuItem>
+
+                            <MenuItem onClick={() => {
+                                setMenuOpen(false)
+                                localStorage.clear()
+                                navigate('/auth')
+                            }}
+                            >
+                                Cerrar sesión
+                            </MenuItem>
+                        </Menu>
                     </div>
                 </Box>
             </Drawer>

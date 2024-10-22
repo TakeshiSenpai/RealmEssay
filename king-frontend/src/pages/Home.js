@@ -1,6 +1,6 @@
-import { Box } from '@mui/material';
+import {Box} from '@mui/material';
 import React from 'react'
-import { ChatComponent } from '../components/ChatComponent';
+import {ChatComponent} from '../components/ChatComponent';
 import ComponenteDeConversacion from '../components/ComponenteDeConversacion'
 
 //Nota: Se debe renombrar a algo relacionado a la vista del alumno y sobre enviar tarea 
@@ -12,13 +12,13 @@ export const Home = () => {
     <Box sx={{ 
       display: 'flex', 
       flexDirection: 'column', 
-      height: '91vh'  // Ocupa todo el alto de la pantalla
+      height: '95vh'  // Ocupa todo el alto de la pantalla
   }}>
     {/* Componente que muestra las conversaciones */}
     <Box sx={{ 
         flexGrow: 1, 
         overflowY: 'auto',  // Permite el scroll si el contenido excede el tamaño
-        paddingY: 4, 
+        paddingY: 4,
         paddingX: 2,  
     }}>
       <ComponenteDeConversacion arregloDeConversacionAlumno={arregloDeConversacionAlumno} arregloDeConversacionIA={arregloDeConversacionIA} />
@@ -27,12 +27,11 @@ export const Home = () => {
     {/* Componente de chat que siempre estará en la parte inferior */}
     <Box sx={{ 
         borderTop: '1px solid #ddd', 
-        padding: 2 
+        padding: 2
     }}>
       <ChatComponent arregloDeConversacionAlumno={arregloDeConversacionAlumno} setArregloDeConversacionAlumno= {setArregloDeConversacioensAlumno} />
     </Box>
   </Box>
-
   )
 }
 
