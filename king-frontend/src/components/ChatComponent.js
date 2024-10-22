@@ -10,6 +10,7 @@ export const ChatComponent = ({arregloDeConversacionAlumno, setArregloDeConversa
 
     const [mensaje, setMensaje] = React.useState('')
     const handleChange = (event) => {
+        
         setMensaje(event.target.value) // Actualiza el estado con el valor actual
     }
     const handleSubmit = async () => {
