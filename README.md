@@ -403,7 +403,7 @@ function EssayComponent() {
 <EssayComponent title="Ensayo" author="Autor" date="2021-10-10" rubric={rubric} user={user} />
 ```
 
-- Si el componente tiene pocas propiedades, se pueden escribir en una sola línea.
+- Si el componente tiene pocas propiedades, se pueden escribir en una sola línea .
 ```javascript
 // Do
 <EssayComponent essay="Ensayo" />
