@@ -68,7 +68,6 @@ function App3() {
         if (isAuto) themeColor = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? '#6a55af' : 'rgb(248,246,252)'
         else themeColor = theme === 'dark' ? '#6a55af' : 'rgb(248,246,252)'
 
-        // const themeColor = theme === 'dark' ? '#6a55af' : 'rgb(248,246,252)'
         document.querySelector('meta[name="theme-color"]').setAttribute('content', themeColor)
 
         return () => mediaQuery.removeEventListener('change', handleChange)

@@ -1,15 +1,16 @@
-from flask import Flask,request,jsonify,Response
+import pathlib
+import sys
+from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
-import pathlib,sys
-# Importaciones absolutas ahora son posibles
-from authentication import google_auth 
+
+from authentication import google_auth
+from ia_function.ia_response import ia_response
+from ia_function.process_rubric.process_rubric import process_rubric
+from send_emails.send_email_validation_code import send_email_validation_code
+
 current_file=pathlib.Path(__file__)
 parent_dir=current_file.parent.parent
-#print(str(parent_dir))
 sys.path.append(str(parent_dir))
-from ia_function.ia_response import ia_response
-from send_emails.send_email_validation_code import send_email_validation_code
-from ia_function.process_rubric.process_rubric import  process_rubric
 
 #ia_response.run
 app = Flask(__name__)
