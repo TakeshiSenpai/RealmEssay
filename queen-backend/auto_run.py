@@ -1,7 +1,6 @@
 import os
 from multiprocessing import Process
 
-
 def run_python_file(file_path):
     if not os.path.exists(file_path):
         file_path = f"queen-backend/{file_path}"
@@ -21,7 +20,7 @@ def ia():
 
 if __name__ == "__main__":
     # Crear procesos para ejecutar los servidores
-    p1 = Process(target= api_gateway)
+    p1 = Process(target=api_gateway)
     p2 = Process(target=authentication)
     p3 = Process(target=homework_teacher)
     p4 = Process(target=ia)
