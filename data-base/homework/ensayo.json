@@ -1,29 +1,7 @@
 {
-    "Ensayo": "Inteligencia Artificial",
-    "Fecha de entrega": "2024-10-25",
-    "Rubrica": "Claridad, organizacion y argumentacion.",
-    "Alumnos": [
-      {
-        "Nombre": "Goku Ramirez",
-        "Correo": "goku.ram@uabc.edu.mx",
-        "Ensayo": "¡La inteligencia artificial me ayudó con mis entrenamientos!",
-        "Fecha de entregado": "2024-10-20",
-        "Calificacion": 85
-      },
-      {
-        "Nombre": "Jose Joestar",
-        "Correo": "JojoORAORA@uabc.edu.mx",
-        "Ensayo": "La IA puede generar ORA ORA ORA ORA ORA ORA ORA ORA ORA ORA ORA ORA ORA ORA ORA ORA.",
-        "Fecha de entregado": "2024-10-29",
-        "Calificacion": 60
-      },
-      {
-        "Nombre": "Deku Gonzalez",
-        "Correo": "Deku.PLUS.ULTRA@uabc.edu.mx",
-        "Ensayo": "La inteligencia artificial me quitó mi chamba como héroe, ¡Oaxaca SMASH!",
-        "Fecha de entregado": "2024-10-02",
-        "Calificacion": 80
-      }
-    ]
-  }
-  
+    "title": "La Importancia de la Ingeniería en Computación",
+    "author": "Alan",
+    "content": "La ingeniería en computación es una de las disciplinas más relevantes en el mundo moderno. Esta rama de la ingeniería se enfoca en el diseño, desarrollo y aplicación de sistemas computacionales, tanto a nivel de hardware como de software. Los ingenieros en computación juegan un papel crucial en la creación de tecnologías que han transformado la vida diaria, como la inteligencia artificial, el Internet de las cosas y el desarrollo de software avanzado.\n\nLa formación en ingeniería en computación combina conocimientos de electrónica, programación, redes y sistemas operativos, lo que permite a los profesionales de esta área abordar problemas complejos y proponer soluciones eficientes e innovadoras. Además, el campo ofrece numerosas oportunidades laborales en industrias como la automotriz, la robótica, las telecomunicaciones y la informática, entre muchas otras.\n\nEn resumen, la ingeniería en computación es fundamental para el avance tecnológico y continuará siendo un campo clave para el desarrollo de la sociedad en los próximos años.",
+    "date": "2024-09-28",
+    "subject": "Ingeniería en Computación"
+}
