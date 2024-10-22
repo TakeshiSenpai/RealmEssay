@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Box,  TextField} from '@mui/material'
+import {Box, TextField } from '@mui/material'
 import { AttachFile, Send } from '@mui/icons-material'
 import { Navigate } from 'react-router-dom'
 import { styled } from '@mui/joy';
@@ -11,9 +11,12 @@ export const ChatComponent = ({arregloDeConversacionAlumno, setArregloDeConversa
 
     const [mensaje,setMensaje] = React.useState('')
     const handleChange = (event) => {
+        
         setMensaje(event.target.value) // Actualiza el estado con el valor actual
       }
       const handleSubmit = async () => {
+        setArregloDeConversacionAlumno([...arregloDeConversacionAlumno,mensaje])
+     
         const rubricaPrueba =  "Se te presenta la rúbrica para evaluar el ensayo. Consta de 2 parámetros, cada uno con un título, descripción, valor máximo y un conjunto de niveles de desempeño (criterios). Cada nivel tiene una descripción y un puntaje asociado. Selecciona el nivel de desempeño más adecuado para cada parámetro del ensayo. Al final, deberás presentar el puntaje total, indicando el puntaje de cada parámetro y proporcionando una breve justificación. Parámetro 1: Ortografia"+"Descripción: Se revisara el trabajao con respecto a palabras bien escritas y que tengan acento donde deberian Valor total: 40 Criterios: Criterio 1: Si no tiene ninguno entonces no hay puntos que restar Valor parcial: 40 Criterio 2: Si tiene 4 faltas de ortografia deberia ser 0 en este parametro, es decir, - 40 puntos Valor parcial: 0"
 +"Parámetro 2: Contenido"
 + "Descripción: En el contenido habla sobre el creador del rubik y la importancia del cubo"
@@ -45,18 +48,20 @@ export const ChatComponent = ({arregloDeConversacionAlumno, setArregloDeConversa
       body: JSON.stringify({criteria: rubricaPrueba})})
         data =await response2.json()
         console.log(data)
-
-      const response3 =  await fetch('http://127.0.0.1:5000/response', {
-        method: 'GET', headers:{
-          'Content-Type': 'application/json'
-        } })
-
-        data = response3
-        console.log(data)
+        const eventSource = new EventSource("http://127.0.0.1:5000/response");  
+        eventSource.onmessage = (event) => {
+          console.log("Mensaje recibido desde el servidor:", event.data);
+          // Aquí puedes actualizar el estado con los fragmentos de respuesta recibidos
+          // por ejemplo: setResponse(prev => [...prev, event.data])
+        };
       
+        eventSource.onerror = (error) => {
+          console.error("Error en la conexión SSE:", error);
+          eventSource.close();
+        };
+        
         setMensaje("")
-        setArregloDeConversacionAlumno([...arregloDeConversacionAlumno,mensaje])
-      
+        
       }
 
       const VisuallyHiddenInput = styled('input')`

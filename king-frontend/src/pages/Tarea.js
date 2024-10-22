@@ -235,7 +235,8 @@ export const Tarea = () => {
                         active={indiceDeCreacion === 2}
                         disabled={indiceDeCreacion < 2}
                         indicator={
-                            <StepIndicator variant="outlined" color="primary">
+                            <StepIndicator >
+                                hola
                                 <CheckCircleRoundedIcon/>
                             </StepIndicator>
                         }

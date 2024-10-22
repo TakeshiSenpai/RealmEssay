@@ -42,7 +42,7 @@ def get_response():
         # Procesar la respuesta como un stream de datos
         def stream_response():
             for fragment in ia_response.process_response():
-                yield fragment  # Enviar cada fragmento al cliente progresivamente
+                yield f"data: {fragment}\n\n"  # Enviar cada fragmento al cliente progresivamente
                 import sys
                 sys.stdout.flush()  # Asegurarnos de que se "flushee" el buffer
 
