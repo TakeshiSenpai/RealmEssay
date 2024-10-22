@@ -1,16 +1,8 @@
 import * as React from 'react'
-<<<<<<< HEAD
-import {Box, TextField } from '@mui/material'
-import { AttachFile, Send } from '@mui/icons-material'
-import { Navigate } from 'react-router-dom'
-import { styled } from '@mui/joy';
-import { IconButton } from '@mui/material'
-=======
 import {Box, IconButton, TextField} from '@mui/material'
 import {AttachFile, Send} from '@mui/icons-material'
 import {Navigate} from 'react-router-dom'
 import {styled} from '@mui/joy';
->>>>>>> 7876bbddae53dc30cfe21a22b4a2f64d5021ef32
 
 export const ChatComponent = ({arregloDeConversacionAlumno, setArregloDeConversacionAlumno}) => {
 
@@ -18,25 +10,7 @@ export const ChatComponent = ({arregloDeConversacionAlumno, setArregloDeConversa
 
     const [mensaje, setMensaje] = React.useState('')
     const handleChange = (event) => {
-        
         setMensaje(event.target.value) // Actualiza el estado con el valor actual
-<<<<<<< HEAD
-      }
-      const handleSubmit = async () => {
-        setArregloDeConversacionAlumno([...arregloDeConversacionAlumno,mensaje])
-     
-        const rubricaPrueba =  "Se te presenta la rúbrica para evaluar el ensayo. Consta de 2 parámetros, cada uno con un título, descripción, valor máximo y un conjunto de niveles de desempeño (criterios). Cada nivel tiene una descripción y un puntaje asociado. Selecciona el nivel de desempeño más adecuado para cada parámetro del ensayo. Al final, deberás presentar el puntaje total, indicando el puntaje de cada parámetro y proporcionando una breve justificación. Parámetro 1: Ortografia"+"Descripción: Se revisara el trabajao con respecto a palabras bien escritas y que tengan acento donde deberian Valor total: 40 Criterios: Criterio 1: Si no tiene ninguno entonces no hay puntos que restar Valor parcial: 40 Criterio 2: Si tiene 4 faltas de ortografia deberia ser 0 en este parametro, es decir, - 40 puntos Valor parcial: 0"
-+"Parámetro 2: Contenido"
-+ "Descripción: En el contenido habla sobre el creador del rubik y la importancia del cubo"
-+"Valor total: 60"
-+"Criterios:"
-+	"Criterio 1: Si tiene los dos contenidos solicitados, es decir el creador y la importancia entinces es todos los puntos"
-+	"Valor parcial: 60"
-+"	Criterio 2: SOlo habla del autor o de la importancia del rubik es la mitad de puntos"
-+	"Valor parcial: 30"
-+	"Criterio 3: Si no habla de ninguno entonces es 0"
-+"	Valor parcial: 0"
-=======
     }
     const handleSubmit = async () => {
         const rubricaPrueba = "Se te presenta la rúbrica para evaluar el ensayo. Consta de 2 parámetros, cada uno con un título, descripción, valor máximo y un conjunto de niveles de desempeño (criterios). Cada nivel tiene una descripción y un puntaje asociado. Selecciona el nivel de desempeño más adecuado para cada parámetro del ensayo. Al final, deberás presentar el puntaje total, indicando el puntaje de cada parámetro y proporcionando una breve justificación. Parámetro 1: Ortografia" + "Descripción: Se revisara el trabajao con respecto a palabras bien escritas y que tengan acento donde deberian Valor total: 40 Criterios: Criterio 1: Si no tiene ninguno entonces no hay puntos que restar Valor parcial: 40 Criterio 2: Si tiene 4 faltas de ortografia deberia ser 0 en este parametro, es decir, - 40 puntos Valor parcial: 0"
@@ -50,7 +24,6 @@ export const ChatComponent = ({arregloDeConversacionAlumno, setArregloDeConversa
             + "Valor parcial: 30"
             + "Criterio 3: Si no habla de ninguno entonces es 0"
             + "	Valor parcial: 0"
->>>>>>> 7876bbddae53dc30cfe21a22b4a2f64d5021ef32
 
         console.log("Mensaje escrito:", mensaje) // Aquí podrías hacer algo con el mensaje, como enviarlo a una API
         const response = await fetch('http://127.0.0.1:5000/submit', {
@@ -72,23 +45,6 @@ export const ChatComponent = ({arregloDeConversacionAlumno, setArregloDeConversa
         })
         data = await response2.json()
         console.log(data)
-<<<<<<< HEAD
-        const eventSource = new EventSource("http://127.0.0.1:5000/response");  
-        eventSource.onmessage = (event) => {
-          console.log("Mensaje recibido desde el servidor:", event.data);
-          // Aquí puedes actualizar el estado con los fragmentos de respuesta recibidos
-          // por ejemplo: setResponse(prev => [...prev, event.data])
-        };
-      
-        eventSource.onerror = (error) => {
-          console.error("Error en la conexión SSE:", error);
-          eventSource.close();
-        };
-        
-        setMensaje("")
-        
-      }
-=======
 
         const response3 = await fetch('http://127.0.0.1:5000/response', {
             method: 'GET', headers: {
@@ -101,7 +57,6 @@ export const ChatComponent = ({arregloDeConversacionAlumno, setArregloDeConversa
 
         setMensaje("")
         setArregloDeConversacionAlumno([...arregloDeConversacionAlumno, mensaje])
->>>>>>> 7876bbddae53dc30cfe21a22b4a2f64d5021ef32
 
     }
 
