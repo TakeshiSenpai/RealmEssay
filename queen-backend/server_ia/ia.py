@@ -1,5 +1,10 @@
-from flask import request, jsonify
+from flask import Flask,request,jsonify
+from flask_cors import CORS
 
+app = Flask(__name__)
+CORS(app)
+
+@app.route('/tarea/rubrica', methods=['POST'])
 def process_rubric():
     rubric = request.json.get('rubrica')
     if rubric is None:
@@ -32,3 +37,13 @@ def process_rubric():
 
     print(message)
     return jsonify({'success': True, 'message': message}), 200
+
+    
+@app.after_request
+def add_header(response):
+    response.headers['Cross-Origin-Opener-Policy'] = 'same-origin'
+    response.headers['Cross-Origin-Embedder-Policy'] = 'require-corp'
+    return response
+
+if __name__ == '__main__':
+    app.run(host='127.0.0.1', port=2003)

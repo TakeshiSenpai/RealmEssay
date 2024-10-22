@@ -11,7 +11,7 @@ export const GoogleButton = () => {
         const token = credentialResponse.credential
 
         try {
-            const response = await fetch('http://127.0.0.1:5000/login/google', {
+            const response = await fetch('http://127.0.0.1:2000/login/google', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
