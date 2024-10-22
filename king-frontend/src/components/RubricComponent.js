@@ -95,7 +95,7 @@ export const RubricComponent = ({parameters, setParameters, error,setError}) => 
 
         // Todo bien, enviar rúbrica
         try {
-            const response = await fetch('http://127.0.0.1:5000/tarea/rubrica', {
+            const response = await fetch('http://127.0.0.1:2000/tarea/rubrica', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
