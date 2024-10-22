@@ -1,4 +1,4 @@
-from flask import Flask,request,jsonify
+from flask import Flask,request,jsonify,Response
 from flask_cors import CORS
 import pathlib,sys
 # Importaciones absolutas ahora son posibles
@@ -9,6 +9,7 @@ parent_dir=current_file.parent.parent
 sys.path.append(str(parent_dir))
 from ia_function.ia_response import ia_response
 from send_emails.send_email_validation_code import send_email_validation_code
+from ia_function.process_rubric.process_rubric import  process_rubric
 
 #ia_response.run
 app = Flask(__name__)
@@ -20,8 +21,7 @@ def login_google():
 
 @app.route('/tarea/rubrica', methods=['POST'])
 def get_rubric():
-    pass
-    #return process_rubric()
+    return process_rubric()
 
 # Ruta para enviar datos de la IA
 @app.route('/submit', methods=['POST'])
@@ -34,12 +34,21 @@ def submit():
     except Exception as e:
         return jsonify({"error": f"Error al procesar los datos: {str(e)}"}), 500
 
+
 # Ruta para obtener la respuesta de la IA
 @app.route('/response', methods=['GET'])
 def get_response():
     try:
-        result = ia_response.Response()
-        return jsonify({"response": result}), 200
+        # Procesar la respuesta como un stream de datos
+        def stream_response():
+            for fragment in ia_response.process_response():
+                yield fragment  # Enviar cada fragmento al cliente progresivamente
+                import sys
+                sys.stdout.flush()  # Asegurarnos de que se "flushee" el buffer
+
+        # Retornamos el stream usando la función generadora
+        return Response(stream_response(), content_type='text/event-stream')
+
     except Exception as e:
         return jsonify({"error": f"Error al obtener la respuesta: {str(e)}"}), 500
 
