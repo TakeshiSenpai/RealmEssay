@@ -1,11 +1,11 @@
 import {useEffect} from 'react'
 import {TextField, Box, Typography} from '@mui/material'
 
-const CrearTareas = ({parametrosTarea, setParametrosTarea}) => {
+const CreateHomework = ({homeworkParameters, setHomeworkParameters}) => {
 
     const cambiarParametros = (field, value) => {
-        // Actualiza el estado de parametrosTarea basado en el campo que se está editando
-        setParametrosTarea((prev) => ({
+        // Actualiza el estado de homeworkParameters basado en el campo que se está editando
+        setHomeworkParameters((prev) => ({
             ...prev,
             [field]: value,
         }))
@@ -13,8 +13,8 @@ const CrearTareas = ({parametrosTarea, setParametrosTarea}) => {
 
     // Este efecto se puede usar si necesitas ejecutar algún código cuando cambian los parámetros
     useEffect(() => {
-        console.log("Parametros actualizados:", parametrosTarea)
-    }, [parametrosTarea])
+        console.log("Parametros actualizados:", homeworkParameters)
+    }, [homeworkParameters])
 
     return (
         <Box component="form" sx={{display: 'flex', flexDirection: 'column', gap: 2}}>
@@ -23,23 +23,23 @@ const CrearTareas = ({parametrosTarea, setParametrosTarea}) => {
             </Typography>
             <TextField
                 label="Nombre de la tarea"
-                value={parametrosTarea.taskName}
+                value={homeworkParameters.taskName}
                 onChange={(e) => cambiarParametros('taskName', e.target.value)}
             />
             <TextField
                 label="Descripción"
-                value={parametrosTarea.description}
+                value={homeworkParameters.description}
                 onChange={(e) => cambiarParametros('description', e.target.value)}
                 multiline
                 rows={4}
             />
             <TextField
                 label="Lista de estudiantes"
-                value={parametrosTarea.studentList}
+                value={homeworkParameters.studentList}
                 onChange={(e) => cambiarParametros('studentList', e.target.value)}
             />
         </Box>
     )
 }
 
-export default CrearTareas
+export default CreateHomework
