@@ -2,7 +2,7 @@ import { Box } from "@mui/material"
 import React from "react"
 
 
-export function conversationComponent({ studentConversationArray, aIConversationArray }) {
+export function ConversationComponent({ studentConversationArray, aIConversationArray }) {
 
     const mostarConversacionAlumno = (mensaje) => {
         return (
@@ -61,4 +61,4 @@ export function conversationComponent({ studentConversationArray, aIConversation
     )
 
 }
-export default conversationComponent
+export default ConversationComponent
