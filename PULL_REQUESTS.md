@@ -28,3 +28,6 @@ git fetch origin pull/#/head && git checkout FETCH_HEAD
    - Ver [**convención de código**](CODE_CONVENTION.md) para más información.
      - `Apréndansela, apliquénla, vivánla, aménla, conviértanse en ella. La convención es ustedes, y ustedes son la convención. La convención es el camino, la verdad y la vida. Sin la convención, son nada.`
 2. El pull request **debe correr sin errores en tu computadora**.
+3. **Prueba el código**.
+   - Verifica que el código cumple con lo que se espera.
+   - Si el código modifica la interfaz gráfica, verifica que se vea bien.
