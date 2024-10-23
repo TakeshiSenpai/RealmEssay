@@ -1,5 +1,5 @@
 import React from 'react'
-import CrearTareas from "../components/CrearTareas.js"
+import CreateHomework from "../components/CreateHomework.js"
 import {Box, Button, IconButton} from '@mui/material'
 import Stepper from '@mui/material/Stepper'
 import Tooltip from '@mui/material/Tooltip'
@@ -11,7 +11,7 @@ import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded'
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded'
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded'
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
-import ComponenteRubrica from "../components/RubricComponent.js"
+import RubricComponent from "../components/RubricComponent.js"
 import HomeworkConfirmation from '../components/HomeworkConfirmation.js'
 import {Link} from "react-router-dom"
 //import { sendEmail } from '../app/api/emails/envioCodigoDeTarea.jsx'
@@ -22,15 +22,15 @@ import {render} from '@react-email/components'
 //Aqui se supone que se creará la tarea, para esto llamará a los componentes necesarios
 export const Tarea = () => {
 
-    const [indiceDeCreacion, setIndiceDeCreacion] = React.useState(0)
-    const [parametrosRubrica, setParametrosRubrica] = React.useState([])
+    const [creationIndex, setCreationIndex] = React.useState(0)
+    const [rubricParameters, setParametrosRubrica] = React.useState([])
     const [errorEnRubrica, setErrorEnRubrica] = React.useState(false)
-    const [parametrosTarea, setParametrosTarea] = React.useState({
+    const [homeworkParameters, setHomeworkParameters] = React.useState({
         taskName: '',
         description: '',
         studentList: ''
     })
-    //Esta funcion recibe la informacion que da el componente
+    //Estas funciones recibe la informacion que da el componente
     const setTaskData = (data) => {
         console.log("Datos recibidos desde CrearTareas:", data)
 
@@ -45,26 +45,27 @@ export const Tarea = () => {
 
     //Cambia el indice por lo que se cambia entre, creartarea, rubrica y finalizar(Confirmar)
     const cambiarIndice = async (numero) => {
-        console.log(parametrosTarea)
-        console.log("Indice", indiceDeCreacion) //esto es como para comprobar cosas despues
+        console.log(homeworkParameters)
+        console.log("Indice", creationIndex) //esto es como para comprobar cosas despues
 
         if (numero === 1) {
-            if (indiceDeCreacion === 1) {
+            if (creationIndex === 1) {
                 let hayErrorEnContenido = comprobarSiNoHayErrorEnLaRubrica()
+                console.log(hayErrorEnContenido)
                 if (!(hayErrorEnContenido || errorEnRubrica)) {
-                    setIndiceDeCreacion((prevIndice) => prevIndice + 1) // Usar la versión más reciente del estado
+                    setCreationIndex((prevIndice) => prevIndice + 1) // Usar la versión más reciente del estado
                 }
-            } else if (indiceDeCreacion === 2) {
+            } else if (creationIndex === 2) {
                 reiniciarParametros()
-                setIndiceDeCreacion(0)
+                setCreationIndex(0)
                 const html = await imprimirHtml() //Se obtiene el html a mandar
                 await mandarCorreos(html, obtenerArregloDeCorreos())
             } else {
-                setIndiceDeCreacion((prevIndice) => prevIndice + 1) // Usar la versión más reciente del estado
+                setCreationIndex((prevIndice) => prevIndice + 1) // Usar la versión más reciente del estado
             }
         } else {
-            if (indiceDeCreacion !== 0) {
-                setIndiceDeCreacion((prevIndice) => prevIndice - 1) // Usar la versión más reciente del estado
+            if (creationIndex !== 0) {
+                setCreationIndex((prevIndice) => prevIndice - 1) // Usar la versión más reciente del estado
             }
         }
     }
@@ -73,7 +74,7 @@ export const Tarea = () => {
     const reiniciarParametros = () => {
 
         setParametrosRubrica([])
-        setParametrosTarea({
+        setHomeworkParameters({
             taskName: '',
             description: '',
             studentList: ''
@@ -104,14 +105,14 @@ export const Tarea = () => {
 
     }
     const obtenerArregloDeCorreos = () => {
-        let stringEmails = parametrosTarea.studentList
+        let stringEmails = homeworkParameters.studentList
         stringEmails = stringEmails.trim() //Quitar los espacios
         return stringEmails.split(',') //Separar los correos
     }
     const comprobarSiNoHayErrorEnLaRubrica = () => {
         let hayError = false
-        setErrorEnRubrica(parametrosRubrica.length === 0)
-        const newParameters = parametrosRubrica.map(param => {
+        setErrorEnRubrica(rubricParameters.length === 0)
+        const newParameters = rubricParameters.map(param => {
             if (param.totalValue === 0) {
                 hayError = true
                 return {...param, error: true}
@@ -121,7 +122,7 @@ export const Tarea = () => {
 
         const updatedParameters = newParameters.map(param => {
             const updatedCriterias = param.criterias.map(criteria => {
-                hayError = true
+                hayError = !criteria.rating.trim() || !criteria.description.trim()
                 return {...criteria, error: !criteria.rating.trim() || !criteria.description.trim()}
             })
             return {...param, criterias: updatedCriterias}
@@ -133,13 +134,23 @@ export const Tarea = () => {
     return (
         <Box sx={{maxWidth: '700px', margin: '0 auto', padding: '2rem', border: '1px solid #ddd', borderRadius: '8px'}}>
 
-            {indiceDeCreacion === 0 && (
-                <CrearTareas parametrosTarea={parametrosTarea} setParametrosTarea={setParametrosTarea}/>)}
-            {indiceDeCreacion === 1 && (
-                <ComponenteRubrica parameters={parametrosRubrica} setParameters={setParametrosRubrica}
-                                   error={errorEnRubrica} setError={setErrorEnRubrica}/>)}
-            {indiceDeCreacion >= 2 && (
-                <HomeworkConfirmation parametrosRubrica={parametrosRubrica} parametrosTarea={parametrosTarea}/>)}
+            {creationIndex === 0 && (
+                <CreateHomework 
+                    homeworkParameters={homeworkParameters} 
+                    setHomeworkParameters={setHomeworkParameters}
+                    />)}
+            {creationIndex === 1 && (
+                <RubricComponent 
+                    parameters={rubricParameters} 
+                    setParameters={setParametrosRubrica}
+                    error={errorEnRubrica} 
+                    setError={setErrorEnRubrica}
+                    />)}
+            {creationIndex >= 2 && (
+                <HomeworkConfirmation 
+                    rubricParameters={rubricParameters} 
+                    homeworkParameters={homeworkParameters}
+                        />)}
 
             <Box sx={{minHeight: '10vh'}}/>
 
@@ -153,17 +164,17 @@ export const Tarea = () => {
                 </IconButton>
 
                 {/* Botón derecho */}
-                {indiceDeCreacion < 2 && (
+                {creationIndex < 2 && (
                     <IconButton onClick={() => {
                         cambiarIndice(1)
                     }} sx={{ml: 'auto'}}>
                         <ArrowForwardRoundedIcon/>
                     </IconButton>)}
                 {
-                    indiceDeCreacion >= 2 && (
+                    creationIndex >= 2 && (
                         <Button onClick={() => {
                             cambiarIndice(1)
-                        }} sx={{ml: 'auto'}} component={Link} to={indiceDeCreacion === 2 ? "/Tarea" : ""}>
+                        }} sx={{ml: 'auto'}} component={Link} to={creationIndex === 2 ? "/Tarea" : ""}>
                             Crear
                         </Button>)
                 }
@@ -204,8 +215,8 @@ export const Tarea = () => {
             >
                 <Tooltip title="Crear tarea">
                     <Step
-                        completed={indiceDeCreacion > 0}
-                        active={indiceDeCreacion === 0}
+                        completed={creationIndex > 0}
+                        active={creationIndex === 0}
                         orientation="vertical"
                         indicator={
                             <StepIndicator variant="outlined" color="primary">
@@ -217,9 +228,9 @@ export const Tarea = () => {
                 <Tooltip title="Crear Rúbrica">
                     <Step
                         orientation="vertical"
-                        completed={indiceDeCreacion > 1}
-                        active={indiceDeCreacion === 1}
-                        disabled={indiceDeCreacion < 1}
+                        completed={creationIndex > 1}
+                        active={creationIndex === 1}
+                        disabled={creationIndex < 1}
                         indicator={
                             <StepIndicator variant="outlined" color="primary">
                                 <AssignmentRoundedIcon/>
@@ -231,9 +242,9 @@ export const Tarea = () => {
                     <Step
                         orientation="vertical"
 
-                        completed={indiceDeCreacion > 2}
-                        active={indiceDeCreacion === 2}
-                        disabled={indiceDeCreacion < 2}
+                        completed={creationIndex > 2}
+                        active={creationIndex === 2}
+                        disabled={creationIndex < 2}
                         indicator={
                             <StepIndicator >
                                 hola

@@ -267,7 +267,7 @@ const Layout = ({theme, setTheme, isAuto}) => {
 
                             <MenuItem
                                 component={Link}
-                                to={!esAlumno ? "/" : "/Tarea"}
+                                to={!esAlumno ? "/" : "/createhomework"}
                                 onClick={() => {
                                     setMenuOpen(false)
                                     cambiarVista()
