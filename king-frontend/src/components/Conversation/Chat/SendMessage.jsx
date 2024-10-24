@@ -54,3 +54,5 @@ export const SendMessage = ({studentConversationArray, setStudentConversationArr
         </Box>
     ) : <Navigate to="/auth"/>
 }
+
+export default SendMessage
