@@ -4,7 +4,7 @@ import {Box, IconButton, TextField} from '@mui/material'
 import {Send} from '@mui/icons-material'
 import {Navigate} from 'react-router-dom'
 
-export const ChatComponent = ({studentConversationArray, setStudentConversationArray}) => {
+export const SendMessage = ({studentConversationArray, setStudentConversationArray}) => {
 
     const token = localStorage.getItem('token')
 

@@ -1,6 +1,6 @@
 import {Box} from '@mui/material';
 import React from 'react'
-import {ChatComponent} from '../components/Conversation/Chat/ChatComponent';
+import {SendMessage} from '../components/Conversation/Chat/SendMessage';
 import ConversationComponent from '../components/Conversation/ConversationComponent'
 
 //Nota: Se debe renombrar a algo relacionado a la vista del alumno y sobre enviar tarea 
@@ -29,7 +29,7 @@ export const TalkTo = () => {
         borderTop: '1px solid #ddd', 
         padding: 2
     }}>
-      <ChatComponent studentConversationArray={studentConversationArray} setStudentConversationArray= {setStudentConversationArray}  />
+      <SendMessage studentConversationArray={studentConversationArray} setStudentConversationArray= {setStudentConversationArray}  />
     </Box>
   </Box>
   )

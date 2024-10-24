@@ -292,10 +292,11 @@ array.push(4)
 
 ### Archivos y Carpetas
 - Los archivos y carpetas deben de tener nombres descriptivos y en **PascalCase** para poder ser identificados fácilmente.
+
 ```javascript
 // Do
-ChatComponent.jsx
-/GetEssayText
+SendMessage.jsx
+/ GetEssayText
 ```
 
 ### Componentes React
