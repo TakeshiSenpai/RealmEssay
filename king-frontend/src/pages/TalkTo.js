@@ -1,7 +1,7 @@
 import {Box} from '@mui/material';
 import React from 'react'
-import {ChatComponent} from '../components/ChatComponent';
-import ConversationComponent from '../components/ConversationComponent'
+import {ChatComponent} from '../components/Conversation/Chat/ChatComponent';
+import ConversationComponent from '../components/Conversation/ConversationComponent'
 
 //Nota: Se debe renombrar a algo relacionado a la vista del alumno y sobre enviar tarea 
 //Renombrado a TalkTo como la pellicula, no se me ocurrio una mejor para describir que aqui se habla con la IA y esta responde
