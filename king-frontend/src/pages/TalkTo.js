@@ -1,7 +1,12 @@
 import {Box} from '@mui/material';
 import React from 'react'
+<<<<<<< HEAD
 import {ChatComponent} from '../components/ChatComponent';
 import ConversationComponent from '../components/ConversationComponent'
+=======
+import {SendMessage} from '../components/Conversation/Chat/SendMessage';
+import ConversationComponent from '../components/Conversation/ConversationComponent'
+>>>>>>> 791e23b3c70a043bc1cc8b49c33f8af9f900c1e2
 
 //Nota: Se debe renombrar a algo relacionado a la vista del alumno y sobre enviar tarea 
 //Renombrado a TalkTo como la pellicula, no se me ocurrio una mejor para describir que aqui se habla con la IA y esta responde
@@ -29,7 +34,11 @@ export const TalkTo = () => {
         borderTop: '1px solid #ddd', 
         padding: 2
     }}>
+<<<<<<< HEAD
       <ChatComponent studentConversationArray={studentConversationArray} setStudentConversationArray= {setStudentConversationArray}  />
+=======
+      <SendMessage studentConversationArray={studentConversationArray} setStudentConversationArray= {setStudentConversationArray}  />
+>>>>>>> 791e23b3c70a043bc1cc8b49c33f8af9f900c1e2
     </Box>
   </Box>
   )
