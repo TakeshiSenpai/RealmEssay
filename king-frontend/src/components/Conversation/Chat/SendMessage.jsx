@@ -15,7 +15,7 @@ export const SendMessage = ({studentConversationArray, setStudentConversationArr
 
     const handleSubmit = async () => {
         //Aqui se deberia habla con la IA y que por aqui responda
-        setStudentConversationArray ([...studentConversationArray, message])
+        setStudentConversationArray([...studentConversationArray, message])
         setMessage("")
         //Tambien debe como que inhabilitar el chat hasta que la IA conteste como un spiner
     }
@@ -47,7 +47,11 @@ export const SendMessage = ({studentConversationArray, setStudentConversationArr
             <IconButton
                 variant="outlined"
                 onClick={handleSubmit}
-                sx={{ml: 'auto'}}
+                sx={{
+                    ml: 'auto',
+                    color: (theme) => theme.palette.primary.main
+                }}
+                disabled={!message.trim()}
             >
                 <Send/>
             </IconButton>
