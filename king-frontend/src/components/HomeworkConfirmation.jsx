@@ -1,16 +1,17 @@
-import {Box, Typography} from '@mui/material'
-import * as React from 'react'
 import {
+    Box,
+    Collapse,
+    IconButton,
+    Paper,
     Table,
     TableBody,
     TableCell,
     TableContainer,
     TableHead,
     TableRow,
-    Paper,
-    Collapse,
-    IconButton
+    Typography
 } from '@mui/material'
+import * as React from 'react'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 

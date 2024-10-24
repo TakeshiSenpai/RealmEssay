@@ -1,7 +1,7 @@
 import {Box} from "@mui/material"
 import React from "react"
-import StudentMessage from "./Chat/StudentMessage";
-import IAMessage from "./Chat/IAMessage";
+import StudentMessage from "./Chat/StudentMessage"
+import IAMessage from "./Chat/IAMessage"
 
 
 export function ConversationComponent({studentConversationArray, aIConversationArray}) {
