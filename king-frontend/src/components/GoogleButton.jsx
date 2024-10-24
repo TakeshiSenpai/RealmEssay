@@ -1,5 +1,5 @@
 import React from 'react'
-import {GoogleOAuthProvider, GoogleLogin} from '@react-oauth/google'
+import {GoogleLogin, GoogleOAuthProvider} from '@react-oauth/google'
 import Button from '@mui/material/Button'
 import GoogleIcon from '@mui/icons-material/Google'
 import {useNavigate} from 'react-router-dom'

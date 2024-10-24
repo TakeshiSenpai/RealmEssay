@@ -294,7 +294,7 @@ array.push(4)
 - Los archivos y carpetas deben de tener nombres descriptivos y en **PascalCase** para poder ser identificados fácilmente.
 ```javascript
 // Do
-ChatComponent.js
+ChatComponent.jsx
 /GetEssayText
 ```
 
