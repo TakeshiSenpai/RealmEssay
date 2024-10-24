@@ -64,3 +64,7 @@
 ## Desarrollo
 
 Es importante leer la [**convención de código**](CODE_CONVENTION.md) antes de comenzar a trabajar en el proyecto.
+
+### Pull Requests
+
+Para revisar los pull requests, sigue los pasos en [**PULL_REQUESTS.md**](PULL_REQUESTS.md).

@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react'
 import ReactDOM from 'react-dom/client'
-
+ 
 import {BrowserRouter, Route, Routes} from "react-router-dom"
 import reportWebVitals from './reportWebVitals'
 import Layout from "./pages/Layout"
-import Home from "./pages/Home"
+import { TalkTo } from "./pages/TalkTo"
 import Auth from './pages/Auth'
-import Tarea from "./pages/Tarea"
+import Homework from "./pages/Homework"
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material"
 
 import './index.css'
@@ -84,8 +84,8 @@ function App3() {
                 <CssBaseline/>
                 <Routes>
                     <Route path="/" element={<Layout setTheme={handleThemeChange} theme={theme} isAuto={isAuto}/>}>
-                        <Route index element={<Home/>}/>
-                        <Route path="/tarea" element={<Tarea/>}/>
+                        <Route index element={<TalkTo/>}/>
+                        <Route path="/createhomework" element={<Homework/>}/>
                     </Route>
                     <Route path="/auth" element={<Auth/>}/>
                 </Routes>
