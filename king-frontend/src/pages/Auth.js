@@ -2,6 +2,7 @@ import {Box, createTheme, ThemeProvider} from '@mui/material'
 import React from 'react'
 import {GoogleButton} from '../components/GoogleButton'
 import Typography from "@mui/material/Typography";
+import IAIcon from "../components/Conversation/Chat/IAIcon";
 
 export const Auth = () => {
     const theme = createTheme({
@@ -19,6 +20,9 @@ export const Auth = () => {
             height="100vh"
         >
             <Box display="flex" alignItems="center">
+                <IAIcon sx={{
+                    fill: (theme) => theme.palette.primary.main,
+                }}/>
                 <ThemeProvider theme={theme}>
                     <Typography variant="h1" style={{fontSize: '4rem'}}>
                         Realm
