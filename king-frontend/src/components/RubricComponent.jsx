@@ -3,7 +3,7 @@ import Box from "@mui/material/Box"
 import Button from "@mui/material/Button";
 import {TextField} from "@mui/material";
 import {grey} from "@mui/material/colors";
-import {Delete, Add} from "@mui/icons-material";
+import {Add, Delete} from "@mui/icons-material";
 import Typography from "@mui/material/Typography";
 
 export const RubricComponent = ({parameters, setParameters, error,setError}) => {
@@ -95,7 +95,7 @@ export const RubricComponent = ({parameters, setParameters, error,setError}) => 
 
         // Todo bien, enviar rúbrica
         try {
-            const response = await fetch('http://127.0.0.1:5000/tarea/rubrica', {
+            const response = await fetch('http://127.0.0.1:2000/tarea/rubrica', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -1,20 +1,21 @@
-import {Box, Typography} from '@mui/material'
-import * as React from 'react'
 import {
+    Box,
+    Collapse,
+    IconButton,
+    Paper,
     Table,
     TableBody,
     TableCell,
     TableContainer,
     TableHead,
     TableRow,
-    Paper,
-    Collapse,
-    IconButton
+    Typography
 } from '@mui/material'
+import * as React from 'react'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 
-export const HomeworkConfirmation = ({parametrosRubrica, parametrosTarea}) => {
+export const HomeworkConfirmation = ({rubricParameters, homeworkParameters}) => {
 
     const [open, setOpen] = React.useState([])
     const handleRowClick = (index) => {
@@ -79,7 +80,7 @@ export const HomeworkConfirmation = ({parametrosRubrica, parametrosTarea}) => {
     }
     return (
         <Box>
-            {/* Mostrar datos de parametrosTarea */}
+            {/* Mostrar datos de homeworkParameters */}
             <Typography variant="h6" gutterBottom>
                 Detalles de la Tarea
             </Typography>
@@ -94,15 +95,15 @@ export const HomeworkConfirmation = ({parametrosRubrica, parametrosTarea}) => {
                     </TableHead>
                     <TableBody>
                         <TableRow>
-                            <TableCell>{parametrosTarea.taskName}</TableCell>
-                            <TableCell>{parametrosTarea.description}</TableCell>
-                            <TableCell>{parametrosTarea.studentList}</TableCell>
+                            <TableCell>{homeworkParameters.taskName}</TableCell>
+                            <TableCell>{homeworkParameters.description}</TableCell>
+                            <TableCell>{homeworkParameters.studentList}</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>
             </TableContainer>
 
-            {/* Mostrar datos de parametrosRubrica */}
+            {/* Mostrar datos de rubricParameters */}
             <Typography variant="h6" gutterBottom sx={{marginTop: 2}}>
                 Detalles de la Rúbrica
             </Typography>
@@ -118,7 +119,7 @@ export const HomeworkConfirmation = ({parametrosRubrica, parametrosTarea}) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {parametrosRubrica.map((rubrica, indice) => (
+                        {rubricParameters.map((rubrica, indice) => (
                             row(rubrica, indice)
                         ))}
                     </TableBody>
