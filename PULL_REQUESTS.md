@@ -16,7 +16,7 @@ git clone https://github.com/TakeshiSenpai/RealmEssay
 
 4. **Cambia a la rama** del Pull Request.
    - Reemplaza `#` por el número del Pull Request.
-```bash
+```
 git fetch origin pull/#/head && git checkout FETCH_HEAD
 ```
 
