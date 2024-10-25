@@ -20,7 +20,7 @@ def send_email_validation_code():
 
         html = request.json.get('html')
         email_to = request.json.get('to')
-        password = os.getenv('PASS') #debe ir en un env, pero de momento no lo haré
+        password = os.getenv('PASS') #debe ir en un env, pero de momento no lo haré xd si lo hice
         email_from = "realmessay@gmail.com"
         mensaje_de_regreso = ""
         server = smtplib.SMTP('smtp.gmail.com', 587)
