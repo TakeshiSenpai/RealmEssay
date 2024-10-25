@@ -26,4 +26,4 @@ def crear_chat_desde_json(archivo_json):
 
 # Ejemplo de uso
 if __name__ == "__main__":
-    crear_chat_desde_json('C:\\Users\\alan1\\Documents\\GitHub\\RealmEssay\\data-base\\chat\\data.json')  # Llamada a la función con el archivo JSON
+    crear_chat_desde_json('C:\\Users\\alan1\\Documents\\GitHub\\RealmEssay\\RealmEssay\\data-base\\chat\\data.json')  # Llamada a la función con el archivo JSON
