@@ -21,7 +21,7 @@ import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import MoreVert from '@mui/icons-material/MoreVert'
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded'
-import {AutoAwesomeRounded, EditNote, PaletteRounded} from "@mui/icons-material"
+import {AutoAwesomeRounded, PaletteRounded} from "@mui/icons-material"
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 
 const Layout = ({theme, setTheme, isAuto}) => {
@@ -292,7 +292,6 @@ const Layout = ({theme, setTheme, isAuto}) => {
                 component="main"
                 sx={{
                     flexGrow: 1,
-                    padding: 3,
                     transition: 'margin 0.3s ease',
                     marginLeft: open ? `0px` : '-250px',
                 }}
