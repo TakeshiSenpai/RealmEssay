@@ -4,7 +4,7 @@ import json
 
 # Conexión a MongoDB
 client = MongoClient("mongodb+srv://alan11gt:ioUvPgAvDZcVwWXs@cluster0.2b8il.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
-db = client["ChatDB"]
+db = client["TareasDB"]
 carpeta_collection = db["Carpeta"]
 
 # Función para eliminar una carpeta por su ID
@@ -20,4 +20,4 @@ def eliminar_carpeta(carpeta_id):
         print(f"Ocurrió un error: {e}")
 
 # Ejemplo de uso
-eliminar_carpeta("671b464bcf72d845cf4c6616")
+eliminar_carpeta("605c9a1b8cfa0d1c4cb7dbae")

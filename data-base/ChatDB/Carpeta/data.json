@@ -1,0 +1,36 @@
+{
+    "CorreoProfesor": "ejemploCorreo@uabc.com",
+    "Nombre": "Fulanito",
+    "Chats": [
+        {
+            "ChatId": "605c9a1b8cfa0d1c4cb7dbae",
+            "CorreoAlumno": "alumno1@example.com",
+            "RespuestasIA": ["Respuesta IA 1", "Respuesta IA 2"],
+            "RespuestasAlumno": ["Respuesta Alumno 1", "Respuesta Alumno 2"]
+        },
+        {
+            "ChatId": "605c9a1b8cfa0d1c4cb7dbaf",
+            "CorreoAlumno": "alumno2@example.com",
+            "RespuestasIA": ["Respuesta IA 3"],
+            "RespuestasAlumno": ["Respuesta Alumno 3"]
+        }
+    ],
+    "Carpeta": {
+        "CorreoProfesor": "ejemploCorreo@uabc.com",
+        "Nombre": "Fulanito",
+        "Chats": [
+        {
+            "ChatId": "605c9a1b8cfa0d1c4cb7dbae",
+            "CorreoAlumno": "alumno1@example.com",
+            "RespuestasIA": ["Respuesta IA 1", "Respuesta IA 2"],
+            "RespuestasAlumno": ["Respuesta Alumno 1", "Respuesta Alumno 2"]
+        },
+        {
+            "ChatId": "605c9a1b8cfa0d1c4cb7dbae",
+            "CorreoAlumno": "alumno1@example.com",
+            "RespuestasIA": ["Respuesta IA 1", "Respuesta IA 2"],
+            "RespuestasAlumno": ["Respuesta Alumno 1", "Respuesta Alumno 2"]
+        }
+        ]
+    }
+}
