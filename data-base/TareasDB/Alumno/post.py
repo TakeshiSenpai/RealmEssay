@@ -1,6 +1,7 @@
+import os
+import json
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-import json
 
 # Conexión a MongoDB
 client = MongoClient("mongodb+srv://alan11gt:ioUvPgAvDZcVwWXs@cluster0.2b8il.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
@@ -26,4 +27,4 @@ def crear_alumno_desde_json(archivo_json):
         print(f"Ocurrió un error: {e}")
 
 # Ejemplo de uso
-crear_alumno_desde_json('C:\\Users\\alan1\\Documents\\GitHub\\RealmEssay\\RealmEssay\\data-base\\TareasDB\\Alumno\\data.json')
+crear_alumno_desde_json('data.json')

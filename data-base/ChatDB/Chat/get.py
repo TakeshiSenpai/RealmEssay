@@ -1,3 +1,4 @@
+import os
 import json
 from pymongo import MongoClient
 from bson.objectid import ObjectId
@@ -26,4 +27,4 @@ def exportar_chats_a_json(archivo_json):
         print(f"Ocurrió un error: {e}")
 
 # Ejemplo de uso
-exportar_chats_a_json('C:\\Users\\alan1\\Documents\\GitHub\\RealmEssay\\RealmEssay\\data-base\\ChatDB\\Chat\\data1.json')
+exportar_chats_a_json('data1.json')

@@ -1,6 +1,7 @@
+import os
+import json
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-import json
 
 # Conexión a MongoDB
 client = MongoClient("mongodb+srv://alan11gt:ioUvPgAvDZcVwWXs@cluster0.2b8il.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
@@ -28,4 +29,4 @@ def exportar_carpetas_a_json(archivo_json):
         print(f"Ocurrió un error: {e}")
 
 # Ejemplo de uso
-exportar_carpetas_a_json('C:\\Users\\alan1\\Documents\\GitHub\\RealmEssay\\RealmEssay\\data-base\\ChatDB\\Carpeta\\data1.json')
+exportar_carpetas_a_json('data1.json')

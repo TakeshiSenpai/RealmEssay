@@ -1,3 +1,4 @@
+import os
 import json
 from pymongo import MongoClient
 from bson.objectid import ObjectId
@@ -40,4 +41,4 @@ def actualizar_chat_desde_json(chat_id, archivo_json):
         print(f"Ocurrió un error: {e}")
 
 # Ejemplo de uso
-actualizar_chat_desde_json("671b3efee259173f17114f35", 'C:\\Users\\alan1\\Documents\\GitHub\\RealmEssay\\RealmEssay\\data-base\\ChatDB\\Chat\\data.json')
+actualizar_chat_desde_json("671b3efee259173f17114f35", 'data.json')

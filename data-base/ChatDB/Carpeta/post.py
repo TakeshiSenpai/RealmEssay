@@ -1,3 +1,4 @@
+import os
 import json
 from pymongo import MongoClient
 from bson.objectid import ObjectId
@@ -8,10 +9,13 @@ db = client["ChatDB"]
 carpeta_collection = db["Carpeta"]
 
 # Función para crear una nueva carpeta desde un archivo JSON que contiene objetos
-def crear_carpeta_desde_json(archivo_json):
+def crear_carpeta_desde_json(nombre_archivo_json):
     try:
+        # Obtener la ruta del archivo JSON relativa a donde se ejecuta el script
+        ruta_archivo = os.path.join(os.path.dirname(__file__), nombre_archivo_json)
+
         # Leer el archivo JSON
-        with open(archivo_json, 'r') as file:
+        with open(ruta_archivo, 'r') as file:
             datos_carpeta = json.load(file)
 
         # Si el campo "Chats" es una lista de objetos, conviértelo adecuadamente
@@ -25,11 +29,11 @@ def crear_carpeta_desde_json(archivo_json):
         print(f"Carpeta creada con ID: {resultado.inserted_id}")
     
     except FileNotFoundError:
-        print(f"Archivo {archivo_json} no encontrado.")
+        print(f"Archivo {nombre_archivo_json} no encontrado.")
     except json.JSONDecodeError:
-        print(f"Error al decodificar el archivo JSON {archivo_json}.")
+        print(f"Error al decodificar el archivo JSON {nombre_archivo_json}.")
     except Exception as e:
         print(f"Ocurrió un error: {e}")
 
 # Ejemplo de uso
-crear_carpeta_desde_json('C:\\Users\\alan1\\Documents\\GitHub\\RealmEssay\\RealmEssay\\data-base\\ChatDB\\Carpeta\\data.json')
+crear_carpeta_desde_json('data.json')

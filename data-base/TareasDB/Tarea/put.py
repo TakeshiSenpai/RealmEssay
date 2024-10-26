@@ -1,6 +1,7 @@
+import os
+import json
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-import json
 
 # Conexión a MongoDB
 client = MongoClient("mongodb+srv://alan11gt:ioUvPgAvDZcVwWXs@cluster0.2b8il.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
@@ -33,4 +34,4 @@ def actualizar_tarea_desde_json(tarea_id, archivo_json):
         print(f"Ocurrió un error: {e}")
 
 # Ejemplo de uso
-actualizar_tarea_desde_json("605c9a1b8cfa0d1c4cb7dbae", 'C:\\Users\\alan1\\Documents\\GitHub\\RealmEssay\\RealmEssay\\data-base\\TareasDB\\Tarea\\data.json')
+actualizar_tarea_desde_json("605c9a1b8cfa0d1c4cb7dbae", 'data.json')

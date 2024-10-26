@@ -1,3 +1,4 @@
+import os
 import json
 from pymongo import MongoClient
 from bson.objectid import ObjectId
@@ -30,4 +31,4 @@ def crear_chat_desde_json(archivo_json):
         print(f"Ocurrió un error: {e}")
 
 # Ejemplo de uso
-crear_chat_desde_json('C:\\Users\\alan1\\Documents\\GitHub\\RealmEssay\\RealmEssay\\data-base\\ChatDB\\Chat\\data.json')
+crear_chat_desde_json('data.json')
