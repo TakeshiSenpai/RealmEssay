@@ -22,8 +22,6 @@ directorio_raiz = pathlib.Path(__file__).parent
 api_token = load_api_token(pathlib.Path(directorio_raiz / 'model_authentication'/ 'api_token.txt'))
 
 
-import requests
-
 def run_model(model, inputs, timeout=1200, stream=True):
     headers = {"Authorization": f"Bearer {api_token}"}
     input_data = {"messages": inputs, "stream": stream}
@@ -81,7 +79,7 @@ def submit(data):
     with open(INPUT_FILE, 'w') as f:
         json.dump(data, f, indent=4)  # Escribe data en formato JSON con indentación de 4 espacios
 
-    return jsonify({"message": "Ensayo enviado con éxito. Esperando criterios del profesor."})
+    return {"message": "Ensayo enviado con éxito. Esperando criterios del profesor."}
 # Función para ejecutar la IA una vez que ambos, ensayo y criterios, estén listos
 def save_interaction(question, response):
     interaction = {
@@ -103,7 +101,7 @@ def save_interaction(question, response):
 def process_response(student_questions):
     # Verificar que tanto el ensayo como los criterios existan
     if not os.path.exists(INPUT_FILE) or not os.path.exists(CRITERIA_FILE):
-        return jsonify({"message": "Aún faltan datos. Asegúrate de que el estudiante haya enviado el ensayo y el profesor los criterios."})
+        return ({"message": "Aún faltan datos. Asegúrate de que el estudiante haya enviado el ensayo y el profesor los criterios."})
 
     # Leer el ensayo y los criterios desde los archivos JSON
     with open(INPUT_FILE, 'r') as f:
@@ -146,4 +144,3 @@ def process_response(student_questions):
             save_interaction(question, response_text)
     except Exception as e:
         yield json.dumps({"message": f"Error al procesar la respuesta de la IA: {str(e)}"})
-#process_response()
