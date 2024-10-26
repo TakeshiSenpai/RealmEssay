@@ -5,18 +5,6 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  --color-background: #af1212;
-  --color-foreground: #1f2023;
-}
-
-body.dark {
-  --color-background: #1f2023;
-  --color-foreground: #efefef;
-}
-
-:root {
-  --color-background: #af1212;
-  --color-foreground: #1f2023;
 }
 
 code {

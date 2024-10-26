@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react'
 import ReactDOM from 'react-dom/client'
- 
+
 import {BrowserRouter, Route, Routes} from "react-router-dom"
 import reportWebVitals from './reportWebVitals'
 import Layout from "./pages/Layout"
-import { TalkTo } from "./pages/TalkTo"
+import {TalkTo} from "./pages/TalkTo"
 import Auth from './pages/Auth'
 import Homework from "./pages/Homework"
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material"
@@ -28,6 +28,7 @@ function App3() {
             colors: {
                 errorText: 'red',
                 textGradient: "linear-gradient(to right, #a195d0, #6a55af)",
+                iaBackground: 'rgb(239, 236, 244)',
             }
         }
     })
@@ -45,6 +46,8 @@ function App3() {
             colors: {
                 errorText: '#cb5f7d',
                 textGradient: "linear-gradient(to right, #a195d0, #6a55af)",
+                iaBackground: 'rgba(35, 30, 52, 1)',
+
             }
         }
     })

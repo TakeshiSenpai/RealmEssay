@@ -1,12 +1,13 @@
-from flask import Flask,request,jsonify
+from flask import Flask,request,jsonify,Response
 from flask_cors import CORS
-
+from ia_response import ia_response
 app = Flask(__name__)
 CORS(app)
 
 @app.route('/tarea/rubrica', methods=['POST'])
 def process_rubric():
     rubric = request.json.get('rubrica')
+
     if rubric is None:
         return jsonify({'success': False, 'message': 'Rúbrica no recibida'}), 400
 
@@ -35,8 +36,47 @@ def process_rubric():
                 f"\n\tValor parcial: {criteria['partialValue']}"
             )
 
-    print(message)
     return jsonify({'success': True, 'message': message}), 200
+
+#Ruta para enviar datos de la IA
+@app.route('/submit_essay', methods=['POST'])
+def submit():
+    try:
+        data = request.json
+        # Enviamos los datos a la función submit() de ia_response
+        result = ia_response.submit(data)
+        return jsonify({"message": "Datos procesados exitosamente", "result": result}), 200
+    except Exception as e:
+        return jsonify({"error": f"Error al procesar los datos: {str(e)}"}), 500
+
+#Ruta para obtener la respuesta de la IA (streaming en tiempo real)
+@app.route('/questions_and_responses', methods=['POST'])
+def get_response():
+    try:
+        #student_questions del cuerpo de la solicitud POST
+        data = request.json
+        student_questions = data.get("student_questions", [])
+
+        # Procesar la respuesta como un stream de datos
+        def stream_response():
+            for fragment in ia_response.process_response(student_questions):
+                yield f"data: {fragment}\n\n"  # Enviar cada fragmento al cliente progresivamente
+
+        # Retornar el stream usando la función generadora
+        return Response(stream_response(), content_type='text/event-stream')
+
+    except Exception as e:
+        return jsonify({"error": f"Error al obtener la respuesta: {str(e)}"}), 500
+
+# Ruta para enviar los criterios de la IA
+@app.route('/submit_criteria', methods=['POST'])
+def submit_criteria():
+    try:
+        criteria_data = request.json
+        ia_response.submit_criteria(criteria_data)
+        return jsonify({"message": "Criterios enviados exitosamente"}), 200
+    except Exception as e:
+        return jsonify({"error": f"Error al enviar los criterios: {str(e)}"}), 500
 
     
 @app.after_request
