@@ -20,7 +20,7 @@ import {render} from '@react-email/components'
 
 
 //Aqui se supone que se creará la tarea, para esto llamará a los componentes necesarios
-export const Tarea = () => {
+export const Homework = () => {
 
     const [creationIndex, setCreationIndex] = React.useState(0)
     const [rubricParameters, setParametrosRubrica] = React.useState([])
@@ -47,10 +47,11 @@ export const Tarea = () => {
     const cambiarIndice = async (numero) => {
         console.log(homeworkParameters)
         console.log("Indice", creationIndex) //esto es como para comprobar cosas despues
-
+        
         if (numero === 1) {
             if (creationIndex === 1) {
-                let hayErrorEnContenido = comprobarSiNoHayErrorEnLaRubrica()
+                console.log ("Si es uno")
+                let hayErrorEnContenido =  comprobarSiNoHayErrorEnLaRubrica()
                 console.log(hayErrorEnContenido)
                 if (!(hayErrorEnContenido || errorEnRubrica)) {
                     setCreationIndex((prevIndice) => prevIndice + 1) // Usar la versión más reciente del estado
@@ -98,7 +99,10 @@ export const Tarea = () => {
     }
     const imprimirHtml = async () => {
         try {
-            return await render(<CodigoDeTarea validationCode={1234}/>)
+            //Numero random de entre 11111 a 99999
+            //Deberia haber una comprobacion en la base de datos antes
+            var randomNumber =Math.floor(Math.random() * (99999 - 11111 + 1)+ 11111)
+            return await render(<CodigoDeTarea validationCode={randomNumber}/>)
         } catch (error) {
             return ""
         }
@@ -112,16 +116,19 @@ export const Tarea = () => {
     const comprobarSiNoHayErrorEnLaRubrica = () => {
         let hayError = false
         setErrorEnRubrica(rubricParameters.length === 0)
+        console.log("Valor Error Rubrica",errorEnRubrica)
         const newParameters = rubricParameters.map(param => {
             if (param.totalValue === 0) {
+                console.log("Entro al map")
                 hayError = true
                 return {...param, error: true}
             }
             return param
         })
-
+        console.log("Valor de hayError",hayError)
         const updatedParameters = newParameters.map(param => {
             const updatedCriterias = param.criterias.map(criteria => {
+                console.log("Entro al map")
                 hayError = !criteria.rating.trim() || !criteria.description.trim()
                 return {...criteria, error: !criteria.rating.trim() || !criteria.description.trim()}
             })
@@ -132,19 +139,19 @@ export const Tarea = () => {
         return hayError
     }
     return (
-        <Box sx={{maxWidth: '700px', margin: '0 auto', padding: '2rem', border: '1px solid #ddd', borderRadius: '8px'}}>
+        <Box sx={{paddingY: 4}}>
+        <Box sx={{maxWidth: '700px', margin: '0 auto', padding: '2rem', border: '1px solid #ddd', borderRadius: '29px'}}>
 
             {creationIndex === 0 && (
                 <CreateHomework 
                     homeworkParameters={homeworkParameters} 
                     setHomeworkParameters={setHomeworkParameters}
                     />)}
-            {creationIndex === 1 && (
+            {(creationIndex === 1 ) && (
                 <RubricComponent 
                     parameters={rubricParameters} 
                     setParameters={setParametrosRubrica}
                     error={errorEnRubrica} 
-                    setError={setErrorEnRubrica}
                     />)}
             {creationIndex >= 2 && (
                 <HomeworkConfirmation 
@@ -255,8 +262,9 @@ export const Tarea = () => {
                 </Tooltip>
             </Stepper>
         </Box>
+        </Box>
     )
 }
-export default Tarea
+export default Homework
 
 
