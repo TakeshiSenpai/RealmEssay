@@ -1,0 +1,14 @@
+{
+    "Descripcion": "Tarea de matemáticas sobre álgebra",
+    "Alumnos": [
+        {
+            "AlumnoId": "605c9a1b8cfa0d1c4cb7dbae",
+            "Nombre": "Juan Pérez"
+        },
+        {
+            "AlumnoId": "605c9a1b8cfa0d1c4cb7dbaf",
+            "Nombre": "María López"
+        }
+    ],
+    "Rubrica": "Puntaje: 100, Evaluación por conceptos"
+}
