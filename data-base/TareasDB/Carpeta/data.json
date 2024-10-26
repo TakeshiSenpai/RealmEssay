@@ -1,0 +1,16 @@
+{
+    "Correo": "profesor@example.com",
+    "Nombre": "Carpeta de Matemáticas",
+    "Tareas": [
+        {
+            "TareaId": "605c9a1b8cfa0d1c4cb7dbae",
+            "Descripcion": "Tarea 1",
+            "Rubrica": "Puntaje: 100"
+        },
+        {
+            "TareaId": "605c9a1b8cfa0d1c4cb7dbaf",
+            "Descripcion": "Tarea 2",
+            "Rubrica": "Puntaje: 90"
+        }
+    ]
+}

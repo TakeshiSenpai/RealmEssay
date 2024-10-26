@@ -81,8 +81,7 @@ def submit(data):
     with open(INPUT_FILE, 'w') as f:
         json.dump(data, f, indent=4)  # Escribe data en formato JSON con indentación de 4 espacios
 
-    return {"message": "Ensayo enviado con éxito."}
-
+    return jsonify({"message": "Ensayo enviado con éxito. Esperando criterios del profesor."})
 # Función para ejecutar la IA una vez que ambos, ensayo y criterios, estén listos
 def save_interaction(question, response):
     interaction = {
@@ -104,8 +103,7 @@ def save_interaction(question, response):
 def process_response(student_questions):
     # Verificar que tanto el ensayo como los criterios existan
     if not os.path.exists(INPUT_FILE) or not os.path.exists(CRITERIA_FILE):
-        yield json.dumps({"message": "Aún faltan datos. Asegúrate de que el estudiante haya enviado el ensayo y el profesor los criterios."})
-        return
+        return jsonify({"message": "Aún faltan datos. Asegúrate de que el estudiante haya enviado el ensayo y el profesor los criterios."})
 
     # Leer el ensayo y los criterios desde los archivos JSON
     with open(INPUT_FILE, 'r') as f:

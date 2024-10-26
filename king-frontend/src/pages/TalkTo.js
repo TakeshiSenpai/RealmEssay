@@ -1,7 +1,7 @@
 import {Box} from '@mui/material'
 import React, {useState} from 'react'
 import {SendMessage} from '../components/Conversation/Chat/SendMessage'
-import ConversationComponent from '../components/Conversation/ConversationComponent'
+import Conversation from '../components/Conversation/Conversation'
 import UploadButton from "../components/Conversation/UploadButton"
 
 //Nota: Se debe renombrar a algo relacionado a la vista del alumno y sobre enviar tarea 
@@ -25,13 +25,13 @@ export const TalkTo = () => {
                 paddingY: 4,
                 paddingX: 2,
             }}>
-                <ConversationComponent studentConversationArray={studentConversationArray} aIConversationArray={aIConversationArray}/>
+                <Conversation studentConversationArray={studentConversationArray} aIConversationArray={aIConversationArray}/>
             </Box>
 
             {/* Componente de chat que siempre estará en la parte inferior */}
             <Box sx={{
-                borderTop: '1px solid #ddd',
-                padding: 2
+                padding: 2,
+                marginBottom: -2
             }}>
                 <SendMessage studentConversationArray={studentConversationArray} setStudentConversationArray={setStudentConversationArray}/>
             </Box>
