@@ -1,7 +1,7 @@
 import requests
 
 # URL para enviar los criterios
-url = 'http://127.0.0.1:5000/submit_criteria'
+url = 'http://127.0.0.1:2003/submit_criteria'
 
 
 def real_input(data):

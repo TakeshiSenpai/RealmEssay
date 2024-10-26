@@ -1,10 +1,17 @@
 import requests
 
 # URL para procesar la evaluación
-url = 'http://127.0.0.1:5000/response'
+url = 'http://127.0.0.1:2003/questions_and_responses'
 
-# Hacer la solicitud GET con la opción de 'stream' habilitada
-response = requests.get(url, stream=True)
+# Datos que se enviarán en la solicitud POST
+data = {
+    "student_questions": [
+        "¿Qué puedo mejorar en la argumentacion?"
+    ]
+}
+
+# Hacer la solicitud POST con stream habilitado
+response = requests.post(url, json=data, stream=True)
 
 # Verificar si la solicitud fue exitosa
 if response.status_code == 200:
