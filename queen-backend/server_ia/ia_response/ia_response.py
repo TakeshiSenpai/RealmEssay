@@ -1,6 +1,6 @@
 import os, requests,json,pathlib
 #from tts import tts_gcp2
-
+#from database import ChatDB
 
 # Rutas donde se almacenarán temporalmente los datos
 
@@ -70,7 +70,7 @@ def submit_criteria(data):
     return {"message": "Criterios enviados con éxito. Procesando la revisión."}
 
 
-def submit(data):
+def submit_essay(data):
     # Procesar el data como sea necesario
     input_text = data.get('input')  # Asegúrate de que 'input' esté en los datos
     print(INPUT_FILE)
@@ -79,14 +79,62 @@ def submit(data):
     with open(INPUT_FILE, 'w') as f:
         json.dump(data, f, indent=4)  # Escribe data en formato JSON con indentación de 4 espacios
 
-    return {"message": "Ensayo enviado con éxito. Esperando criterios del profesor."}
-# Función para ejecutar la IA una vez que ambos, ensayo y criterios, estén listos
-def save_interaction(question, response):
-    interaction = {
-        "question": question,
-        "response": response
-    }
-     # Verificar si el archivo de interacciones ya existe y cargarlo
+
+    if not os.path.exists(CRITERIA_FILE):
+        return {"message": "Ensayo enviado con éxito. Esperando criterios del profesor."}
+    else:
+          # Leer el ensayo y los criterios desde los archivos JSON
+        with open(INPUT_FILE, 'r') as f:
+            input_data = json.load(f)  # Cargar el contenido del archivo como JSON
+            input_text = input_data.get('input')  # Extraer el texto del ensayo
+
+        with open(CRITERIA_FILE, 'r') as f:
+            criteria_data = json.load(f)  # Cargar el contenido del archivo como JSON
+            criteria = criteria_data.get('criteria')  # Extraer los criterios
+
+        role_text = (
+            "Usted es un asistente de redacción académica. Por favor, evalúe el ensayo "
+            "centrándose en los siguientes aspectos y puntúe los ensayos de 0 a 10. "
+        )
+        system_instructions = f"{role_text} Los criterios de evaluación son: {criteria}"
+
+        # Crear el input principal para la IA
+        inputs = [
+            {"role": "system", "content": system_instructions},
+            {"role": "user", "content": input_text}
+        ]
+        result = run_model("@cf/meta/llama-3-8b-instruct", inputs, timeout=1200, stream=True)
+
+    try:
+        response_text = ""
+        for fragment in result:
+            response_text += fragment
+            yield fragment  # Enviar cada fragmento en tiempo real
+
+        # Guardar la interacción de pregunta-respuesta en el archivo JSON
+        #tts_text=tts_gcp2.procesar_texto(response_text)
+        #print(tts_text)
+        #tts_gcp2.run_and_save(tts_text)
+        save_interaction(input_text, response_text,interaction_type="essay")
+    except Exception as e:
+        yield json.dumps({"message": f"Error al procesar la respuesta de la IA: {str(e)}"})
+#funcion para guardar las interacciones de la IA con el alumno
+def save_interaction(input_text, response, interaction_type="essay"):
+    # Elegir el formato según el tipo de interacción
+    if interaction_type == "question":
+        interaction = {
+            "question": input_text,
+            "response": response
+        }
+    elif interaction_type == "essay":
+        interaction = {
+            "essay": input_text,
+            "evaluation": response
+        }
+    else:
+        raise ValueError("Tipo de interacción desconocido. Use 'question' o 'essay'.")
+    print(f"Guardando interacción de tipo: {interaction_type}")
+    # Verificar si el archivo de interacciones ya existe y cargarlo
     if os.path.exists(INTERACTIONS_FILE):
         with open(INTERACTIONS_FILE, 'r') as f:
             interactions = json.load(f)
@@ -98,7 +146,7 @@ def save_interaction(question, response):
     with open(INTERACTIONS_FILE, 'w') as f:
         json.dump(interactions, f, indent=4)
 
-def process_response(student_questions):
+def process_questions_and_responses(student_questions):
     # Verificar que tanto el ensayo como los criterios existan
     if not os.path.exists(INPUT_FILE) or not os.path.exists(CRITERIA_FILE):
         return ({"message": "Aún faltan datos. Asegúrate de que el estudiante haya enviado el ensayo y el profesor los criterios."})
@@ -140,7 +188,10 @@ def process_response(student_questions):
             yield fragment  # Enviar cada fragmento en tiempo real
 
         # Guardar la interacción de pregunta-respuesta en el archivo JSON
+        #tts_text=tts_gcp2.procesar_texto(response_text)
+        #print(tts_text)
+        #tts_gcp2.run_and_save(tts_text)
         for question in student_questions:
-            save_interaction(question, response_text)
+            save_interaction(question, response_text,interaction_type="question")
     except Exception as e:
         yield json.dumps({"message": f"Error al procesar la respuesta de la IA: {str(e)}"})
