@@ -66,7 +66,7 @@ def get_response():
         # Procesar la respuesta como un stream de datos
         def stream_response():
             
-            for fragment in ia_response.process_response(student_questions):
+            for fragment in ia_response.process_questions_and_responses(student_questions):
                 yield fragment 
 
 
