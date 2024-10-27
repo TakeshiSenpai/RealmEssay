@@ -55,7 +55,7 @@ def submit_essay():
     except Exception as e:
         return jsonify({"error": f"Error al procesar los datos: {str(e)}"}), 500
 
-#Ruta para obtener la respuesta de la IA (streaming en tiempo real)
+#Ruta para obtener la respuesta de la IA al momento de realizar preguntas sobre la evaluacion(streaming en tiempo real)
 @app.route('/questions_and_responses', methods=['POST'])
 def get_response():
     try:
