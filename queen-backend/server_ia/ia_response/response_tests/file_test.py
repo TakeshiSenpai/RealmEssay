@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import ia_student_input
-from get_essay_text import get_essay_text
+from ia_function.get_essay_text import get_essay_text
 
 import re
 

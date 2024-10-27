@@ -1,7 +1,6 @@
 import os, requests,json,pathlib
-from flask import jsonify
 #from tts import tts_gcp2
-#from database import ChatDB
+
 
 # Rutas donde se almacenarán temporalmente los datos
 
@@ -61,73 +60,33 @@ def run_model(model, inputs, timeout=1200, stream=True):
     except requests.exceptions.RequestException as e:
         yield json.dumps({"error": str(e)})
 
-# Función para evaluar el ensayo si ambos archivos están disponibles
-def evaluate_essay():
-    # Cargar ensayo y criterios
-    input_text = load_data_from_file(INPUT_FILE, 'input')
-    criteria = load_data_from_file(CRITERIA_FILE, 'criteria')
-
-    # Verificar que existan ambos archivos
-    if not input_text or not criteria:
-        return {"message": "Aún faltan datos para evaluar el ensayo."}
-
-    # Generar entradas y procesar evaluación en la IA
-    inputs = generate_inputs(input_text, criteria)
-    result_stream = run_model("@cf/meta/llama-3-8b-instruct", inputs, timeout=1200, stream=True)
-    
-    return process_ia_response(result_stream, input_text)
-
-# Función para enviar los criterios y evaluar si el ensayo ya fue enviado
 def submit_criteria(data):
-    criteria = data.get('criteria')
-    
-    # Guardar los criterios en un archivo JSON si aún no están guardados
-    if not os.path.exists(CRITERIA_FILE):
-        save_json(CRITERIA_FILE, data)
-        print("Criterios guardados.")
-    else:
-        print("Los criterios ya han sido enviados anteriormente.")
-    
-    # Intentar evaluar si el ensayo está disponible
-    if os.path.exists(INPUT_FILE):
-        return evaluate_essay()
-    else:
-        return {"message": "Criterios enviados con éxito. Esperando el ensayo del estudiante."}
+    criteria = data.get('criteria')  # Obtén los criterios del diccionario `data`
 
-# Función para enviar el ensayo
-def submit_essay(data):
-    input_text = data.get('input')
-    
-    # Guardar el ensayo en un archivo JSON si aún no está guardado
-    if not os.path.exists(INPUT_FILE):
-        save_json(INPUT_FILE, data)
-        print("Ensayo guardado.")
-    else:
-        print("El ensayo ya ha sido enviado anteriormente.")
+    # Guardar los criterios en un archivo JSON
+    with open(CRITERIA_FILE, 'w') as f:
+        json.dump({"criteria": criteria}, f, indent=4)  # Guarda los criterios en formato JSON con indentación
 
-    # Intentar evaluar si los criterios están disponibles
-    if os.path.exists(CRITERIA_FILE):
-        return evaluate_essay()
-    else:
-        return {"message": "Ensayo enviado con éxito. Esperando criterios del profesor."}
+    return {"message": "Criterios enviados con éxito. Procesando la revisión."}
 
-#funcion para guardar las interacciones de la IA con el alumno
-def save_interaction(input_text, response, interaction_type="essay"):
-    # Elegir el formato según el tipo de interacción
-    if interaction_type == "question":
-        interaction = {
-            "question": input_text,
-            "response": response
-        }
-    elif interaction_type == "essay":
-        interaction = {
-            "essay": input_text,
-            "evaluation": response
-        }
-    else:
-        raise ValueError("Tipo de interacción desconocido. Use 'question' o 'essay'.")
-    print(f"Guardando interacción de tipo: {interaction_type}")
-    # Verificar si el archivo de interacciones ya existe y cargarlo
+
+def submit(data):
+    # Procesar el data como sea necesario
+    input_text = data.get('input')  # Asegúrate de que 'input' esté en los datos
+    print(INPUT_FILE)
+
+    # Guardar el ensayo en un archivo JSON
+    with open(INPUT_FILE, 'w') as f:
+        json.dump(data, f, indent=4)  # Escribe data en formato JSON con indentación de 4 espacios
+
+    return {"message": "Ensayo enviado con éxito. Esperando criterios del profesor."}
+# Función para ejecutar la IA una vez que ambos, ensayo y criterios, estén listos
+def save_interaction(question, response):
+    interaction = {
+        "question": question,
+        "response": response
+    }
+     # Verificar si el archivo de interacciones ya existe y cargarlo
     if os.path.exists(INTERACTIONS_FILE):
         with open(INTERACTIONS_FILE, 'r') as f:
             interactions = json.load(f)
@@ -139,67 +98,49 @@ def save_interaction(input_text, response, interaction_type="essay"):
     with open(INTERACTIONS_FILE, 'w') as f:
         json.dump(interactions, f, indent=4)
 
-# Función para procesar preguntas del estudiante y respuestas de la IA
-def process_questions_and_responses(student_questions):
-    # Verificar que existan el ensayo y los criterios
+def process_response(student_questions):
+    # Verificar que tanto el ensayo como los criterios existan
     if not os.path.exists(INPUT_FILE) or not os.path.exists(CRITERIA_FILE):
-        return {"message": "Aún faltan datos. Asegúrate de que el estudiante haya enviado el ensayo y el profesor los criterios."}
+        return ({"message": "Aún faltan datos. Asegúrate de que el estudiante haya enviado el ensayo y el profesor los criterios."})
 
-    # Leer ensayo y criterios
-    input_text = load_data_from_file(INPUT_FILE, 'input')
-    criteria = load_data_from_file(CRITERIA_FILE, 'criteria')
+    # Leer el ensayo y los criterios desde los archivos JSON
+    with open(INPUT_FILE, 'r') as f:
+        input_data = json.load(f)  # Cargar el contenido del archivo como JSON
+        input_text = input_data.get('input')  # Extraer el texto del ensayo
 
-    # Generar entradas para la IA con preguntas adicionales
-    inputs = generate_inputs(input_text, criteria, student_questions)
-    result_stream = run_model("@cf/meta/llama-3-8b-instruct", inputs, timeout=1200, stream=True)
-    
-    yield from process_ia_response(result_stream, input_text, student_questions)
+    with open(CRITERIA_FILE, 'r') as f:
+        criteria_data = json.load(f)  # Cargar el contenido del archivo como JSON
+        criteria = criteria_data.get('criteria')  # Extraer los criterios
 
-# Funciones auxiliares
-def save_json(file_path, data):
-    """Guarda los datos en un archivo JSON con formato legible."""
-    with open(file_path, 'w') as f:
-        json.dump(data, f, indent=4)
-
-def load_data_from_file(file_path, key):
-    """Carga un valor específico de un archivo JSON."""
-    if os.path.exists(file_path):
-        with open(file_path, 'r') as f:
-            data = json.load(f)
-            return data.get(key)
-    return None
-
-def generate_inputs(input_text, criteria, student_questions=None):
-    """Genera las entradas necesarias para el modelo de IA."""
     role_text = (
         "Usted es un asistente de redacción académica. Por favor, evalúe el ensayo "
         "centrándose en los siguientes aspectos y puntúe los ensayos de 0 a 10. "
+        "Además, responda cualquier pregunta que el estudiante pueda tener sobre su evaluación."
     )
-    if student_questions:
-        role_text += "Además, responda cualquier pregunta que el estudiante pueda tener sobre su evaluación."
-        
     system_instructions = f"{role_text} Los criterios de evaluación son: {criteria}"
-    inputs = [{"role": "system", "content": system_instructions}, {"role": "user", "content": input_text}]
 
-    # Agregar preguntas del estudiante si las hay
+    # Crear el input principal para la IA
+    inputs = [
+        {"role": "system", "content": system_instructions},
+        {"role": "user", "content": input_text}
+    ]
+
+    # Si el estudiante tiene preguntas adicionales, añádelas al input
     if student_questions:
-        inputs.extend({"role": "user", "content": question} for question in student_questions)
-    
-    return inputs
+        for question in student_questions:
+            inputs.append({"role": "user", "content": question})
 
-def process_ia_response(result_stream, input_text, student_questions=None):
-    """Procesa la respuesta del modelo IA y guarda la interacción en el archivo JSON."""
-    response_text = ""
+    # Llamada al modelo de IA con stream
+    result = run_model("@cf/meta/llama-3-8b-instruct", inputs, timeout=1200, stream=True)
+
     try:
-        for fragment in result_stream:
+        response_text = ""
+        for fragment in result:
             response_text += fragment
             yield fragment  # Enviar cada fragmento en tiempo real
-        
-        # Guardar la interacción en el archivo JSON
-        if student_questions:
-            for question in student_questions:
-                save_interaction(question, response_text, interaction_type="question")
-        else:
-            save_interaction(input_text, response_text, interaction_type="essay")
+
+        # Guardar la interacción de pregunta-respuesta en el archivo JSON
+        for question in student_questions:
+            save_interaction(question, response_text)
     except Exception as e:
         yield json.dumps({"message": f"Error al procesar la respuesta de la IA: {str(e)}"})
