@@ -38,18 +38,24 @@ def process_rubric():
 
     return jsonify({'success': True, 'message': message}), 200
 
-#Ruta para enviar datos de la IA
+# Ruta para enviar el ensayo y recibir la evaluación en fragmentos
 @app.route('/submit_essay', methods=['POST'])
-def submit():
+def submit_essay():
     try:
         data = request.json
-        # Enviamos los datos a la función submit() de ia_response
-        result = ia_response.submit(data)
-        return jsonify({"message": "Datos procesados exitosamente", "result": result}), 200
+        
+        # Función generadora para transmitir la respuesta en fragmentos
+        def stream_response():
+            for fragment in ia_response.submit_essay(data):
+                yield f"data: {fragment}\n\n"  # Enviar cada fragmento al cliente progresivamente
+
+        # Retornar la respuesta como un `Response` para hacer `streaming`
+        return Response(stream_response(), content_type='text/event-stream')
+
     except Exception as e:
         return jsonify({"error": f"Error al procesar los datos: {str(e)}"}), 500
 
-#Ruta para obtener la respuesta de la IA (streaming en tiempo real)
+#Ruta para obtener la respuesta de la IA al momento de realizar preguntas sobre la evaluacion(streaming en tiempo real)
 @app.route('/questions_and_responses', methods=['POST'])
 def get_response():
     try:
@@ -62,6 +68,7 @@ def get_response():
             
             for fragment in ia_response.process_response(student_questions):
                 yield fragment 
+
 
         # Retornar el stream usando la función generadora
         return Response(stream_response(), content_type='text/event-stream')
