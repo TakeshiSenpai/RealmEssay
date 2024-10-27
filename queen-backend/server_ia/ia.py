@@ -65,8 +65,10 @@ def get_response():
 
         # Procesar la respuesta como un stream de datos
         def stream_response():
-            for fragment in ia_response.process_questions_and_responses(student_questions):
-                yield f"data: {fragment}\n\n"  # Enviar cada fragmento al cliente progresivamente
+            
+            for fragment in ia_response.process_response(student_questions):
+                yield fragment 
+
 
         # Retornar el stream usando la función generadora
         return Response(stream_response(), content_type='text/event-stream')
