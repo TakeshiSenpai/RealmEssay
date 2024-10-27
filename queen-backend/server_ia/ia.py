@@ -85,8 +85,9 @@ def submit_criteria():
         return jsonify({"message": "Criterios enviados exitosamente"}), 200
     except Exception as e:
         return jsonify({"error": f"Error al enviar los criterios: {str(e)}"}), 500
-
     
+
+
 @app.after_request
 def add_header(response):
     response.headers['Cross-Origin-Opener-Policy'] = 'same-origin'

@@ -1,6 +1,7 @@
-import os, requests,json,pathlib
-from flask import jsonify
-#from tts import tts_gcp2
+import os, requests,json,pathlib,sys
+sys.path.append(str(pathlib.Path(__file__).parent.resolve()))
+#print(str(pathlib.Path(__file__).parent.resolve()))
+from tts import tts_gcp2
 #from database import ChatDB
 
 # Rutas donde se almacenarán temporalmente los datos
@@ -8,6 +9,7 @@ from flask import jsonify
 INPUT_FILE = pathlib.Path('queen-backend/server_ia/ia_response/input.json').resolve()
 CRITERIA_FILE = pathlib.Path('queen-backend/server_ia/ia_response/criteria.json').resolve()
 INTERACTIONS_FILE =pathlib.Path('queen-backend/server_ia/ia_response/interactions.json').resolve()
+TTS_FILE=pathlib.Path('queen-backend/server_ia/ia_response/cleanOutput.mp3').resolve()
 
 
 # Cargar el token desde un archivo
@@ -126,7 +128,7 @@ def save_interaction(input_text, response, interaction_type="essay"):
         }
     else:
         raise ValueError("Tipo de interacción desconocido. Use 'question' o 'essay'.")
-    print(f"Guardando interacción de tipo: {interaction_type}")
+   # print(f"Guardando interacción de tipo: {interaction_type}")
     # Verificar si el archivo de interacciones ya existe y cargarlo
     if os.path.exists(INTERACTIONS_FILE):
         with open(INTERACTIONS_FILE, 'r') as f:
@@ -196,6 +198,9 @@ def process_ia_response(result_stream, input_text, student_questions=None):
             yield fragment  # Enviar cada fragmento en tiempo real
         
         # Guardar la interacción en el archivo JSON
+        clean_text=tts_gcp2.procesar_texto(response_text)
+        print(clean_text)
+        tts_gcp2.run_and_save(clean_text,TTS_FILE)
         if student_questions:
             for question in student_questions:
                 save_interaction(question, response_text, interaction_type="question")

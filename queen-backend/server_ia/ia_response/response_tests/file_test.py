@@ -1,9 +1,10 @@
-from pathlib import Path
-
+import pathlib
+import sys,re
 import ia_student_input
+sys.path.append(str(pathlib.Path(__file__).parent.parent.parent.resolve()))
+#print(str(pathlib.Path(__file__).parent.parent.parent.resolve()))
 from get_essay_text import get_essay_text
 
-import re
 
 def clean_text(text):
     # Eliminar "● Se" y cualquier otro texto similar
@@ -20,7 +21,7 @@ def test(filename):
     text_data={
         'essay' : text
     }
-    print(text_data)
+    #print(text_data)
     ia_student_input.real_input(text_data)
 
-test(str(Path('../get_essay_text/Propuesta de arquitectura.pdf')))
+test(str(pathlib.Path('queen-backend/server_ia/get_essay_text/Propuesta de arquitectura.pdf').resolve()))
