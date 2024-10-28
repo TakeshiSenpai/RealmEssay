@@ -86,20 +86,20 @@ def submit_criteria():
     except Exception as e:
         return jsonify({"error": f"Error al enviar los criterios: {str(e)}"}), 500
     
-
-@app.route('/force_evaluation', methods=["GET"])
-def force_evaluation():
-    try:
-        # Procesar la respuesta como un stream de datos
-        def stream_response():
-            # Iterar sobre los fragmentos generados por `evaluate_essay`
-            for fragment in ia_response.evaluate_essay():
-                yield f"data: {fragment}\n\n"  # Formato adecuado para Server-Sent Events (SSE)
-
-        # Retornar el stream usando la función generadora
-        return Response(stream_response(), content_type='text/event-stream')
-    except Exception as e:
-        return jsonify({"error": f"Error al evaluar el ensayo: {str(e)}"}), 500
+#
+# @app.route('/force_evaluation', methods=["GET"])
+# def force_evaluation():
+#     try:
+#         # Procesar la respuesta como un stream de datos
+#         def stream_response():
+#             # Iterar sobre los fragmentos generados por `evaluate_essay`
+#             for fragment in ia_response.evaluate_essay():
+#                 yield f"data: {fragment}\n\n"  # Formato adecuado para Server-Sent Events (SSE)
+#
+#         # Retornar el stream usando la función generadora
+#         return Response(stream_response(), content_type='text/event-stream')
+#     except Exception as e:
+#         return jsonify({"error": f"Error al evaluar el ensayo: {str(e)}"}), 500
 
 @app.after_request
 def add_header(response):

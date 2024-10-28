@@ -131,7 +131,7 @@ def save_interaction(input_text, response, interaction_type="essay"):
     else:
         # Si el archivo no existe, crear una estructura nueva con un ID único para el archivo
         interactions_data = {
-            "file_id": str(ObjectId()),  # ID único para el archivo
+            "conversation_id": str(ObjectId()),  # ID único para el archivo
             "interactions": []  # Lista vacía para almacenar las interacciones
         }
 
