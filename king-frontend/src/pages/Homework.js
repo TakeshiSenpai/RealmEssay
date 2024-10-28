@@ -41,16 +41,15 @@ export const Homework = () => {
         async function envairCoreoConfirmacion(){
         console.log("Estamos en el useEffect",textRubric);
         if(textRubric !== undefined){
-            const html = await printHtmlConfirmation()
             const storedUserInfo = localStorage.getItem('userInfo')
             const parsedUserInfo = JSON.parse(storedUserInfo)
+            const html = await printHtmlConfirmation(parsedUserInfo.name)
             await updateBD(parsedUserInfo.email)
             reiniciarParametros()
             const to = []
             to.push(parsedUserInfo.email)
-            
             //Comentado porque no quiero mil correos de momento
-            //await mandarCorreos(html,to, "Confirmación de tarea")
+           // await mandarCorreos(html,to, "Confirmación de tarea")
         }
     
     }
@@ -167,13 +166,17 @@ export const Homework = () => {
         }
 
     }
-    const printHtmlConfirmation = async () =>{
+    const printHtmlConfirmation = async (profesor) =>{
         try{
 
             let textHomework = "Nombre de tarea" + homeworkParameters.taskName 
             + "Descripción: " + homeworkParameters.description + "Estudiantes registrados " + homeworkParameters.studentList;
             
-            return await render (<EmailProfesorConfirmation textHomework = {textHomework} textRubric={textRubric}/>)
+            return await render (<EmailProfesorConfirmation 
+                textHomework = {textHomework} 
+                textRubric={textRubric}
+                profesor={profesor}
+                />)
         }
         catch{
             return ""

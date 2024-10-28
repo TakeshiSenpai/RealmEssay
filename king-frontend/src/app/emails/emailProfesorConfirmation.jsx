@@ -18,7 +18,7 @@ import {
     ? `https://${process.env.VERCEL_URL}`
     : "https://avatars.githubusercontent.com/u/124811814?v=4";
   
-  const EmailProfesorConfirmation = ({textRubric, textHomework}) => (
+  const EmailProfesorConfirmation = ({textRubric, textHomework, profesor}) => (
     <Html>
       <Head />
       <Preview>Real Essay tarea creada resumen</Preview>
@@ -48,7 +48,7 @@ import {
           <Section style={paragraphContent}>
             <Hr style={hr} />
             <Text style={heading}>Aviso de creación de tarea</Text>
-            <Text style={paragraph}>Hola profesor, profesor@gmail.com</Text>
+            <Text style={paragraph}>Hola profesor, {profesor}</Text>
             <Text style={paragraph}>
               Aquí esta un resumen de su tarea creada
             </Text>
