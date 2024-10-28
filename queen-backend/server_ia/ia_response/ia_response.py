@@ -63,21 +63,15 @@ def run_model(model, inputs, timeout=1200, stream=True):
     except requests.exceptions.RequestException as e:
         yield json.dumps({"error": str(e)})
 
-# Función para evaluar el ensayo si ambos archivos están disponibles
-def evaluate_essay():
-    # Cargar ensayo y criterios
-    input_text = load_data_from_file(INPUT_FILE, 'input')
-    criteria = load_data_from_file(CRITERIA_FILE, 'criteria')
+# Función para obtener las últimas dos interacciones guardadas
+def get_last_two_interactions():
+    if os.path.exists(INTERACTIONS_FILE):
+        with open(INTERACTIONS_FILE, 'r') as f:
+            interactions = json.load(f)
+        # Extraer las dos últimas interacciones
+        return interactions[-2:] if len(interactions) >= 2 else interactions
+    return []
 
-    # Verificar que existan ambos archivos
-    if not input_text or not criteria:
-        return {"message": "Aún faltan datos para evaluar el ensayo."}
-
-    # Generar entradas y procesar evaluación en la IA
-    inputs = generate_inputs(input_text, criteria)
-    result_stream = run_model("@cf/meta/llama-3-8b-instruct", inputs, timeout=1200, stream=True)
-    
-    return process_ia_response(result_stream, input_text)
 
 # Función para enviar los criterios y evaluar si el ensayo ya fue enviado
 def submit_criteria(data):
@@ -105,7 +99,8 @@ def submit_essay(data):
         save_json(INPUT_FILE, data)
         print("Ensayo guardado.")
     else:
-        print("El ensayo ya ha sido enviado anteriormente.")
+        print("El ensayo ya ha sido enviado anteriormente. sobreescribiendo datos...")
+        save_json(INPUT_FILE,data)
 
     # Intentar evaluar si los criterios están disponibles
     if os.path.exists(CRITERIA_FILE):
@@ -172,14 +167,26 @@ def load_data_from_file(file_path, key):
     return None
 
 def generate_inputs(input_text, criteria, student_questions=None):
-    """Genera las entradas necesarias para el modelo de IA."""
+    """Genera las entradas necesarias para el modelo de IA, incluyendo las últimas interacciones."""
+    # Obtener las últimas dos interacciones para proporcionar contexto
+    last_interactions = get_last_two_interactions()
+    
+    # Preparar el texto de instrucciones del sistema
     role_text = (
         "Usted es un asistente de redacción académica. Por favor, evalúe el ensayo "
         "centrándose en los siguientes aspectos y puntúe los ensayos de 0 a 10. "
     )
     if student_questions:
         role_text += "Además, responda cualquier pregunta que el estudiante pueda tener sobre su evaluación."
-        
+    
+    # Incluir las interacciones anteriores, si las hay
+    if last_interactions:
+        role_text += " A continuación, se incluyen las últimas interacciones para proporcionar contexto:\n"
+        for interaction in last_interactions:
+            role_text += f"- Pregunta: {interaction.get('question', '')}\n"
+            role_text += f"- Respuesta: {interaction.get('response', '')}\n"
+    
+    # Agregar los criterios de evaluación
     system_instructions = f"{role_text} Los criterios de evaluación son: {criteria}"
     inputs = [{"role": "system", "content": system_instructions}, {"role": "user", "content": input_text}]
 
@@ -189,10 +196,28 @@ def generate_inputs(input_text, criteria, student_questions=None):
     
     return inputs
 
+# Función para evaluar el ensayo si ambos archivos están disponibles
+def evaluate_essay():
+    # Cargar ensayo y criterios
+    input_text = load_data_from_file(INPUT_FILE, 'input')
+    criteria = load_data_from_file(CRITERIA_FILE, 'criteria')
+
+    # Verificar que existan ambos archivos
+    if not input_text or not criteria:
+        return {"message": "Aún faltan datos para evaluar el ensayo."}
+
+    # Generar entradas y procesar evaluación en la IA
+    inputs = generate_inputs(input_text, criteria)
+    result_stream = run_model("@cf/meta/llama-3-8b-instruct", inputs, timeout=1200, stream=True)
+    
+    return process_ia_response(result_stream, input_text)
+
 def process_ia_response(result_stream, input_text, student_questions=None):
     """Procesa la respuesta del modelo IA y guarda la interacción en el archivo JSON."""
     response_text = ""
     try:
+         # Enviar las últimas dos interacciones al cliente, si están disponibles
+     
         for fragment in result_stream:
             response_text += fragment
             yield fragment  # Enviar cada fragmento en tiempo real
