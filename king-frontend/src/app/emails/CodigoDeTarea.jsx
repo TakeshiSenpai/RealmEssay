@@ -15,7 +15,7 @@ import {
     ? `https://${process.env.VERCEL_URL}`
     : " https://avatars.githubusercontent.com/u/124811814?v=4 ";
   
-  const PlaidVerifyIdentityEmail = ({ validationCode }) => (
+  const homeworkCode = ({ validationCode }) => (
     <Html>
       <Head />
       <Body style={main}>
@@ -46,11 +46,11 @@ import {
     </Html>
   );
   
-  PlaidVerifyIdentityEmail.PreviewProps = {
+  homeworkCode.PreviewProps = {
     validationCode: "144833",
   };
   
-  export default PlaidVerifyIdentityEmail;
+  export default homeworkCode;
   
   const main = {
     backgroundColor: "#ffffff",

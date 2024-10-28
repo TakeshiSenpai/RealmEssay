@@ -16,12 +16,12 @@ import {
   
   const baseUrl = process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
-    : "";
+    : "https://avatars.githubusercontent.com/u/124811814?v=4";
   
-  export const GooglePlayPolicyUpdateEmail = ({textRubric, textHomework}) => (
+  const EmailProfesorConfirmation = ({textRubric, textHomework}) => (
     <Html>
       <Head />
-      <Preview>Google Play developers</Preview>
+      <Preview>Real Essay tarea creada resumen</Preview>
       <Body style={main}>
         <Container style={container}>
           <Section>
@@ -56,12 +56,12 @@ import {
           </Section>
           <Section style={paragraphList}>
             <Text style={paragraph}>
-                {textoDeTarea}  
+                {textHomework}  
             </Text>
           </Section>
           <Section style={paragraphContent}>
             <Text style={paragraph}>
-                {textoDeRubrica}  
+                Prompt de la rúbrica enviado a la IA: {textRubric}  
             </Text>
             <Hr style={hr} />
           </Section>
@@ -111,8 +111,7 @@ import {
     </Html>
   );
   
-  export default GooglePlayPolicyUpdateEmail;
-  
+  export default EmailProfesorConfirmation
   const main = {
     backgroundColor: "#dbddde",
     fontFamily:

@@ -33,3 +33,4 @@ soupsieve
 urllib3
 Werkzeug
 python-dotenv
+pymongo
