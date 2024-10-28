@@ -1,4 +1,4 @@
-import json
+import json,pathlib
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 
@@ -30,4 +30,6 @@ def crear_chat_desde_json(archivo_json):
         print(f"Ocurrió un error: {e}")
 
 # Ejemplo de uso
-crear_chat_desde_json('C:\\Users\\alan1\\Documents\\GitHub\\RealmEssay\\RealmEssay\\data-base\\ChatDB\\Chat\\data.json')
+test_path=pathlib.Path('database/ChatDB/Chat/chat_tests_files/data.json').resolve()
+print(test_path)
+crear_chat_desde_json(test_path)
