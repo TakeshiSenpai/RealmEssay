@@ -2,7 +2,7 @@ import os, requests,json,pathlib,sys
 sys.path.append(str(pathlib.Path(__file__).parent.resolve()))
 #print(str(pathlib.Path(__file__).parent.resolve()))
 from tts import tts_gcp2
-#from database import ChatDB
+from bson.objectid import ObjectId
 
 # Rutas donde se almacenarán temporalmente los datos
 
@@ -127,14 +127,17 @@ def save_interaction(input_text, response, interaction_type="essay"):
     # Verificar si el archivo de interacciones ya existe y cargarlo
     if os.path.exists(INTERACTIONS_FILE):
         with open(INTERACTIONS_FILE, 'r') as f:
-            interactions = json.load(f)
+            interactions_data = json.load(f)
     else:
-        interactions = []
+       interactions_data = {
+            "file_id": str(ObjectId()),  # ID único para el archivo
+            "interactions": []  # Lista vacía para almacenar las interacciones
+        }
 
     # Agregar la nueva interacción y guardar en el archivo
-    interactions.append(interaction)
+    interactions_data["interactions"].append(interaction)
     with open(INTERACTIONS_FILE, 'w') as f:
-        json.dump(interactions, f, indent=4)
+        json.dump(interactions_data, f, indent=4)
 
 # Función para procesar preguntas del estudiante y respuestas de la IA
 def process_questions_and_responses(student_questions):
