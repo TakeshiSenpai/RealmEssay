@@ -108,9 +108,9 @@ def submit_essay(data):
     else:
         return {"message": "Ensayo enviado con éxito. Esperando criterios del profesor."}
 
-#funcion para guardar las interacciones de la IA con el alumno
+
 def save_interaction(input_text, response, interaction_type="essay"):
-    # Elegir el formato según el tipo de interacción
+    # Crear la interacción según el tipo
     if interaction_type == "question":
         interaction = {
             "question": input_text,
@@ -123,13 +123,14 @@ def save_interaction(input_text, response, interaction_type="essay"):
         }
     else:
         raise ValueError("Tipo de interacción desconocido. Use 'question' o 'essay'.")
-   # print(f"Guardando interacción de tipo: {interaction_type}")
+
     # Verificar si el archivo de interacciones ya existe y cargarlo
     if os.path.exists(INTERACTIONS_FILE):
         with open(INTERACTIONS_FILE, 'r') as f:
             interactions_data = json.load(f)
     else:
-       interactions_data = {
+        # Si el archivo no existe, crear una estructura nueva con un ID único para el archivo
+        interactions_data = {
             "file_id": str(ObjectId()),  # ID único para el archivo
             "interactions": []  # Lista vacía para almacenar las interacciones
         }
@@ -138,7 +139,6 @@ def save_interaction(input_text, response, interaction_type="essay"):
     interactions_data["interactions"].append(interaction)
     with open(INTERACTIONS_FILE, 'w') as f:
         json.dump(interactions_data, f, indent=4)
-
 # Función para procesar preguntas del estudiante y respuestas de la IA
 def process_questions_and_responses(student_questions):
     # Verificar que existan el ensayo y los criterios
