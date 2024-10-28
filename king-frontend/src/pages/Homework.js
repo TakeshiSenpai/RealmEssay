@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import CreateHomework from "../components/CreateHomework.jsx"
 import {Box, Button, IconButton} from '@mui/material'
 import Stepper from '@mui/material/Stepper'
@@ -17,12 +17,14 @@ import {Link} from "react-router-dom"
 //import { sendEmail } from '../app/api/emails/envioCodigoDeTarea.jsx'
 import CodigoDeTarea from "../app/emails/CodigoDeTarea.jsx"
 import {render} from '@react-email/components'
+import emailProfesorConfirmation from '../app/emails/emailProfesorConfirmation.jsx'
 
 
 //Aqui se supone que se creará la tarea, para esto llamará a los componentes necesarios
 export const Homework = () => {
 
     const [creationIndex, setCreationIndex] = React.useState(0)
+    const [textRubric,setTextRubric] = React.useState()
     const [rubricParameters, setParametrosRubrica] = React.useState([])
     const [errorEnRubrica, setErrorEnRubrica] = React.useState(false)
     const [homeworkParameters, setHomeworkParameters] = React.useState({
@@ -31,6 +33,13 @@ export const Homework = () => {
         studentList: ''
     })
     //Estas funciones recibe la informacion que da el componente
+
+    //Cuando se use esto es porque el profesor creo la tarea, se puede decir que este es el ulitmo paso
+    //Aqui se guarda la informacion en la base de datos
+    useEffect(()=>{
+
+
+    },[textRubric])
     const setTaskData = (data) => {
         console.log("Datos recibidos desde CrearTareas:", data)
 
@@ -57,10 +66,16 @@ export const Homework = () => {
                     setCreationIndex((prevIndice) => prevIndice + 1) // Usar la versión más reciente del estado
                 }
             } else if (creationIndex === 2) {
+                //Si entra aqui quiere decir que le dió en crear
                 reiniciarParametros()
                 setCreationIndex(0)
-                const html = await imprimirHtml() //Se obtiene el html a mandar
-                await mandarCorreos(html, obtenerArregloDeCorreos())
+                const htmlCode = await printHtmlValidationCode() //Se obtiene el html a mandar
+                await mandarCorreos(htmlCode, obtenerArregloDeCorreos())
+                //Ahora se manda el correo de confirmacion
+                const storedUserInfo = localStorage.getItem('userInfo')
+                const parsedUserInfo = JSON.parse(storedUserInfo)
+                const hmtlConfirmation = await
+                await mandatCoreos(hmtlConfirmation, parsedUserInfo.email)
             } else {
                 setCreationIndex((prevIndice) => prevIndice + 1) // Usar la versión más reciente del estado
             }
@@ -97,13 +112,24 @@ export const Homework = () => {
             console.log(`Error al enviar la rúbrica: ${error.message}`)
         }
     }
-    const imprimirHtml = async () => {
+    const printHtmlValidationCode = async () => {
         try {
             //Numero random de entre 11111 a 99999
             //Deberia haber una comprobacion en la base de datos antes
             var randomNumber =Math.floor(Math.random() * (99999 - 11111 + 1)+ 11111)
             return await render(<CodigoDeTarea validationCode={randomNumber}/>)
         } catch (error) {
+            return ""
+        }
+
+    }
+    const printHtmlConfirmation = async (textRubric) =>{
+        try{
+
+            textHomework = "Nombre de tarea" + parame
+            return await render (<emailProfesorConfirmation textHomework = {textHomework} textRubric={textRubric}/>)
+        }
+        catch{
             return ""
         }
 

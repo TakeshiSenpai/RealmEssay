@@ -38,7 +38,7 @@ def process_rubric():
 
     return jsonify({'success': True, 'message': message}), 200
 
-    
+
 @app.after_request
 def add_header(response):
     response.headers['Cross-Origin-Opener-Policy'] = 'same-origin'

@@ -18,7 +18,7 @@ import {
     ? `https://${process.env.VERCEL_URL}`
     : "";
   
-  export const GooglePlayPolicyUpdateEmail = () => (
+  export const GooglePlayPolicyUpdateEmail = ({textRubric, textHomework}) => (
     <Html>
       <Head />
       <Preview>Google Play developers</Preview>
@@ -44,50 +44,24 @@ import {
               </Column>
             </Row>
           </Section>
-  
+    
           <Section style={paragraphContent}>
             <Hr style={hr} />
-            <Text style={heading}>DEVELOPER UPDATE</Text>
-            <Text style={paragraph}>Hello Google Play Developer,</Text>
+            <Text style={heading}>Aviso de creación de tarea</Text>
+            <Text style={paragraph}>Hola profesor, profesor@gmail.com</Text>
             <Text style={paragraph}>
-              We strive to make Google Play a safe and trusted experience for
-              users.
+              Aquí esta un resumen de su tarea creada
             </Text>
-            <Text style={paragraph}>
-              We've added clarifications to our{" "}
-              <Link href="https://notifications.google.com" style={link}>
-                Target API Level policy
-              </Link>
-              . Because this is a clarification, our enforcement standards and
-              practices for this policy remain the same.
-            </Text>
+                
           </Section>
           <Section style={paragraphList}>
             <Text style={paragraph}>
-              We’re noting exceptions to the{" "}
-              <Link href="https://notifications.google.com" style={link}>
-                Target API Level policy
-              </Link>
-              , which can be found in our updated{" "}
-              <Link href="https://notifications.google.com" style={link}>
-                Help Center article.
-              </Link>
-              These exceptions include permanently private apps and apps that
-              target automotive or wearables form factors and are bundled within
-              the same package.{" "}
-              <Link href="https://notifications.google.com" style={link}>
-                Learn more
-              </Link>
+                {textoDeTarea}  
             </Text>
           </Section>
           <Section style={paragraphContent}>
             <Text style={paragraph}>
-              We’re also extending the deadline to give you more time to adjust to
-              these changes. Now, apps that target API level 29 or below will
-              start experiencing reduced distribution starting <b>Jan 31, 2023</b>{" "}
-              instead of Nov 1, 2022. If you need more time to update your app,
-              you can request an extension to keep your app discoverable to all
-              users until May 1, 2023.
+                {textoDeRubrica}  
             </Text>
             <Hr style={hr} />
           </Section>
@@ -99,36 +73,13 @@ import {
             </Text>
           </Section>
   
-          <Section style={containerContact}>
-            <Row>
-              <Text style={paragraph}>Connect with us</Text>
-            </Row>
-            <Row
-              align="left"
-              style={{
-                width: "84px",
-                float: "left",
-              }}
-            >
-              <Column style={{ paddingRight: "4px" }}>
-                <Link href="https://notifications.google.com">
-                  <Img
-                    width="28"
-                    height="28"
-                    src={`${baseUrl}/static/google-play-chat.png`}
-                  />
-                </Link>
-              </Column>
-              <Column style={{ paddingRight: "4px" }}>
-                <Link href="https://notifications.google.com">
-                  <Img
-                    width="28"
-                    height="28"
-                    src={`${baseUrl}/static/google-play-icon.png`}
-                  />
-                </Link>
-              </Column>
-            </Row>
+          <Section style={paragraphContent}>
+            
+              <Text style={paragraph}>Contáctanos <br/>
+               <Link href="mailto:realmessay@gmail.com" style={link}>
+                    realmessay@gmail.com
+                </Link>{" "}
+                </Text>
           </Section>
   
           <Section style={{ ...paragraphContent, paddingBottom: 30 }}>
@@ -151,7 +102,7 @@ import {
                 margin: 0,
               }}
             >
-              Usted recibió este anuncio por correo electronico de obligatorio para informale
+              Usted recibió este anuncio por correo eléctronico de manera automática para informale
               de la creacion de su tarea.
             </Text>
           </Section>

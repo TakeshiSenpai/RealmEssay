@@ -17,6 +17,8 @@ def homework_teacher():
 
 def ia():
     run_python_file("server_ia/ia.py")
+# def db):
+    #run_python_file("database/maindb.py")
 
 if __name__ == "__main__":
     # Crear procesos para ejecutar los servidores
