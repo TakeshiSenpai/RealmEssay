@@ -1,11 +1,16 @@
-import os
+import os, pathlib
 from multiprocessing import Process
+from pydoc import resolve
 
 def run_python_file(file_path):
+    entorno_virtiual = pathlib.Path(".venv/Scripts/Python.exe").resolve()
+    print(entorno_virtiual) #Print de debug para mirar la ruta, borrenlo cuando todos puedan correrlo
     if not os.path.exists(file_path):
         file_path = f"queen-backend/{file_path}"
-    os.system(f"python3 {file_path}")
-
+    os.system(f"{entorno_virtiual} {file_path}")
+    #Cambio para que funcionara con el entorno virtual
+    #Si no quieren el entorno virtual cambien la variable entorno_virtiual = "python" ó entorno_virtiual ="python3"
+    #En Mac es pathlib.Path(".venv/bin/Python").resolve()
 def api_gateway():
     run_python_file("api_gateway.py")
 
