@@ -97,10 +97,8 @@ def post_tarea_db():
             "Rubrica": rubrica,
             "Alumnos": alumnos
         }
-        json_datos_tarea = json.dumps(datos_tarea, indent=4)
-        print(json_datos_tarea)
         # Insertar la tarea en la colección
-        # resultado = tarea_collection.insert_one(nombre)
+        tarea_collection.insert_one(datos_tarea)
         #print(f"Tarea creada con ID: {resultado.inserted_id}")
 
         return jsonify({'success': True, 'message': 'Tarea guardada'}), 200

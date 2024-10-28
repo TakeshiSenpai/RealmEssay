@@ -11,10 +11,7 @@ const CreateHomework = ({homeworkParameters, setHomeworkParameters}) => {
         }))
     }
 
-    // Este efecto se puede usar si necesitas ejecutar algún código cuando cambian los parámetros
-    useEffect(() => {
-        console.log("Parametros actualizados:", homeworkParameters)
-    }, [homeworkParameters])
+
 
     return (
         <Box component="form" sx={{display: 'flex', flexDirection: 'column', gap: 2}}>
