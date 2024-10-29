@@ -8,7 +8,7 @@ from bson.objectid import ObjectId
 
 INPUT_FILE = pathlib.Path('queen-backend/server_ia/ia_response/input.json').resolve()
 CRITERIA_FILE = pathlib.Path('queen-backend/server_ia/ia_response/criteria.json').resolve()
-INTERACTIONS_FILE =pathlib.Path('queen-backend/server_ia/ia_response/interactions.json').resolve()
+INTERACTIONS_FILE =pathlib.Path('queen-backend/server_ia/ia_response/user_interactions/interactions.json').resolve()
 TTS_FILE=pathlib.Path('queen-backend/server_ia/ia_response/cleanOutput.mp3').resolve()
 
 
@@ -67,11 +67,11 @@ def run_model(model, inputs, timeout=1200, stream=True):
 def get_last_two_interactions():
     if os.path.exists(INTERACTIONS_FILE):
         with open(INTERACTIONS_FILE, 'r') as f:
-            interactions = json.load(f)
+            data = json.load(f)
+            interactions = data.get("interactions", [])
         # Extraer las dos últimas interacciones
         return interactions[-2:] if len(interactions) >= 2 else interactions
     return []
-
 
 # Función para enviar los criterios y evaluar si el ensayo ya fue enviado
 def submit_criteria(data):
