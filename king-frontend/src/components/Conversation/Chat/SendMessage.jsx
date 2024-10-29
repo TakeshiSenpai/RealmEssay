@@ -32,15 +32,16 @@ export const SendMessage = ({
                 },
                 body: JSON.stringify({ student_questions: [message] })
             })
-
             if (response.ok) {
                 const reader = response.body.getReader()
+                console.log(reader)
                 const decoder = new TextDecoder('utf-8')
                 let done = false
                 let accumulatedText = ""
 
                 while (!done) {
                     const { value, done: streamDone } = await reader.read()
+                    console.log(value,done)
                     done = streamDone
                     if (value) {
                         const chunk = decoder.decode(value, { stream: true })
@@ -57,6 +58,7 @@ export const SendMessage = ({
         } catch (error) {
             console.error('Error durante la recepción de la respuesta de la IA:', error)
         } finally {
+            
             setLoading(false)  // Desactivar el spinner al finalizar la solicitud
         }
     }

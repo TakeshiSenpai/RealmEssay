@@ -24,7 +24,6 @@ API_BASE_GATEWAYLOG = "https://gateway.ai.cloudflare.com/v1/a71faaf431a55b28fbf7
 directorio_raiz = pathlib.Path(__file__).parent
 api_token = load_api_token(pathlib.Path(directorio_raiz / 'model_authentication'/ 'api_token.txt'))
 
-
 def run_model(model, inputs, timeout=1200, stream=True):
     headers = {"Authorization": f"Bearer {api_token}"}
     input_data = {"messages": inputs, "stream": stream}
