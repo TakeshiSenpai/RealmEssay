@@ -3,6 +3,7 @@ import {useEffect, useState} from 'react'
 import {Box, IconButton, TextField, CircularProgress} from '@mui/material'
 import {Send} from '@mui/icons-material'
 import {Navigate} from 'react-router-dom'
+import Showdown from 'showdown'
 
 export const SendMessage = ({
     studentConversationArray, 
@@ -23,6 +24,7 @@ export const SendMessage = ({
         setStudentConversationArray([...studentConversationArray, message])
         setMessage('')
         setLoading(true) // Activar el spinner cuando se envía el mensaje
+        const convertirAHTML = new  Showdown.Converter()
 
         try {
             const response = await fetch('http://127.0.0.1:2003/questions_and_responses', {
@@ -34,10 +36,10 @@ export const SendMessage = ({
             })
             if (response.ok) {
                 const reader = response.body.getReader()
-                console.log(reader)
                 const decoder = new TextDecoder('utf-8')
                 let done = false
                 let accumulatedText = ""
+                let accumulatedTextHTML = ""
 
                 while (!done) {
                     const { value, done: streamDone } = await reader.read()
@@ -46,10 +48,15 @@ export const SendMessage = ({
                     if (value) {
                         const chunk = decoder.decode(value, { stream: true })
                         accumulatedText += chunk
-
+                        //accumulatedText.replace("a",":")
+                        //accumulatedTextHTML = convertirAHTML.makeHtml(accumulatedText)
+                        
                         // Actualizar el array con el nuevo fragmento
                         setAiConversationArray([...aIConversationArray, accumulatedText])
-                        console.log(accumulatedText) // Solo para depuración
+                        let nuevoTexto = aIConversationArray
+                        //nuevoTexto.replace(/(\n+)/g, "<br>")
+                        console.log(nuevoTexto)
+                        //console.log(accumulatedText) // Solo para depuración
                     }
                 }
             } else {

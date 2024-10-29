@@ -62,7 +62,7 @@ def get_response():
         #student_questions del cuerpo de la solicitud POST
         data = request.json
         student_questions = data.get("student_questions", [])
-
+        print("Entro a get_response")
         # Procesar la respuesta como un stream de datos
         def stream_response():
             

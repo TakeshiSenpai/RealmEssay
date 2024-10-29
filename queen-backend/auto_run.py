@@ -3,7 +3,8 @@ from multiprocessing import Process
 from pydoc import resolve
 
 def run_python_file(file_path):
-    entorno_virtiual = pathlib.Path(".venv/Scripts/Python.exe").resolve()
+    #entorno_virtiual = pathlib.Path(".venv/Scripts/Python.exe").resolve()
+    entorno_virtiual = "python"
     print(entorno_virtiual) #Print de debug para mirar la ruta, borrenlo cuando todos puedan correrlo
     if not os.path.exists(file_path):
         file_path = f"queen-backend/{file_path}"
