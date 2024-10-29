@@ -35,8 +35,8 @@ def login_google():
         }
         jwt_token = generate_jwt(user_info)
         return jsonify({'success': True, 'user_info': user_info, 'token': jwt_token}), 200
-    except ValueError:
-        return jsonify({'success': False, 'message': 'Invalid token'}), 400
+    except Exception as e:
+        return jsonify({'success': False, 'message': f'Invalid token {e}'}), 400
     
 @app.after_request
 def add_header(response):
