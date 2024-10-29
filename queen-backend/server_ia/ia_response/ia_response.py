@@ -1,7 +1,8 @@
-import os, requests,json,pathlib
-from flask import jsonify
-#from tts import tts_gcp2
-#from database import ChatDB
+import os, requests,json,pathlib,sys
+sys.path.append(str(pathlib.Path(__file__).parent.resolve()))
+#print(str(pathlib.Path(__file__).parent.resolve()))
+from tts import tts_gcp2
+from bson.objectid import ObjectId
 
 # Rutas donde se almacenarán temporalmente los datos
 
@@ -98,7 +99,8 @@ def submit_essay(data):
         save_json(INPUT_FILE, data)
         print("Ensayo guardado.")
     else:
-        print("El ensayo ya ha sido enviado anteriormente.")
+        print("El ensayo ya ha sido enviado anteriormente. sobreescribiendo datos...")
+        save_json(INPUT_FILE,data)
 
     # Intentar evaluar si los criterios están disponibles
     if os.path.exists(CRITERIA_FILE):
@@ -106,9 +108,9 @@ def submit_essay(data):
     else:
         return {"message": "Ensayo enviado con éxito. Esperando criterios del profesor."}
 
-#funcion para guardar las interacciones de la IA con el alumno
+
 def save_interaction(input_text, response, interaction_type="essay"):
-    # Elegir el formato según el tipo de interacción
+    # Crear la interacción según el tipo
     if interaction_type == "question":
         interaction = {
             "question": input_text,
@@ -121,19 +123,22 @@ def save_interaction(input_text, response, interaction_type="essay"):
         }
     else:
         raise ValueError("Tipo de interacción desconocido. Use 'question' o 'essay'.")
-    print(f"Guardando interacción de tipo: {interaction_type}")
+
     # Verificar si el archivo de interacciones ya existe y cargarlo
     if os.path.exists(INTERACTIONS_FILE):
         with open(INTERACTIONS_FILE, 'r') as f:
-            interactions = json.load(f)
+            interactions_data = json.load(f)
     else:
-        interactions = []
+        # Si el archivo no existe, crear una estructura nueva con un ID único para el archivo
+        interactions_data = {
+            "conversation_id": str(ObjectId()),  # ID único para el archivo
+            "interactions": []  # Lista vacía para almacenar las interacciones
+        }
 
     # Agregar la nueva interacción y guardar en el archivo
-    interactions.append(interaction)
+    interactions_data["interactions"].append(interaction)
     with open(INTERACTIONS_FILE, 'w') as f:
-        json.dump(interactions, f, indent=4)
-
+        json.dump(interactions_data, f, indent=4)
 # Función para procesar preguntas del estudiante y respuestas de la IA
 def process_questions_and_responses(student_questions):
     # Verificar que existan el ensayo y los criterios
@@ -165,14 +170,26 @@ def load_data_from_file(file_path, key):
     return None
 
 def generate_inputs(input_text, criteria, student_questions=None):
-    """Genera las entradas necesarias para el modelo de IA."""
+    """Genera las entradas necesarias para el modelo de IA, incluyendo las últimas interacciones."""
+    # Obtener las últimas dos interacciones para proporcionar contexto
+    last_interactions = get_last_two_interactions()
+    
+    # Preparar el texto de instrucciones del sistema
     role_text = (
         "Usted es un asistente de redacción académica. Por favor, evalúe el ensayo "
         "centrándose en los siguientes aspectos y puntúe los ensayos de 0 a 10. "
     )
     if student_questions:
         role_text += "Además, responda cualquier pregunta que el estudiante pueda tener sobre su evaluación."
-        
+    
+    # Incluir las interacciones anteriores, si las hay
+    if last_interactions:
+        role_text += " A continuación, se incluyen las últimas interacciones para proporcionar contexto:\n"
+        for interaction in last_interactions:
+            role_text += f"- Pregunta: {interaction.get('question', '')}\n"
+            role_text += f"- Respuesta: {interaction.get('response', '')}\n"
+    
+    # Agregar los criterios de evaluación
     system_instructions = f"{role_text} Los criterios de evaluación son: {criteria}"
     inputs = [{"role": "system", "content": system_instructions}, {"role": "user", "content": input_text}]
 
@@ -182,15 +199,36 @@ def generate_inputs(input_text, criteria, student_questions=None):
     
     return inputs
 
+# Función para evaluar el ensayo si ambos archivos están disponibles
+def evaluate_essay():
+    # Cargar ensayo y criterios
+    input_text = load_data_from_file(INPUT_FILE, 'input')
+    criteria = load_data_from_file(CRITERIA_FILE, 'criteria')
+
+    # Verificar que existan ambos archivos
+    if not input_text or not criteria:
+        return {"message": "Aún faltan datos para evaluar el ensayo."}
+
+    # Generar entradas y procesar evaluación en la IA
+    inputs = generate_inputs(input_text, criteria)
+    result_stream = run_model("@cf/meta/llama-3-8b-instruct", inputs, timeout=1200, stream=True)
+    
+    return process_ia_response(result_stream, input_text)
+
 def process_ia_response(result_stream, input_text, student_questions=None):
     """Procesa la respuesta del modelo IA y guarda la interacción en el archivo JSON."""
     response_text = ""
     try:
+         # Enviar las últimas dos interacciones al cliente, si están disponibles
+     
         for fragment in result_stream:
             response_text += fragment
             yield fragment  # Enviar cada fragmento en tiempo real
         
         # Guardar la interacción en el archivo JSON
+        clean_text=tts_gcp2.procesar_texto(response_text)
+        print(clean_text)
+        tts_gcp2.run_and_save(clean_text,TTS_FILE)
         if student_questions:
             for question in student_questions:
                 save_interaction(question, response_text, interaction_type="question")

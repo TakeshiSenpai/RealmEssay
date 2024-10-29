@@ -6,7 +6,7 @@ url = 'http://127.0.0.1:2003/questions_and_responses'
 # Datos que se enviarán en la solicitud POST
 data = {
     "student_questions": [
-        "¿Qué puedo mejorar en la argumentacion?"
+        "¿podrias repetir Qué puedo mejorar en la argumentacion?"
     ]
 }
 inicio=time.time()
