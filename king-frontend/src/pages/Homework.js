@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import CreateHomework from "../components/CreateHomework.jsx"
 import {Box, Button, IconButton} from '@mui/material'
 import Stepper from '@mui/material/Stepper'
@@ -17,49 +17,65 @@ import {Link} from "react-router-dom"
 //import { sendEmail } from '../app/api/emails/envioCodigoDeTarea.jsx'
 import CodigoDeTarea from "../app/emails/CodigoDeTarea.jsx"
 import {render} from '@react-email/components'
+import EmailProfesorConfirmation from '../app/emails/EmailProfesorConfirmation.jsx'
 
 
 //Aqui se supone que se creará la tarea, para esto llamará a los componentes necesarios
-export const Tarea = () => {
+export const Homework = () => {
 
     const [creationIndex, setCreationIndex] = React.useState(0)
+    const [idHomework,setIDHomework] = React.useState()
+    const [textRubric,setTextRubric] = React.useState()
     const [rubricParameters, setParametrosRubrica] = React.useState([])
-    const [errorEnRubrica, setErrorEnRubrica] = React.useState(false)
+    const [errorEnRubrica, setErrorEnRubrica] = React.useState(true)
     const [homeworkParameters, setHomeworkParameters] = React.useState({
         taskName: '',
         description: '',
         studentList: ''
     })
     //Estas funciones recibe la informacion que da el componente
-    const setTaskData = (data) => {
-        console.log("Datos recibidos desde CrearTareas:", data)
 
-
+    //Cuando se use esto es porque el profesor creo la tarea, se puede decir que este es el ulitmo paso
+    //Aqui se guarda la informacion en la base de datos
+    useEffect( ()=>{
+        async function envairCoreoConfirmacion(){
+        console.log("Estamos en el useEffect",textRubric);
+        if(textRubric !== undefined){
+            const storedUserInfo = localStorage.getItem('userInfo')
+            const parsedUserInfo = JSON.parse(storedUserInfo)
+            const html = await printHtmlConfirmation(parsedUserInfo.name)
+            await updateBD(parsedUserInfo.email)
+            reiniciarParametros()
+            const to = []
+            to.push(parsedUserInfo.email)
+            //Comentado porque no quiero mil correos de momento
+           // await mandarCorreos(html,to, "Confirmación de tarea")
+        }
+    
     }
-    const setTaskDataRubrica = (data) => {
-        console.log("Datos recibidos desde rubrica:", data)
-        console.log("TaskName", data[0].taskName)
-        setParametrosRubrica(data)
-
-    }
-
+    envairCoreoConfirmacion()
+    },[textRubric])
+ 
     //Cambia el indice por lo que se cambia entre, creartarea, rubrica y finalizar(Confirmar)
     const cambiarIndice = async (numero) => {
         console.log(homeworkParameters)
         console.log("Indice", creationIndex) //esto es como para comprobar cosas despues
-
+        
         if (numero === 1) {
             if (creationIndex === 1) {
-                let hayErrorEnContenido = comprobarSiNoHayErrorEnLaRubrica()
+                console.log ("Si es uno")
+                let hayErrorEnContenido =  comprobarSiNoHayErrorEnLaRubrica()
                 console.log(hayErrorEnContenido)
                 if (!(hayErrorEnContenido || errorEnRubrica)) {
                     setCreationIndex((prevIndice) => prevIndice + 1) // Usar la versión más reciente del estado
                 }
             } else if (creationIndex === 2) {
-                reiniciarParametros()
+                //Si entra aqui quiere decir que le dió en crear
                 setCreationIndex(0)
-                const html = await imprimirHtml() //Se obtiene el html a mandar
-                await mandarCorreos(html, obtenerArregloDeCorreos())
+                const htmlCode = await printHtmlValidationCode() //Se obtiene el html a mandar
+                await mandarCorreos(htmlCode, obtenerArregloDeCorreos(), "Código de enivío de ensayo")
+                //Ahora se manda el correo de confirmacion
+                await getTextRubric() 
             } else {
                 setCreationIndex((prevIndice) => prevIndice + 1) // Usar la versión más reciente del estado
             }
@@ -69,7 +85,48 @@ export const Tarea = () => {
             }
         }
     }
+    //Aqui basicamente se hará un post a la base de datos de tarea
+    const updateBD = async (profesor)=>{
+        try {
+            const response = await fetch('http://127.0.0.1:2002/tarea/postDB', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id:idHomework,
+                    Nombre: homeworkParameters.taskName, 
+                    Profesor: profesor,
+                    Descripcion: homeworkParameters.description,
+                    Rubrica: textRubric,
+                    Alumnos:obtenerArregloDeCorreos() 
+                })
+            })
 
+            const data = await response.json()
+            console.log(data.message)
+        } catch (error) {
+            console.log(`Error al guardar la tarea: ${error.message}`)
+        }
+    }
+    const getTextRubric= async ()=>{
+        try {
+            const response = await fetch('http://127.0.0.1:2003/tarea/rubrica', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({rubrica: rubricParameters})
+            })
+
+            const data = await response.json()
+            console.log(data.message)
+            setTextRubric(data.message)
+        } catch (error) {
+            console.log(`Error al enviar la rúbrica: ${error.message}`)
+        }        
+
+    }
     //Borra las variables, se supone que antes de estoy deberia enviarlo al backend peor pues eso todavia (15oct) no
     const reiniciarParametros = () => {
 
@@ -80,26 +137,48 @@ export const Tarea = () => {
             studentList: ''
         })
     }
-    const mandarCorreos = async (html, to) => {
+    const mandarCorreos = async (html, to, subject) => {
         try {
-            const response = await fetch('http://127.0.0.1:5000/tarea/email/code', {
+            const response = await fetch('http://127.0.0.1:2002/tarea/email/code', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({html: html, to: to})
+                body: JSON.stringify({html: html, to: to, subject: subject})
             })
 
             const data = await response.json()
-            console.log(data.message)
+            console.log(data.message, "A ", to.length)
         } catch (error) {
             console.log(`Error al enviar la rúbrica: ${error.message}`)
         }
     }
-    const imprimirHtml = async () => {
+    const printHtmlValidationCode = async () => {
         try {
-            return await render(<CodigoDeTarea validationCode={1234}/>)
+            //Numero random de entre 11111 a 99999
+            //Deberia haber una comprobacion en la base de datos antes
+            //const randomNumber = obtenerID() //Aqui se obtiene el numero random pero tomando en cuenta la bd
+            var randomNumber =Math.floor(Math.random() * (99999 - 11111 + 1)+ 11111)
+            setIDHomework(randomNumber)
+            return await render(<CodigoDeTarea validationCode={randomNumber}/>)
         } catch (error) {
+            return ""
+        }
+
+    }
+    const printHtmlConfirmation = async (profesor) =>{
+        try{
+
+            let textHomework = "Nombre de tarea" + homeworkParameters.taskName 
+            + "Descripción: " + homeworkParameters.description + "Estudiantes registrados " + homeworkParameters.studentList;
+            
+            return await render (<EmailProfesorConfirmation 
+                textHomework = {textHomework} 
+                textRubric={textRubric}
+                profesor={profesor}
+                />)
+        }
+        catch{
             return ""
         }
 
@@ -112,16 +191,19 @@ export const Tarea = () => {
     const comprobarSiNoHayErrorEnLaRubrica = () => {
         let hayError = false
         setErrorEnRubrica(rubricParameters.length === 0)
+        console.log("Valor Error Rubrica",errorEnRubrica)
         const newParameters = rubricParameters.map(param => {
             if (param.totalValue === 0) {
+                console.log("Entro al map")
                 hayError = true
                 return {...param, error: true}
             }
             return param
         })
-
+        console.log("Valor de hayError",hayError)
         const updatedParameters = newParameters.map(param => {
             const updatedCriterias = param.criterias.map(criteria => {
+                console.log("Entro al map")
                 hayError = !criteria.rating.trim() || !criteria.description.trim()
                 return {...criteria, error: !criteria.rating.trim() || !criteria.description.trim()}
             })
@@ -132,19 +214,19 @@ export const Tarea = () => {
         return hayError
     }
     return (
-        <Box sx={{maxWidth: '700px', margin: '0 auto', padding: '2rem', border: '1px solid #ddd', borderRadius: '8px'}}>
+        <Box sx={{paddingY: 4}}>
+        <Box sx={{maxWidth: '700px', margin: '0 auto', padding: '2rem', border: '1px solid #ddd', borderRadius: '29px'}}>
 
             {creationIndex === 0 && (
                 <CreateHomework 
                     homeworkParameters={homeworkParameters} 
                     setHomeworkParameters={setHomeworkParameters}
                     />)}
-            {creationIndex === 1 && (
+            {(creationIndex === 1 ) && (
                 <RubricComponent 
                     parameters={rubricParameters} 
                     setParameters={setParametrosRubrica}
                     error={errorEnRubrica} 
-                    setError={setErrorEnRubrica}
                     />)}
             {creationIndex >= 2 && (
                 <HomeworkConfirmation 
@@ -174,7 +256,7 @@ export const Tarea = () => {
                     creationIndex >= 2 && (
                         <Button onClick={() => {
                             cambiarIndice(1)
-                        }} sx={{ml: 'auto'}} component={Link} to={creationIndex === 2 ? "/Tarea" : ""}>
+                        }} sx={{ml: 'auto'}} component={Link} to={creationIndex === 2 ? "/createhomework" : ""}>
                             Crear
                         </Button>)
                 }
@@ -255,8 +337,9 @@ export const Tarea = () => {
                 </Tooltip>
             </Stepper>
         </Box>
+        </Box>
     )
 }
-export default Tarea
+export default Homework
 
 

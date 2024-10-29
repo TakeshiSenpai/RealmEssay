@@ -13,9 +13,10 @@ const StudentMessage = ({ message }) => (
             px: '1.25rem',
             py: '.625rem',
             color: 'white',
-            whiteSpace: 'pre-wrap',
-        }}>
-            {message}
+            whiteSpace: "pre-line"
+        }}
+        >
+            {message} 
         </Box>
     </Box>
 )
