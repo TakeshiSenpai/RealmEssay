@@ -1,3 +1,5 @@
+import pathlib
+
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 import json
@@ -26,4 +28,6 @@ def crear_tarea_desde_json(archivo_json):
         print(f"Ocurrió un error: {e}")
 
 # Ejemplo de uso
-crear_tarea_desde_json('C:\\Users\\alan1\\Documents\\GitHub\\RealmEssay\\RealmEssay\\data-base\\TareasDB\\Tarea\\data.json')
+path = pathlib.Path("data.json").resolve()
+print(path)
+crear_tarea_desde_json(path)

@@ -29,7 +29,7 @@ export const HomeworkConfirmation = ({rubricParameters, homeworkParameters}) => 
     //Esto es para crear el row, tambien se hace el de colapse para los criterios
     const row = (rubrica, indice) => {
         return (
-            <React.Fragment>
+            <React.Fragment key={indice}>
                 <TableRow>
                     <TableCell>
                         <IconButton
@@ -58,7 +58,7 @@ export const HomeworkConfirmation = ({rubricParameters, homeworkParameters}) => 
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {rubrica.criterias.map((criterios) => {
+                                        {rubrica.criterias && rubrica.criterias.map((criterios) => {
                                             return (
                                                 <TableRow key={criterios.rating}>
                                                     <TableCell>{criterios.rating}</TableCell>
@@ -111,7 +111,7 @@ export const HomeworkConfirmation = ({rubricParameters, homeworkParameters}) => 
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
-                        <TableRow>
+                        <TableRow key={99}>
                             <TableCell>Criterios</TableCell>
                             <TableCell>Titulo</TableCell>
                             <TableCell>Descripcion</TableCell>

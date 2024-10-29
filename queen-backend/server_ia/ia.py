@@ -62,14 +62,12 @@ def get_response():
         #student_questions del cuerpo de la solicitud POST
         data = request.json
         student_questions = data.get("student_questions", [])
-
+        print("Entro a get_response")
         # Procesar la respuesta como un stream de datos
         def stream_response():
             
             for fragment in ia_response.process_questions_and_responses(student_questions):
-                yield fragment 
-
-
+                yield fragment
         # Retornar el stream usando la función generadora
         return Response(stream_response(), content_type='text/event-stream')
 

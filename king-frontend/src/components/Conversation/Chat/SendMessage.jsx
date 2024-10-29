@@ -3,6 +3,7 @@ import {useEffect, useState} from 'react'
 import {Box, IconButton, TextField, CircularProgress} from '@mui/material'
 import {Send} from '@mui/icons-material'
 import {Navigate} from 'react-router-dom'
+import Showdown from 'showdown'
 
 export const SendMessage = ({
     studentConversationArray, 
@@ -32,7 +33,6 @@ export const SendMessage = ({
                 },
                 body: JSON.stringify({ student_questions: [message] })
             })
-
             if (response.ok) {
                 const reader = response.body.getReader()
                 const decoder = new TextDecoder('utf-8')
@@ -41,14 +41,14 @@ export const SendMessage = ({
 
                 while (!done) {
                     const { value, done: streamDone } = await reader.read()
+                    console.log(value,done)
                     done = streamDone
                     if (value) {
                         const chunk = decoder.decode(value, { stream: true })
                         accumulatedText += chunk
-
+                        
                         // Actualizar el array con el nuevo fragmento
                         setAiConversationArray([...aIConversationArray, accumulatedText])
-                        console.log(accumulatedText) // Solo para depuración
                     }
                 }
             } else {
@@ -57,6 +57,7 @@ export const SendMessage = ({
         } catch (error) {
             console.error('Error durante la recepción de la respuesta de la IA:', error)
         } finally {
+            
             setLoading(false)  // Desactivar el spinner al finalizar la solicitud
         }
     }

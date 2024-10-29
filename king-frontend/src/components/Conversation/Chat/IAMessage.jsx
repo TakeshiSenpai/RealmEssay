@@ -1,8 +1,18 @@
 import {Box} from "@mui/material"
 import React from "react"
 import IAIcon from "./IAIcon"
+import Showdown from "showdown"
 
-const IAMessage = ({message}) => (
+
+const IAMessage = ({message})  =>{
+    const superMessage = ()=>{
+        const conv = new Showdown.Converter()
+        //Nose porque el \n no lo convierte a br, por lo que se debe aplicar ese replace
+        return conv.makeHtml(message.replaceAll("\\n", "<br>"))
+        
+         
+    }
+    return(
     <Box sx={{
         display: 'flex',
         alignItems: 'flex-end',
@@ -26,10 +36,11 @@ const IAMessage = ({message}) => (
             py: '.625rem',
             backgroundColor: (theme) => theme.palette.colors.iaBackground,
             whiteSpace: 'pre-wrap',
-        }}>
-            {message}
+        }}
+        dangerouslySetInnerHTML={{ __html: superMessage() }}>
+             
         </Box>
-    </Box>
-)
+    </Box>)
+        }
 
 export default IAMessage

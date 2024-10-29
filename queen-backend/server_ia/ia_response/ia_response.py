@@ -1,4 +1,6 @@
 import os, requests,json,pathlib,sys
+from traceback import print_tb
+
 sys.path.append(str(pathlib.Path(__file__).parent.resolve()))
 #print(str(pathlib.Path(__file__).parent.resolve()))
 from tts import tts_gcp2
@@ -6,8 +8,11 @@ from bson.objectid import ObjectId
 
 # Rutas donde se almacenarán temporalmente los datos
 
-INPUT_FILE = pathlib.Path('queen-backend/server_ia/ia_response/input.json').resolve()
-CRITERIA_FILE = pathlib.Path('queen-backend/server_ia/ia_response/criteria.json').resolve()
+
+#Revisen el pahtfile!!!
+#A mi(Manuel) me fallo por eso
+INPUT_FILE = pathlib.Path('server_ia/ia_response/input.json').resolve()
+CRITERIA_FILE = pathlib.Path('server_ia/ia_response/criteria.json').resolve()
 INTERACTIONS_FILE =pathlib.Path('queen-backend/server_ia/ia_response/user_interactions/interactions.json').resolve()
 TTS_FILE=pathlib.Path('queen-backend/server_ia/ia_response/cleanOutput.mp3').resolve()
 
@@ -23,7 +28,6 @@ API_BASE_GATEWAYLOG = "https://gateway.ai.cloudflare.com/v1/a71faaf431a55b28fbf7
 # Cargar el token de la API desde el archivo
 directorio_raiz = pathlib.Path(__file__).parent
 api_token = load_api_token(pathlib.Path(directorio_raiz / 'model_authentication'/ 'api_token.txt'))
-
 
 def run_model(model, inputs, timeout=1200, stream=True):
     headers = {"Authorization": f"Bearer {api_token}"}
@@ -144,7 +148,7 @@ def process_questions_and_responses(student_questions):
     # Verificar que existan el ensayo y los criterios
     if not os.path.exists(INPUT_FILE) or not os.path.exists(CRITERIA_FILE):
         return {"message": "Aún faltan datos. Asegúrate de que el estudiante haya enviado el ensayo y el profesor los criterios."}
-
+    print("Entro a  process_questions_and_responses")
     # Leer ensayo y criterios
     input_text = load_data_from_file(INPUT_FILE, 'input')
     criteria = load_data_from_file(CRITERIA_FILE, 'criteria')

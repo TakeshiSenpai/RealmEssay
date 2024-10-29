@@ -13,7 +13,7 @@ export function Conversation({ studentConversationArray, aIConversationArray }) 
     }, [studentConversationArray, aIConversationArray])
 
     return (
-        <Box>
+        <Box >
             {studentConversationArray.length > 0 && (
                 studentConversationArray.map((mensaje, indice) => (
                     <React.Fragment key={indice}>
