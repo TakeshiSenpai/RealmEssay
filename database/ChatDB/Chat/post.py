@@ -1,9 +1,10 @@
-import json
+import json,pathlib
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 
 # Conexión a MongoDB
 client = MongoClient("mongodb+srv://alan11gt:ioUvPgAvDZcVwWXs@cluster0.2b8il.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+#client = MongoClient(f"mongodb+srv://alan11gt:ioUvPgAvDZcVwWXs@cluster0.2b8il.mongodb.net/?retryWrites=true&w=majority&tls=true&tlsAllowInvalidCertificates=true")
 db = client["ChatDB"]
 chat_collection = db["Chat"]
 
@@ -30,4 +31,6 @@ def crear_chat_desde_json(archivo_json):
         print(f"Ocurrió un error: {e}")
 
 # Ejemplo de uso
-crear_chat_desde_json('C:\\Users\\alan1\\Documents\\GitHub\\RealmEssay\\RealmEssay\\data-base\\ChatDB\\Chat\\data.json')
+test_path=pathlib.Path('chat_tests_files/data.json').resolve()
+print(test_path)
+crear_chat_desde_json(test_path)
