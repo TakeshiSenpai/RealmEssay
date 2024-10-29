@@ -24,6 +24,14 @@
         {
             "question": "Me gusta el pan y a ti?",
             "response": "No, yo no soy capaz de tener gustos o prefer personales, ni tengo un est\u00f3mago o boca para comer. Mi funci\u00f3n es ayudarte con tareas de redacci\u00f3n y evaluaci\u00f3n, por lo que no tengo para disfrutar de alimentos como el pan. Sin embargo, puedo ayudarte con la revisi\u00f3n de tu ensayo y ofrecerte retroalimentaci\u00f3n constructiva sobre c\u00f3mo mejorar tus escritos. \u00bfHay algo en particular que te gustar\u00eda discutir o cambiar tu ensayo?"
+        },
+        {
+            "question": "hola",
+            "response": "\u00a1Hola! Estoy aqu\u00ed para ayudarte con la revisi\u00f3n de tu ensayo. La \u00faltima vez queu\u00e9 contigo, te compart\u00ed una evaluaci\u00f3n general de tu ensayo en cuanto a gram\u00e1tica, estructura yaci\u00f3n.\\n\\nRecib\u00ed un puntaje de 8/10 en gram\u00e1tica, 7.5/10 en estructura y 8/10 en argumentaci\u00f3n. Not\u00e9 que la mayor parte de tus oraciones estaban bien construidas y la puntuaci\u00f3n era correcta, pero que hay parciales que podr\u00edan ser mejorados. En cuanto a estructura, not\u00e9 que la organizaci\u00f3n podr\u00eda mejorar un poco, y que algunas secciones se sent\u00edan un poco desordenadas o no estaban bienadas con el resto del texto.\\n\\nEn cuanto a la argumentaci\u00f3n, not\u00e9 que tu texto ofrece una buena visi\u00f3n coherente y bien estructurada de la arquitectura propuesta y sus ventajas, pero que podr\u00edas profundizar m\u00e1s en algunos puntos, como la optimizaci\u00f3n de la interacci\u00f3n entre loses y la autorizaci\u00f3n mediante tokens.\\n\\n\u00bfTienes alguna pregunta o quieres discutir mi evaluaci\u00f3n en detalle? \u00a1Estoy aqu\u00ed para ayudarte!"
+        },
+        {
+            "question": "hazme una lista con tabs",
+            "response": "A continuaci\u00f3n, teo la lista de la evaluaci\u00f3n con tabs:\\n\\n**Gram\u00e1tica: 8.5/10**\\nLa mayor parte de las oraciones est\u00e1n bien construidas y la puntuaci\u00f3n es correcta. Sin embargo, hab\u00eda algunos puntos donde la puntuaci\u00f3n o la estructura de las oraciones no eran perfectas, lo que necesitaba Una reorganizaci\u00f3n o una correcci\u00f3n menor.\\n\\n**Estructura: 7.5/10**\\nLa organizaci\u00f3n del texto no es del todo clara. Las secciones se sienten un poco desordenadas y no est\u00e1n bienadas con el resto del texto. Se recomienda reorganizar y refundir las secciones para mejorar la fluidez y la coherencia del texto.\\n\\n**Argumentaci\u00f3n: 8/10**\\nLa argumentaci\u00f3n es clara y coherente, y se presenta una visi\u00f3n general decente de la arquitectura propuesta y sus ventajas. Sin embargo, se podr\u00eda profundizar m\u00e1s en algunos puntos, como la optimizaci\u00f3n de la interacci\u00f3n entre loses y la autorizaci\u00f3n mediante tokens.\\n\\n**Total:** 8/10"
         }
     ]
 }

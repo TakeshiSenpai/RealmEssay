@@ -8,7 +8,7 @@ const IAMessage = ({message})  =>{
     const superMessage = ()=>{
         const conv = new Showdown.Converter()
         //Nose porque el \n no lo convierte a br, por lo que se debe aplicar ese replace
-        return conv.makeHtml(message.replaceAll("\\n", "<br>"))
+        return conv.makeHtml(message.replaceAll("\\n", "<br>").replaceAll("\\t", "&nbsp;&nbsp;&nbsp;&nbsp;"))
         
          
     }
