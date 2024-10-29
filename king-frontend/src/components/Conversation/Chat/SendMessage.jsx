@@ -24,7 +24,6 @@ export const SendMessage = ({
         setStudentConversationArray([...studentConversationArray, message])
         setMessage('')
         setLoading(true) // Activar el spinner cuando se envía el mensaje
-        const convertirAHTML = new  Showdown.Converter()
 
         try {
             const response = await fetch('http://127.0.0.1:2003/questions_and_responses', {
@@ -39,7 +38,6 @@ export const SendMessage = ({
                 const decoder = new TextDecoder('utf-8')
                 let done = false
                 let accumulatedText = ""
-                let accumulatedTextHTML = ""
 
                 while (!done) {
                     const { value, done: streamDone } = await reader.read()
@@ -48,15 +46,9 @@ export const SendMessage = ({
                     if (value) {
                         const chunk = decoder.decode(value, { stream: true })
                         accumulatedText += chunk
-                        //accumulatedText.replace("a",":")
-                        //accumulatedTextHTML = convertirAHTML.makeHtml(accumulatedText)
                         
                         // Actualizar el array con el nuevo fragmento
                         setAiConversationArray([...aIConversationArray, accumulatedText])
-                        let nuevoTexto = aIConversationArray
-                        //nuevoTexto.replace(/(\n+)/g, "<br>")
-                        console.log(nuevoTexto)
-                        //console.log(accumulatedText) // Solo para depuración
                     }
                 }
             } else {
