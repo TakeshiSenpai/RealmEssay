@@ -7,7 +7,8 @@ from flask import jsonify
 
 INPUT_FILE = pathlib.Path('queen-backend/server_ia/ia_response/input.json').resolve()
 CRITERIA_FILE = pathlib.Path('queen-backend/server_ia/ia_response/criteria.json').resolve()
-INTERACTIONS_FILE =pathlib.Path('queen-backend/server_ia/ia_response/interactions.json').resolve()
+INTERACTIONS_FILE =pathlib.Path('queen-backend/server_ia/ia_response/user_interactions/interactions.json').resolve()
+TTS_FILE=pathlib.Path('queen-backend/server_ia/ia_response/cleanOutput.mp3').resolve()
 
 
 # Cargar el token desde un archivo
@@ -61,21 +62,15 @@ def run_model(model, inputs, timeout=1200, stream=True):
     except requests.exceptions.RequestException as e:
         yield json.dumps({"error": str(e)})
 
-# Función para evaluar el ensayo si ambos archivos están disponibles
-def evaluate_essay():
-    # Cargar ensayo y criterios
-    input_text = load_data_from_file(INPUT_FILE, 'input')
-    criteria = load_data_from_file(CRITERIA_FILE, 'criteria')
-
-    # Verificar que existan ambos archivos
-    if not input_text or not criteria:
-        return {"message": "Aún faltan datos para evaluar el ensayo."}
-
-    # Generar entradas y procesar evaluación en la IA
-    inputs = generate_inputs(input_text, criteria)
-    result_stream = run_model("@cf/meta/llama-3-8b-instruct", inputs, timeout=1200, stream=True)
-    
-    return process_ia_response(result_stream, input_text)
+# Función para obtener las últimas dos interacciones guardadas
+def get_last_two_interactions():
+    if os.path.exists(INTERACTIONS_FILE):
+        with open(INTERACTIONS_FILE, 'r') as f:
+            data = json.load(f)
+            interactions = data.get("interactions", [])
+        # Extraer las dos últimas interacciones
+        return interactions[-2:] if len(interactions) >= 2 else interactions
+    return []
 
 # Función para enviar los criterios y evaluar si el ensayo ya fue enviado
 def submit_criteria(data):
