@@ -5,7 +5,6 @@ from pydoc import resolve
 def run_python_file(file_path):
     #entorno_virtiual = pathlib.Path(".venv/Scripts/Python.exe").resolve()
     entorno_virtiual = "python3"
-    print(entorno_virtiual) #Print de debug para mirar la ruta, borrenlo cuando todos puedan correrlo
     if not os.path.exists(file_path):
         file_path = f"queen-backend/{file_path}"
     os.system(f"{entorno_virtiual} {file_path}")
@@ -23,6 +22,10 @@ def homework_teacher():
 
 def ia():
     run_python_file("server_ia/ia.py")
+
+def homework_student():
+    run_python_file("server_homework_student/homework_student.py")
+
 # def db):
     #run_python_file("database/maindb.py")
 
@@ -32,15 +35,18 @@ if __name__ == "__main__":
     p2 = Process(target=authentication)
     p3 = Process(target=homework_teacher)
     p4 = Process(target=ia)
+    p5 = Process(target=homework_student)
 
     # Iniciar ambos procesos
     p1.start()
     p2.start()
     p3.start()
     p4.start()
+    p5.start()
 
     # Esperar a que ambos procesos terminen
     p1.join()
     p2.join()
     p3.join()
     p4.join()
+    p5.join()
