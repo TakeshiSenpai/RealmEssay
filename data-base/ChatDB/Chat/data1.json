@@ -1,8 +1,8 @@
 [
     {
-        "_id": "671b3efee259173f17114f35",
+        "_id": "671dc35fa7e8386f4e90ed58",
         "CorreoAlumno": "ejemploCorreo@uabc.com",
-        "Prompt": "\u00c2\u00bfPor que mi calificacion fue 85?",
+        "RespuestaAlumno": "\u00c2\u00bfPor que mi calificacion fue 85?",
         "RespuestaIA": "Por k ta mal tu cosa"
     }
 ]
