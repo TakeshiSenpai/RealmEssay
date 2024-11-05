@@ -32,6 +32,22 @@
         {
             "question": "hazme una lista con tabs",
             "response": "A continuaci\u00f3n, teo la lista de la evaluaci\u00f3n con tabs:\\n\\n**Gram\u00e1tica: 8.5/10**\\nLa mayor parte de las oraciones est\u00e1n bien construidas y la puntuaci\u00f3n es correcta. Sin embargo, hab\u00eda algunos puntos donde la puntuaci\u00f3n o la estructura de las oraciones no eran perfectas, lo que necesitaba Una reorganizaci\u00f3n o una correcci\u00f3n menor.\\n\\n**Estructura: 7.5/10**\\nLa organizaci\u00f3n del texto no es del todo clara. Las secciones se sienten un poco desordenadas y no est\u00e1n bienadas con el resto del texto. Se recomienda reorganizar y refundir las secciones para mejorar la fluidez y la coherencia del texto.\\n\\n**Argumentaci\u00f3n: 8/10**\\nLa argumentaci\u00f3n es clara y coherente, y se presenta una visi\u00f3n general decente de la arquitectura propuesta y sus ventajas. Sin embargo, se podr\u00eda profundizar m\u00e1s en algunos puntos, como la optimizaci\u00f3n de la interacci\u00f3n entre loses y la autorizaci\u00f3n mediante tokens.\\n\\n**Total:** 8/10"
+        },
+        {
+            "question": "Hola, de que es el ensayo que te mande?",
+            "response": "\u00a1Hola! Me alegra verte nuevamente. El ensayo que me mandaste es una propuesta de arquitectura para el proyecto deier\u00eda de de la Universidad Aut\u00f3noma de Baja California. Es un que la estructura de un sistema software y c\u00f3mo funcionan sus componentes. Estoy aqu\u00ed para evaluar tu ensayo yarte retroalimentaci\u00f3n para que puedas mejorar. \u00bfTienes alguna o deseas discutir mi evaluaci\u00f3n en detalle?"
+        },
+        {
+            "question": "holi, de que es el ensayo que te di?",
+            "response": "\u00a1Hola! Me alegra verte nuevamente. El ensayo que me mandaste es sobre \\El pan: Historia, Cultura y Significado\\ Es un ensayo que explora la historia del pan, su evoluci\u00f3n a lo largo del tiempo, su papel en la cultura y la religi\u00f3n, y su importancia en la vida cotidiana. Estoy aqu\u00ed para evaluar tu ensayo yarte retroalimentaci\u00f3n para que puedas mejorar. \u00bfTienes alguna o deseas discutir mi evaluaci\u00f3n en detalle? Los criterios de evaluaci\u00f3n son: Gram\u00e1tica, estructura y argumentaci\u00f3n."
+        },
+        {
+            "question": "dame una lista de lo que esta bien en el ensayo",
+            "response": "Encantado delo! A continuaci\u00f3n, teo una lista de aspectos positivos que destaco en tu ensayo sobre \\El Pan: Historia, Cultura y Significado\\1. **Incorporaci\u00f3n de hechos hist\u00f3ricos**: Has presentado una cronolog\u00eda razonable del origen del pan y su evoluci\u00f3n a lo largo de los siglos.\\n2. **Uso de ejemplos concretos**: La menci\u00f3n a la baguette francesa, el naan indio y la tortilla latinoamericana son ejemplos efectivos de c\u00f3mo las culturas han adaptado el pan a sus tradiciones culinarias.\\n3. **An\u00e1lisis de la cultura y religi\u00f3n**: Has explorado c\u00f3mo el pan ha tenido un papelativo en culturas y religiones, como el cristianismo, el juda\u00edsmo y lahospitalidad en muchas culturas.\\n4. **Estructura l\u00f3gica**: El ensayo se presenta de manera l\u00f3gica y cronol\u00f3gica, pasando de la del pan su papel en la cultura y religi\u00f3n.\\n5. **Lenguaje claro y conciso**: Has utilizado un lenguaje sencillo y f\u00e1cil de entender, lo que facilita la comprensi\u00f3n del tema.\\n6. **Conclusi\u00f3n efectiva**: La conclusi\u00f3n resume los puntos del ensayo y destaca la importancia del pan en la vida cotidiana y la con el pasado y las comunidades.\\n\\nRecuerda que, aunque hay elementos positivos en tu ensayo, tambi\u00e9n hay \u00e1reas que pueden mejorar. La evaluaci\u00f3n objetiva busca proporcionarte retroalimentaci\u00f3n constructiva para que puedas_growth como escritor."
+        },
+        {
+            "question": "Hola, de que es el pdf que te envie?",
+            "response": "Hola! No entiendo muy bien qu\u00e9 te refieres al PDF. Me parece que hasado un informe de vulnerabilidades generado por la herramienta Wapiti, que analiza la seguridad de una p\u00e1gina web. El informe indica presencia de vulnerabilidades como la falta deaci\u00f3n de de y la ausencia de habilitaci\u00f3n de conexiones seguras (HSTS). Sin embargo, no veo un PDF en que me hayas enviado. \u00bfPodr\u00edas explicarme m\u00e1s sobre qu\u00e9 es el PDF y qu\u00e9 se supone que haga?"
         }
     ]
 }

@@ -1,6 +1,7 @@
 from flask import Flask,request,jsonify,Response
 from flask_cors import CORS
 from ia_response import ia_response
+
 app = Flask(__name__)
 CORS(app)
 
@@ -38,23 +39,6 @@ def process_rubric():
 
     return jsonify({'success': True, 'message': message}), 200
 
-# Ruta para enviar el ensayo y recibir la evaluación en fragmentos
-@app.route('/submit_essay', methods=['POST'])
-def submit_essay():
-    try:
-        data = request.json
-        
-        # Función generadora para transmitir la respuesta en fragmentos
-        def stream_response():
-            for fragment in ia_response.submit_essay(data):
-                yield f"data: {fragment}\n\n"  # Enviar cada fragmento al cliente progresivamente
-
-        # Retornar la respuesta como un `Response` para hacer `streaming`
-        return Response(stream_response(), content_type='text/event-stream')
-
-    except Exception as e:
-        return jsonify({"error": f"Error al procesar los datos: {str(e)}"}), 500
-
 #Ruta para obtener la respuesta de la IA al momento de realizar preguntas sobre la evaluacion(streaming en tiempo real)
 @app.route('/questions_and_responses', methods=['POST'])
 def get_response():
@@ -62,12 +46,11 @@ def get_response():
         #student_questions del cuerpo de la solicitud POST
         data = request.json
         student_questions = data.get("student_questions", [])
-        print("Entro a get_response")
         # Procesar la respuesta como un stream de datos
         def stream_response():
-            
             for fragment in ia_response.process_questions_and_responses(student_questions):
                 yield fragment
+
         # Retornar el stream usando la función generadora
         return Response(stream_response(), content_type='text/event-stream')
 
