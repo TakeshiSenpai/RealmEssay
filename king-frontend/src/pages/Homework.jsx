@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, {useEffect} from 'react'
 import CreateHomework from "../components/CreateHomework.jsx"
 import {Box, Button, IconButton} from '@mui/material'
 import Stepper from '@mui/material/Stepper'
@@ -21,7 +21,7 @@ import EmailProfesorConfirmation from '../app/emails/EmailProfesorConfirmation.j
 
 
 //Aqui se supone que se creará la tarea, para esto llamará a los componentes necesarios
-export const Homework = () => {
+const Homework = () => {
 
     const [creationIndex, setCreationIndex] = React.useState(0)
     const [idHomework,setIDHomework] = React.useState()

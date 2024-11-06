@@ -6,7 +6,8 @@ import {grey} from "@mui/material/colors";
 import {Add, Delete} from "@mui/icons-material";
 import Typography from "@mui/material/Typography";
 
-export const RubricComponent = ({parameters, setParameters, error,setError}) => {
+// RubricComponent es un componente que permite al profesor crear una rúbrica
+const RubricComponent = ({parameters, setParameters, error,setError}) => {
 
     console.log(error)
 

@@ -1,5 +1,6 @@
 import {Box} from '@mui/material'
 
+// StudentMessage es un componente que representa un mensaje del estudiante
 const StudentMessage = ({ message }) => (
     <Box sx={{
         display: 'flex',

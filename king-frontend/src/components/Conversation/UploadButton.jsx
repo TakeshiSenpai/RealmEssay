@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import {DeleteRounded, Send} from "@mui/icons-material";
 
+// UploadButton es un componente que permite al estudiante subir un archivo .pdf o .txt
 const UploadButton = ({setShowConversation}) => {
 
     const [file, setFile] = useState(null)
@@ -14,6 +15,7 @@ const UploadButton = ({setShowConversation}) => {
         if (file[0]) setFile(file[0])
     }, [])
 
+    // Configuración del dropzone para aceptar archivos .pdf y .txt
     const {getRootProps, getInputProps, isDragActive} = useDropzone({
         onDrop: onDrop,
         accept: {
@@ -25,28 +27,24 @@ const UploadButton = ({setShowConversation}) => {
     // Enviar el archivo a la IA, si sale bien, mostrar la conversación.
     const handleSubmission = async () => {
         try {
-            // (no sé como funciona la IA, para mandarle el contenido del archivo)
             const reader = new FileReader()
             reader.onabort = () => console.log('file reading was aborted')
             reader.onerror = () => console.log('file reading has failed')
             reader.onload = async () => {
-                // Do whatever you want with the file contents
-                const binaryStr = reader.result
-                console.log(binaryStr)
-
+                const binaryString = reader.result
+                
                 const response = await fetch('http://127.0.0.1:2004/submit_essay', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: binaryStr
+                    body: binaryString
                 })
-                
-                const data = await response.json();
+
+                await response.json();
             }
 
             reader.readAsArrayBuffer(file)
-            
 
             setShowConversation(true)
         } catch (error) {
@@ -138,11 +136,10 @@ const UploadButton = ({setShowConversation}) => {
                             </IconButton>
                         </Box>
                     )}
-
                 </Box>
             </div>
         </Box>
     )
 }
 
-export default UploadButton;
+export default UploadButton
