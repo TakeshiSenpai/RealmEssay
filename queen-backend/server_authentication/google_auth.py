@@ -1,9 +1,10 @@
-from flask import Flask,request,jsonify
-from flask_cors import CORS
-from google.oauth2 import id_token
-from google.auth.transport import requests
-import jwt
 import datetime
+
+import jwt
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+from google.auth.transport import requests
+from google.oauth2 import id_token
 
 app = Flask(__name__)
 CORS(app)
@@ -45,4 +46,4 @@ def add_header(response):
     return response
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=2001)
+    app.run(host='127.0.0.1', port=2001, debug=True)

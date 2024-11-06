@@ -10,9 +10,11 @@ import {DeleteRounded, Send} from "@mui/icons-material";
 const UploadButton = ({setShowConversation}) => {
 
     const [file, setFile] = useState(null)
+    const [error, setError] = useState(null)
 
     const onDrop = useCallback(file => {
         if (file[0]) setFile(file[0])
+        setError(null)
     }, [])
 
     // Configuración del dropzone para aceptar archivos .pdf y .txt
@@ -31,24 +33,39 @@ const UploadButton = ({setShowConversation}) => {
             reader.onabort = () => console.log('file reading was aborted')
             reader.onerror = () => console.log('file reading has failed')
             reader.onload = async () => {
-                const binaryString = reader.result
-                
-                const response = await fetch('http://127.0.0.1:2004/submit_essay', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: binaryString
-                })
+                try {
+                    const arrayBuffer = reader.result;
 
-                await response.json();
+                    const binaryString = Array.from(new Uint8Array(arrayBuffer))
+                        .map(byte => String.fromCharCode(byte))
+                        .join('');
+
+                    const response = await fetch('http://127.0.0.1:2004/submit_essay', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            fileName: file.name,
+                            fileData: btoa(binaryString),
+                        })
+                    })
+
+                    if (!response.ok) {
+                        const data = await response.json()
+                        setError(data.message)
+                        return
+                    }
+
+                    setShowConversation(true)
+                } catch (error) {
+                    setError(error.message)
+                }
             }
 
             reader.readAsArrayBuffer(file)
-
-            setShowConversation(true)
         } catch (error) {
-            console.log(error)
+            setError(error.message)
         }
     }
 
@@ -75,13 +92,15 @@ const UploadButton = ({setShowConversation}) => {
                     borderRadius: '10px',
                     textAlign: 'center',
                     padding: '20px',
-                    borderColor: (theme) => isDragActive ? theme.palette.primary.main : theme.palette.text.primary
+                    borderColor: (theme) => isDragActive ? theme.palette.primary.main : theme.palette.text.primary,
+                    maxWidth: '450px',
+                    margin: '0 auto'
                 }}>
                     <img
                         src={`${process.env.PUBLIC_URL}/res/PDF-TXT(${useTheme().palette.mode === 'dark' ? 'dark' : 'light'}).png`}
                         alt="Archivos permitidos: .pdf, .txt"
                         style={{
-                            width: '90%'
+                            width: '90%',
                         }}
                     />
 
@@ -96,7 +115,8 @@ const UploadButton = ({setShowConversation}) => {
                                 alignItems: 'center',
                                 justifyContent: 'space-between',
                                 gap: '10px',
-                                cursor: 'default'
+                                cursor: 'default',
+                                paddingBottom: '10px'
                             }}
                             onClick={(e) => e.stopPropagation()}
                         >
@@ -120,6 +140,7 @@ const UploadButton = ({setShowConversation}) => {
                                 <DeleteRounded onClick={(e) => {
                                     e.stopPropagation()
                                     setFile(null)
+                                    setError(null)
                                 }}/>
                             </IconButton>
 
@@ -135,6 +156,19 @@ const UploadButton = ({setShowConversation}) => {
                                 }}/>
                             </IconButton>
                         </Box>
+                    )}
+
+                    {error != null && (
+                        <Typography sx={{
+                            backgroundColor: 'red',
+                            borderRadius: '8px',
+                            padding: '5px',
+                            display: 'inline-block',
+                            color: 'white',
+                            width: '100%'
+                        }}>
+                            {error.toString()}
+                        </Typography>
                     )}
                 </Box>
             </div>
