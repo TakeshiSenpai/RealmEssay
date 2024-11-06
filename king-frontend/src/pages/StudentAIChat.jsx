@@ -1,12 +1,11 @@
 import {Box} from '@mui/material'
 import React, {useState} from 'react'
-import {SendMessage} from '../components/Conversation/Chat/SendMessage'
+import SendMessage from '../components/Conversation/Chat/SendMessage'
 import Conversation from '../components/Conversation/Conversation'
 import UploadButton from "../components/Conversation/UploadButton"
 
-//Nota: Se debe renombrar a algo relacionado a la vista del alumno y sobre enviar tarea 
-//Renombrado a TalkTo como la pellicula, no se me ocurrio una mejor para describir que aqui se habla con la IA y esta responde
-export const TalkTo = () => {
+// StudentAIChat es un componente que representa la vista del chat del alumno con la IA
+const StudentAIChat = () => {
     const [studentConversationArray, setStudentConversationArray] = useState([])
     const [aIConversationArray, setAiConversationArray] = useState([])
 
@@ -47,4 +46,4 @@ export const TalkTo = () => {
     ) : <UploadButton setShowConversation={setShowConversation} />
 }
 
-export default TalkTo
+export default StudentAIChat

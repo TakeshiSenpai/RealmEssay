@@ -1,10 +1,13 @@
 import {Box, createTheme, ThemeProvider} from '@mui/material'
 import React from 'react'
-import {GoogleButton} from '../components/GoogleButton'
+import GoogleButton from '../components/GoogleButton'
 import Typography from "@mui/material/Typography";
 import IAIcon from "../components/Conversation/Chat/IAIcon";
 
-export const Auth = () => {
+// Auth es un componente que representa la página de autenticación
+const Auth = () => {
+
+    // Tema personalizado para el texto
     const theme = createTheme({
         typography: {
             fontFamily: 'Mea Culpa',

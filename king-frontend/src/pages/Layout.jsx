@@ -24,15 +24,16 @@ import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded'
 import {AutoAwesomeRounded, PaletteRounded} from "@mui/icons-material"
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 
+// Layout es un componente que representa la estructura de la página
 const Layout = ({theme, setTheme, isAuto}) => {
     const [open, setOpen] = useState(true)
     const [openModal, setOpenModal] = useState(false)
     const [userInfo, setUserInfo] = useState({name: '', institution: '', picture: ''})
-    const [arregloDeConversaciones, setArregloDeConversaciones] = useState(["Home"])
+    const [conversationArray, setConversationArray] = useState(["Home"])
     const [arregloDeTareas, setArregloDeTareas] = useState(["Primera Tarea"])
 
     const navigate = useNavigate()
-    const [esAlumno, setAlumno] = useState(true)
+    const [isStudent, setIsStudent] = useState(true)
 
     const [menuOpen, setMenuOpen] = useState(false)
     const [themeMenuOpen, setThemeMenuOpen] = useState(false)
@@ -42,8 +43,7 @@ const Layout = ({theme, setTheme, isAuto}) => {
         setThemeMenuOpen(false)
     })
 
-    const [anchorEl, setAnchorEl] = React.useState(null);
-
+    // Cargar la información del usuario y el tema desde localStorage
     useEffect(() => {
         const storedUserInfo = localStorage.getItem('userInfo')
 
@@ -63,16 +63,17 @@ const Layout = ({theme, setTheme, isAuto}) => {
         if (savedTheme) setTheme(savedTheme)
     }, [])
 
-    const addArregloDeConversaciones = (codigo) => {
-        setArregloDeConversaciones([...arregloDeConversaciones, codigo])
+    const addToConversationArray = (code) => {
+        setConversationArray([...conversationArray, code])
+    }
 
+    // Cambiar entre vista de estudiante y profesor
+    const changeView = () => {
+        setIsStudent(!isStudent)
     }
-    const cambiarVista = () => {
-        setAlumno(!esAlumno)
-    }
+
     const addArregloDeTareas = (nombre) => {
-        setArregloDeConversaciones([...arregloDeConversaciones, nombre])
-
+        setConversationArray([...conversationArray, nombre])
     }
 
     const handleThemeChange = (newTheme) => {
@@ -80,13 +81,14 @@ const Layout = ({theme, setTheme, isAuto}) => {
         localStorage.setItem('theme', newTheme)
     }
 
-    const mostrarContenidoEnSidebarListItem = () => {
-        if (esAlumno) {
+    // Mostrar las tareas o conversaciones en la barra lateral
+    const displaySidebarListItems = () => {
+        if (isStudent) {
             return [
-                arregloDeConversaciones.map((_, index) => (
+                conversationArray.map((_, index) => (
                     <ListItem key={index}>
                         <ListItemButton component={Link} to="/">
-                            {arregloDeConversaciones[index].length > 30 ? arregloDeConversaciones[index].slice(0, 25) + "..." : arregloDeConversaciones[index]}
+                            {conversationArray[index].length > 30 ? conversationArray[index].slice(0, 25) + "..." : conversationArray[index]}
                         </ListItemButton>
                     </ListItem>
                 ))
@@ -103,6 +105,7 @@ const Layout = ({theme, setTheme, isAuto}) => {
         ]
 
     }
+
     return (
         <Box sx={{display: 'flex'}}>
             <Drawer open={open} onClose={() => setOpen(false)} sx={{
@@ -129,9 +132,9 @@ const Layout = ({theme, setTheme, isAuto}) => {
                             <ViewSidebarRoundedIcon/>
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title={esAlumno ? "Ingresar codigo de conversacion" : "Crear Tarea"}>
+                    <Tooltip title={isStudent ? "Ingresar code de conversacion" : "Crear Tarea"}>
                         <IconButton sx={{ml: 'auto'}} color="neutral" aria-label="delete" component={Link}
-                                    to={esAlumno ? "/" : "/Tarea"} onClick={esAlumno
+                                    to={isStudent ? "/" : "/Tarea"} onClick={isStudent
                             ? () => setOpenModal(true) : () => setOpen(true)}>
                             <AddIcon/>
                         </IconButton>
@@ -147,13 +150,13 @@ const Layout = ({theme, setTheme, isAuto}) => {
                                     setOpenModal(false)
                                     const formData = new FormData(event.currentTarget)
                                     const formJson = Object.fromEntries(formData.entries())
-                                    addArregloDeConversaciones(formJson.codigo)
-                                    console.log(arregloDeConversaciones)
+                                    addToConversationArray(formJson.code)
+                                    console.log(conversationArray)
                                 }}
                             >
                                 <Stack spacing={2}>
                                     <FormControl>
-                                        <Input autoFocus required name="codigo"/>
+                                        <Input autoFocus required name="code"/>
                                     </FormControl>
                                     <Button type="submit" variant='contained'>Enviar</Button>
                                 </Stack>
@@ -164,10 +167,10 @@ const Layout = ({theme, setTheme, isAuto}) => {
                 <Divider/>
                 <List>
                     {
-                        mostrarContenidoEnSidebarListItem()
+                        displaySidebarListItems()
 
                     }
-                    </List>
+                </List>
 
                 <Box
                     sx={{
@@ -267,13 +270,13 @@ const Layout = ({theme, setTheme, isAuto}) => {
 
                             <MenuItem
                                 component={Link}
-                                to={!esAlumno ? "/" : "/createhomework"}
+                                to={!isStudent ? "/" : "/createhomework"}
                                 onClick={() => {
                                     setMenuOpen(false)
-                                    cambiarVista()
+                                    changeView()
                                 }}
                             >
-                                {esAlumno ? "Cambiar a profesor" : "Cambiar a alumno"}
+                                {isStudent ? "Cambiar a profesor" : "Cambiar a alumno"}
                             </MenuItem>
 
                             <MenuItem onClick={() => {

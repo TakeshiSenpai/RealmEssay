@@ -4,17 +4,19 @@ import ReactDOM from 'react-dom/client'
 import {BrowserRouter, Route, Routes} from "react-router-dom"
 import reportWebVitals from './reportWebVitals'
 import Layout from "./pages/Layout"
-import {TalkTo} from "./pages/TalkTo"
+import StudentAIChat from "./pages/StudentAIChat"
 import Auth from './pages/Auth'
 import Homework from "./pages/Homework"
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material"
 
 import './index.css'
 
+// App3 es el componente principal de la aplicación
 function App3() {
     const [theme, setTheme] = React.useState(localStorage.getItem('theme') || 'auto')
     const [isAuto, setIsAuto] = React.useState(theme === 'auto')
 
+    // Tema claro
     const lightTheme = createTheme({
         palette: {
             mode: 'light',
@@ -33,6 +35,7 @@ function App3() {
         }
     })
 
+    // Tema oscuro
     const darkTheme = createTheme({
         palette: {
             mode: 'dark',
@@ -52,11 +55,13 @@ function App3() {
         }
     })
 
+    // Obtener el tema actual
     const getTheme = () => {
         if (isAuto) return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? darkTheme : lightTheme
         return theme === 'dark' ? darkTheme : lightTheme
     }
 
+    // Cambiar el tema dependiendo de la preferencia del usuario (ya sea automático al cambiar el sistema o manual)
     useEffect(() => {
         localStorage.setItem('theme', theme)
         const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
@@ -87,7 +92,7 @@ function App3() {
                 <CssBaseline/>
                 <Routes>
                     <Route path="/" element={<Layout setTheme={handleThemeChange} theme={theme} isAuto={isAuto}/>}>
-                        <Route index element={<TalkTo/>}/>
+                        <Route index element={<StudentAIChat/>}/>
                         <Route path="/createhomework" element={<Homework/>}/>
                     </Route>
                     <Route path="/auth" element={<Auth/>}/>
