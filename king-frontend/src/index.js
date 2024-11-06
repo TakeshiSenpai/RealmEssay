@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react'
 import ReactDOM from 'react-dom/client'
-
-import {BrowserRouter, Route, Routes} from "react-router-dom"
+import {BrowserRouter, Route, Routes, useNavigate} from "react-router-dom"
 import reportWebVitals from './reportWebVitals'
 import Layout from "./pages/Layout"
 import StudentAIChat from "./pages/StudentAIChat"
@@ -13,10 +12,17 @@ import './index.css'
 
 // App3 es el componente principal de la aplicación
 function App3() {
+    const token = localStorage.getItem('token')
+    const navigate = useNavigate()
+    useEffect(() => {
+        if (!token) {
+            navigate('/auth')
+        }
+    }, [token, navigate])
+
     const [theme, setTheme] = React.useState(localStorage.getItem('theme') || 'auto')
     const [isAuto, setIsAuto] = React.useState(theme === 'auto')
 
-    // Tema claro
     const lightTheme = createTheme({
         palette: {
             mode: 'light',
@@ -35,7 +41,6 @@ function App3() {
         }
     })
 
-    // Tema oscuro
     const darkTheme = createTheme({
         palette: {
             mode: 'dark',
@@ -50,18 +55,15 @@ function App3() {
                 errorText: '#cb5f7d',
                 textGradient: "linear-gradient(to right, #a195d0, #6a55af)",
                 iaBackground: 'rgba(35, 30, 52, 1)',
-
             }
         }
     })
 
-    // Obtener el tema actual
     const getTheme = () => {
         if (isAuto) return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? darkTheme : lightTheme
         return theme === 'dark' ? darkTheme : lightTheme
     }
 
-    // Cambiar el tema dependiendo de la preferencia del usuario (ya sea automático al cambiar el sistema o manual)
     useEffect(() => {
         localStorage.setItem('theme', theme)
         const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
@@ -87,21 +89,28 @@ function App3() {
     }
 
     return (
-        <BrowserRouter>
-            <ThemeProvider theme={getTheme()}>
-                <CssBaseline/>
-                <Routes>
-                    <Route path="/" element={<Layout setTheme={handleThemeChange} theme={theme} isAuto={isAuto}/>}>
-                        <Route index element={<StudentAIChat/>}/>
-                        <Route path="/createhomework" element={<Homework/>}/>
-                    </Route>
-                    <Route path="/auth" element={<Auth/>}/>
-                </Routes>
-            </ThemeProvider>
-        </BrowserRouter>
+        <ThemeProvider theme={getTheme()}>
+            <CssBaseline/>
+            <Routes>
+                <Route path="/" element={<Layout setTheme={handleThemeChange} theme={theme} isAuto={isAuto}/>}>
+                    <Route index element={<StudentAIChat/>}/>
+                    <Route path="/createhomework" element={<Homework/>}/>
+                </Route>
+                <Route path="/auth" element={<Auth/>}/>
+            </Routes>
+        </ThemeProvider>
     )
 }
 
+// ProtectedAppWrapper se encarga de envolver la aplicación para poder utilizar useNavigate.
+// Esto es necesario para redirigir al usuario a la página de autenticación si no ha iniciado sesión.
+const ProtectedAppWrapper = () => (
+    <BrowserRouter>
+        <App3 />
+    </BrowserRouter>
+)
+
+// Se renderiza la aplicación en el elemento con id 'root'
 const root = ReactDOM.createRoot(document.getElementById('root'))
-root.render(<App3/>)
+root.render(<ProtectedAppWrapper />)
 reportWebVitals()
