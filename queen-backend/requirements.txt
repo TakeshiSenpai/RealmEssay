@@ -42,3 +42,4 @@ rsa
 soupsieve
 urllib3
 Werkzeug
+pdfplumber

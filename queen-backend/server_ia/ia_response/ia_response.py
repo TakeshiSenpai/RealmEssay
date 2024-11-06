@@ -1,5 +1,8 @@
-import os, requests,json,pathlib,sys
-from traceback import print_tb
+import json
+import os
+import pathlib
+import requests
+import sys
 
 sys.path.append(str(pathlib.Path(__file__).parent.resolve()))
 #print(str(pathlib.Path(__file__).parent.resolve()))
@@ -13,8 +16,8 @@ from bson.objectid import ObjectId
 #A mi(Manuel) me fallo por eso
 INPUT_FILE = pathlib.Path('server_ia/ia_response/input.json').resolve()
 CRITERIA_FILE = pathlib.Path('server_ia/ia_response/criteria.json').resolve()
-INTERACTIONS_FILE =pathlib.Path('queen-backend/server_ia/ia_response/user_interactions/interactions.json').resolve()
-TTS_FILE=pathlib.Path('queen-backend/server_ia/ia_response/cleanOutput.mp3').resolve()
+INTERACTIONS_FILE =pathlib.Path('server_ia/ia_response/user_interactions/interactions.json').resolve()
+TTS_FILE=pathlib.Path('server_ia/ia_response/cleanOutput.mp3').resolve()
 
 
 # Cargar el token desde un archivo
@@ -180,8 +183,7 @@ def generate_inputs(input_text, criteria, student_questions=None):
     
     # Preparar el texto de instrucciones del sistema
     role_text = (
-        "Usted es un asistente de redacción académica. Por favor, evalúe el ensayo "
-        "centrándose en los siguientes aspectos y puntúe los ensayos de 0 a 10. "
+        "Usted es un asistente evaluador de ensayos de preparatoria y universidad"
     )
     if student_questions:
         role_text += "Además, responda cualquier pregunta que el estudiante pueda tener sobre su evaluación."
@@ -231,8 +233,7 @@ def process_ia_response(result_stream, input_text, student_questions=None):
         
         # Guardar la interacción en el archivo JSON
         clean_text=tts_gcp2.procesar_texto(response_text)
-        print(clean_text)
-        tts_gcp2.run_and_save(clean_text,TTS_FILE)
+        # tts_gcp2.run_and_save(clean_text,TTS_FILE) TODO: Descomentar esta línea para habilitar la generación de audio
         if student_questions:
             for question in student_questions:
                 save_interaction(question, response_text, interaction_type="question")

@@ -29,14 +29,25 @@ const UploadButton = ({setShowConversation}) => {
             const reader = new FileReader()
             reader.onabort = () => console.log('file reading was aborted')
             reader.onerror = () => console.log('file reading has failed')
-            reader.onload = () => {
+            reader.onload = async () => {
                 // Do whatever you want with the file contents
                 const binaryStr = reader.result
                 console.log(binaryStr)
+
+                const response = await fetch('http://127.0.0.1:2004/submit_essay', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: binaryStr
+                })
+                
+                const data = await response.json();
             }
 
             reader.readAsArrayBuffer(file)
-            // await enviar ensayo a la IA
+            
+
             setShowConversation(true)
         } catch (error) {
             console.log(error)
