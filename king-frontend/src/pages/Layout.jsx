@@ -29,7 +29,7 @@ const Layout = ({theme, setTheme, isAuto}) => {
     const [open, setOpen] = useState(true)
     const [openModal, setOpenModal] = useState(false)
     const [userInfo, setUserInfo] = useState({name: '', institution: '', picture: ''})
-    const [conversationArray, setConversationArray] = useState(["Home"])
+    const [conversationArray, setConversationArray] = useState(["RealmEssayHome"])
     const [arregloDeTareas, setArregloDeTareas] = useState(["Primera Tarea"])
 
     const navigate = useNavigate()

@@ -9,6 +9,7 @@ import Homework from "./pages/Homework"
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material"
 
 import './index.css'
+import RealmEssayHome from "./pages/RealmEssayHome";
 
 // App3 es el componente principal de la aplicación
 function App3() {
@@ -92,11 +93,12 @@ function App3() {
         <ThemeProvider theme={getTheme()}>
             <CssBaseline/>
             <Routes>
-                <Route path="/" element={<Layout setTheme={handleThemeChange} theme={theme} isAuto={isAuto}/>}>
-                    <Route index element={<StudentAIChat/>}/>
-                    <Route path="/createhomework" element={<Homework/>}/>
-                </Route>
+                <Route path="/" element={<RealmEssayHome/>}/>
                 <Route path="/auth" element={<Auth/>}/>
+                <Route path="/essays" element={<Layout setTheme={handleThemeChange} theme={theme} isAuto={isAuto}/>}>
+                    <Route index element={<StudentAIChat/>}/>
+                    <Route path="   createhomework" element={<Homework/>}/>
+                </Route>
             </Routes>
         </ThemeProvider>
     )
