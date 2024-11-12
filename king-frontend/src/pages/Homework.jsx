@@ -54,7 +54,7 @@ const Homework = () => {
             reiniciarParametros();
             const html = await printHtmlConfirmation(homeworkParametersCopy,parsedUserInfo.name)
             await updateBD(homeworkParametersCopy,parsedUserInfo.email)
-            
+
             const to = []
             to.push(parsedUserInfo.email)
             //Comentado porque no quiero mil correos de momento
@@ -104,7 +104,7 @@ const Homework = () => {
                 },
                 body: JSON.stringify({
                     id:idHomework,
-                    Nombre: homeworkParametersCopy.taskName, 
+                    Nombre: homeworkParametersCopy.taskName,
                     Profesor: profesor,
                     Descripcion: homeworkParametersCopy.description,
                     Rubrica: textRubric,
@@ -178,9 +178,9 @@ const Homework = () => {
     const printHtmlConfirmation = async (homeworkParametersCopy,profesor) =>{
         try{
 
-            let textHomework = "Nombre de tarea" + homeworkParametersCopy.taskName 
+            let textHomework = "Nombre de tarea" + homeworkParametersCopy.taskName
             + "Descripción: " + homeworkParametersCopy.description + "Estudiantes registrados " + homeworkParametersCopy.studentList;
-            
+
             return await render (<EmailProfesorConfirmation 
                 textHomework = {textHomework} 
                 textRubric={textRubric}

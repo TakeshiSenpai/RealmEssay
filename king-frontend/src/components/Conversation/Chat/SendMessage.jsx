@@ -29,7 +29,7 @@ const SendMessage = ({
         setStudentConversationArray([...studentConversationArray, message])
         setMessage('')
         setLoading(true) // Activar el spinner cuando se envía el mensaje
-        
+
         try {
             const response = await fetch(`${IAUrl}/questions_and_responses`, {
                 method: 'POST',
@@ -51,7 +51,7 @@ const SendMessage = ({
                     if (value) {
                         const chunk = decoder.decode(value, {stream: true})
                         accumulatedText += chunk
-                        
+
                         // Actualizar el array con el nuevo fragmento
                         setAiConversationArray([...aIConversationArray, accumulatedText])
                     }

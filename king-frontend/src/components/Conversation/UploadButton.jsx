@@ -19,7 +19,7 @@ const UploadButton = ({setShowConversation}) => {
     const studentUrl = process.env.VERCEL_HOMEWORK_STUDENT
                 ? `https://${process.env.VERCEL_HOMEWORK_STUDENT}`
                 : 'http://127.0.0.1:2004'
-            
+
     // Configuración del dropzone para aceptar archivos .pdf y .txt
     const {getRootProps, getInputProps, isDragActive} = useDropzone({
         onDrop: onDrop,
