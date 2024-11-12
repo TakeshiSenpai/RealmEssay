@@ -33,7 +33,9 @@ const UploadButton = ({setShowConversation}) => {
     const handleSubmission = async () => {
         try {
 
-            console.log(process.env);
+            console.log("El env normal"+process.env);
+            console.log("El env development "+process.env.development);
+            console.log("El env production"+process.env.production);
             const reader = new FileReader()
             reader.onabort = () => console.log('file reading was aborted')
             reader.onerror = () => console.log('file reading has failed')
