@@ -6,6 +6,9 @@ import {useNavigate} from 'react-router-dom'
 
 // GoogleButton es un componente que permite al usuario iniciar sesión con Google
 const GoogleButton = () => {
+    const authURL = process.env.VERCEL_AUTHENTICATION
+                ? `https://${process.env.VERCEL_AUTHENTICATION}`
+                : 'http://127.0.0.1:2000'
     const navigate = useNavigate()
 
     // Maneja el éxito de la autenticación
@@ -13,7 +16,7 @@ const GoogleButton = () => {
         const token = credentialResponse.credential
 
         try {
-            const response = await fetch('https://server-authentication-ochre.vercel.app/login/google', {
+            const response = await fetch(`${authURL}/login/google`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

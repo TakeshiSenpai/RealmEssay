@@ -6,9 +6,16 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 import json
-from ia_response import ia_response
-print("Directorio actual de trabajo en vercel:", os.getcwd())
+try:
+    #En vercel asi deberia ser porque el root es server_ia
+    from ia_response import ia_response
+except:
+    from  server_ia.ia_response import ia_response
+
 #El de welcome esta hecho para probar como funciona el vercel
+
+
+
 @app.route('/api', methods=['GET'])
 def welcome():
     return jsonify({'success':True, 'message':'welcome ia... uhm, i think is better to say: welcome developer'}),200
@@ -87,11 +94,16 @@ def add_header(response):
 @app.route('/write_input', methods=['POST'])
 def write_input():
     try:
-        data = request.json('data')
-        with open('ia_response/input.json', 'w', encoding='utf-8') as file:
+        if "VERCEL_ENV" in os.environ:  # Esta variable solo existe en Vercel
+            file_path = 'ia_response/input.json'
+        else:
+            file_path = 'server_ia/ia_response/input.json'
+
+        data = request.json.get('data')
+        with open(file_path, 'w', encoding='utf-8') as file:
             json.dump(data, file, ensure_ascii=False, indent=4)
         return jsonify({"message": "Texto guardado exitosamente"}), 200
     except Exception as e:
         return jsonify({"error": f"Error al enviar los criterios: {str(e)}"}), 400
 if __name__ == '__main__':
-    app.run()
+    app.run(host='127.0.0.1', port=2003)

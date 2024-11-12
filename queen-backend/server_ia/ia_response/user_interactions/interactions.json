@@ -84,6 +84,14 @@
         {
             "question": "hola",
             "response": "Hola! \u00bfEn qu\u00e9 puedo ayudarte con tu ensayo sobre Taylor Swift? \u00bfTienes alguna o necesitas retroalimentaci\u00f3n tu texto? Recuerda que como evaluador, considero los criterios de evaluaci\u00f3n de gram\u00e1tica, estructura y argumentaci\u00f3n. \u00bfQuieres que te haga una evaluaci\u00f3n inicial de tu texto?"
+        },
+        {
+            "question": "Hola puedes decirme que es mi escrito",
+            "response": "Hola!\\n\\nMe parece que no es un ensayo sobre Taylor Swift, sino m\u00e1s bien un c\u00f3digo de programaci\u00f3n en Python para un proyecto de control PID una c\u00e1mara y un sistema de control de."
+        },
+        {
+            "question": "Dime de que es este escrito",
+            "response": "Me parece que este escrito es una pr\u00e1ctica o trabajo acad\u00e9mico de la carrera de Ingenier\u00eda en una universidad,icamente de la Facultad de Ingenier\u00eda de la Aut\u00f3noma de Baja. El tema parece ser el uso de relevadoresagn\u00e9ticos en de control y automatizaci\u00f3n, y se incluyen varios circuitos el\u00e9ctricos a solucionar pr\u00e1cticos.\\n\\nEl escrito tiene una estructura clara y se dividen en secciones l\u00f3gicas: introducci\u00f3n,izaci\u00f3n, procedimiento, y conclusi\u00f3n. El lenguaje es t\u00e9cnico y se refiere a conceptos y terminolog\u00eda espec\u00edficos de la ingenier\u00eda el\u00e9ctrica.\\n\\nEn general, parece que el estudiante est\u00e1 demostrando su comprensi\u00f3n de los relevadoresagn\u00e9ticos y su en sistemas de control y automatizaci\u00f3n, as\u00ed como tambi\u00e9n su habilidad para dise\u00f1ar y solucionar problemas pr\u00e1cticos utilizandoes electr\u00f3nicos."
         }
     ]
 }

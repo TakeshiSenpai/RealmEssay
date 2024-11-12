@@ -124,4 +124,4 @@ def post_tarea_db():
         return jsonify({'success': False, 'message': f'Error al guardar la tarea: {str(e)}'}), 400
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='127.0.0.1', port=2002)

@@ -16,7 +16,10 @@ const UploadButton = ({setShowConversation}) => {
         if (file[0]) setFile(file[0])
         setError(null)
     }, [])
-
+    const studentUrl = process.env.VERCEL_HOMEWORK_STUDENT
+                ? `https://${process.env.VERCEL_HOMEWORK_STUDENT}`
+                : 'http://127.0.0.1:2004'
+            
     // Configuración del dropzone para aceptar archivos .pdf y .txt
     const {getRootProps, getInputProps, isDragActive} = useDropzone({
         onDrop: onDrop,
@@ -40,7 +43,7 @@ const UploadButton = ({setShowConversation}) => {
                         .map(byte => String.fromCharCode(byte))
                         .join('');
 
-                    const response = await fetch('https://server-homework-student.vercel.app/submit_essay', {
+                    const response = await fetch(`${studentUrl}/submit_essay`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'

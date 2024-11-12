@@ -15,7 +15,9 @@ const SendMessage = ({
     const token = localStorage.getItem('token')
     const [message, setMessage] = useState('')
     const [loading, setLoading] = useState(false)  // Nuevo estado para controlar el spinner
-
+    const IAUrl = process.env.VERCEL_IA
+                ? `https://${process.env.VERCEL_IA}`
+                : 'http://127.0.0.1:2003'
     // Actualiza el estado con el valor actual del TextField
     const handleChange = (event) => {
         setMessage(event.target.value)
@@ -27,9 +29,9 @@ const SendMessage = ({
         setStudentConversationArray([...studentConversationArray, message])
         setMessage('')
         setLoading(true) // Activar el spinner cuando se envía el mensaje
-
+        
         try {
-            const response = await fetch('https://ia-server.vercel.app/questions_and_responses', {
+            const response = await fetch(`${IAUrl}/questions_and_responses`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

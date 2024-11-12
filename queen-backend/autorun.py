@@ -13,7 +13,7 @@ def run_python_file(file_path):
     #Si no quieren el entorno virtual cambien la variable entorno_virtiual = "python" ó entorno_virtiual ="python3"
     #En Mac es pathlib.Path(".venv/bin/Python").resolve()
 def api_gateway():
-    run_python_file("api_gateway/api_gateway.py")
+    run_python_file("api_gateway/api/index.py")
 
 def authentication():
     run_python_file("server_authentication/api/index.py")

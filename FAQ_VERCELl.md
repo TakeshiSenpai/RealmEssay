@@ -43,15 +43,7 @@ De momento si, no encontre una forma que me permitiera cambiar el nombre, de seg
 
 #### ¿Toca cambiar los fetch en el frontend?
 
-Si, sería en los componentes de
-* SendMessage.jsx
-* UploadButton.jsx
-* Homework.jsx
-* GoogleButton.jsx
-* RubricComponent.jsx
-
-Aunque esta lista se actualizará la lista si algun otro componente requiere hacer un fetch 
-
+No, se usa variables de entorno para que sea compatible el uso de vercel tanto en local con un autorun
 ## Conclusión
 
 Vercel esta muy bueno y pienso que nuestro proyecto no debería migrarse por completo a la nube sino mantener los dos formatos, ademas nunca deberíamos pagar en vercel porque realmente es caro, pero es posible crear una nueva cuenta cuando se acabe el limite gratuito 😈
