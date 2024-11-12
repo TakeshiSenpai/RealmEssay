@@ -1,0 +1,16 @@
+[
+    {
+        "_id": "671b464bcf72d845cf4c6616",
+        "CorreoProfesor": "ejemploCorreo@uabc.com",
+        "Nombre": "Fulanito",
+        "Chats": [
+            "N",
+            "o",
+            " ",
+            "s",
+            "\u00c3",
+            "\u00a9"
+        ],
+        "Carpeta": "2B"
+    }
+]
