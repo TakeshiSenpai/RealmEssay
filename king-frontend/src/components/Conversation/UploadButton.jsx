@@ -18,7 +18,7 @@ const UploadButton = ({setShowConversation}) => {
     }, [])
     const studentUrl = process.env.VERCEL_HOMEWORK_STUDENT
                 ? `https://${process.env.VERCEL_HOMEWORK_STUDENT}`
-                : 'http://127.0.0.1:2004'
+                : 'http://127.0.0.1:2004';
 
     // Configuración del dropzone para aceptar archivos .pdf y .txt
     const {getRootProps, getInputProps, isDragActive} = useDropzone({
@@ -32,6 +32,8 @@ const UploadButton = ({setShowConversation}) => {
     // Enviar el archivo a la IA, si sale bien, mostrar la conversación.
     const handleSubmission = async () => {
         try {
+
+            console.log(process.env);
             const reader = new FileReader()
             reader.onabort = () => console.log('file reading was aborted')
             reader.onerror = () => console.log('file reading has failed')
