@@ -43,12 +43,13 @@ def send_email_validation_code():
     """
     Enviar un correo electrónico de validación con un código HTML a los destinatarios especificados.
     """
+    password = "que raro"
     try:
         # Cargar las variables de entorno del archivo .env
         html = request.json.get('html')  # Contenido HTML del correo
         email_to = request.json.get('to')  # Lista de correos a los que se enviará el mensaje
         subject = request.json.get('subject')  # Asunto del correo
-        password = os.getenv('PASS')  # Contraseña del correo desde el archivo .env
+        password = os.getenv('PASS',"No hay")  # Contraseña del correo desde el archivo .env
         email_from = "realmessay@gmail.com"  # Correo del remitente
 
         if not html:
@@ -83,7 +84,7 @@ def send_email_validation_code():
         return jsonify({'success': True, 'message': mensaje_de_regreso}), 200
 
     except Exception as e:
-        return jsonify({'success': False, 'message': f'Ocurrió un error: {str(e)}'}), 400
+        return jsonify({'success': False, 'message': f'Ocurrió un error: {str(e)}  {password}'}), 400
 
 
 
