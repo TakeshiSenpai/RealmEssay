@@ -93,17 +93,22 @@ def add_header(response):
 
 @app.route('/write_input', methods=['POST'])
 def write_input():
+    mensaje= ""
     try:
         if "VERCEL_ENV" in os.environ:  # Esta variable solo existe en Vercel
             file_path = 'ia_response/input.json'
+            mensaje="Si leyo el vercel_ENV"
+            print(mensaje)
         else:
             file_path = 'server_ia/ia_response/input.json'
+            mensaje = "No lo leyo el vercel_ENV"
+            print(mensaje)
 
         data = request.json.get('data')
         with open(file_path, 'w', encoding='utf-8') as file:
             json.dump(data, file, ensure_ascii=False, indent=4)
-        return jsonify({"message": "Texto guardado exitosamente"}), 200
+        return jsonify({"message": f"Texto guardado exitosamente, {mensaje}"}), 200
     except Exception as e:
-        return jsonify({"error": f"Error al enviar los criterios: {str(e)}"}), 400
+        return jsonify({"error": f"Error al enviar los criterios: {str(e)} , {mensaje}"}), 400
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=2003)

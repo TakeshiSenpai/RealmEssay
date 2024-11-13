@@ -53,7 +53,7 @@ def submit_essay():
             if resp.status_code == 200:  # Buen post
                 return Response(status=200)
             else:
-                return jsonify({"message": f"Error al intentar comunicarse con ia_server."}), 500
+                return jsonify({"message": f"Error al intentar comunicarse con ia_server.{resp.text}"}), 500
 
         except Exception as e:
             return  jsonify({"message": f"Error interno al decodificar el archivo PDF. ERROR {e}"}), 500
@@ -69,7 +69,7 @@ def submit_essay():
             if resp.status_code == 200:#Buen post
                 return Response(status=200)
             else:
-                return jsonify({"message": f"Error al intentar comunicarse con ia_server."}), 400
+                return jsonify({"message": f"Error al intentar comunicarse con ia_server. {resp.text}"}), 400
         except Exception as e:
             return jsonify({"message": f" Error interno al decodificar el archivo TXT. ERROR {e}"}),400
 
