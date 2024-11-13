@@ -1,11 +1,18 @@
 import {Box, createTheme, ThemeProvider} from '@mui/material'
-import React from 'react'
+import React, {useEffect} from 'react'
 import GoogleButton from '../components/GoogleButton'
-import Typography from "@mui/material/Typography";
-import IAIcon from "../components/Conversation/Chat/IAIcon";
+import Typography from "@mui/material/Typography"
+import IAIcon from "../components/Conversation/Chat/IAIcon"
+import {useNavigate} from "react-router-dom"
 
 // Auth es un componente que representa la página de autenticación
 const Auth = () => {
+    // Redirigir al usuario a la página principal si ya está autenticado
+    const navigate = useNavigate()
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        if (token) navigate('/')
+    }, [navigate])
 
     // Tema personalizado para el texto
     const theme = createTheme({
