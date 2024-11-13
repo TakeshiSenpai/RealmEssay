@@ -10,7 +10,7 @@ sys.path.append(str(pathlib.Path(__file__).parent.resolve()))
 from bson.objectid import ObjectId
 
 if "VERCEL_ENV" in os.environ:  # Esta variable solo existe en Vercel
-    INPUT_file_path = 'temp/input.json'
+    INPUT_file_path = 'tmp/input.json'
     CRITERIA_file_path = 'ia_response/criteria.json'
     INTERACTIONS_file_path = 'ia_response/user_interactions/interactions.json'
     TTS_file_path = 'ia_response/cleanOutput.mp3'
