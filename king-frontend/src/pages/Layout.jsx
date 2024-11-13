@@ -1,21 +1,16 @@
-import {Button, Dialog, Divider, ListItemButton} from '@mui/material'
+import {Divider, ListItemButton} from '@mui/material'
 import Drawer from '@mui/material/Drawer'
 import React, {useEffect, useRef, useState} from 'react'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import IconButton from '@mui/material/IconButton'
 import Avatar from '@mui/material/Avatar'
-import DialogTitle from '@mui/material/DialogTitle'
-import DialogContent from '@mui/material/DialogContent'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import ViewSidebarRoundedIcon from '@mui/icons-material/ViewSidebarRounded'
 import {Link, Outlet, useNavigate} from "react-router-dom"
 import Tooltip from '@mui/material/Tooltip'
 import AddIcon from '@mui/icons-material/Add'
-import FormControl from '@mui/material/FormControl'
-import Input from '@mui/material/Input'
-import Stack from '@mui/material/Stack'
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
@@ -23,6 +18,7 @@ import MoreVert from '@mui/icons-material/MoreVert'
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded'
 import {AutoAwesomeRounded, Home, PaletteRounded} from "@mui/icons-material"
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded"
+import HomeworkCode from "../components/Homeworks/HomeworkCode";
 
 // Layout es un componente que representa la estructura de la página
 const Layout = ({theme, setTheme, isAuto}) => {
@@ -131,37 +127,20 @@ const Layout = ({theme, setTheme, isAuto}) => {
                             <ViewSidebarRoundedIcon/>
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title={isStudent ? "Ingresar code de conversacion" : "Crear Tarea"}>
-                        <IconButton sx={{ml: 'auto'}} color="neutral" aria-label="delete" component={Link}
-                                    to={isStudent ? "/" : "/Tarea"} onClick={isStudent
+                    <Tooltip title={isStudent ? "Ingresar código de ensayo" : "Crear Tarea"}>
+                        <IconButton sx={{ml: 'auto'}} color="neutral" aria-label="delete" /*component={Link}
+                                    to={isStudent ? "/" : "/Tarea"} */ onClick={isStudent
                             ? () => setOpenModal(true) : () => setOpen(true)}>
                             <AddIcon/>
                         </IconButton>
 
                     </Tooltip>
-                    <Dialog open={openModal} onClose={() => setOpenModal(false)}>
-                        <DialogContent>
-                            <DialogTitle>Ingresa el código de chat</DialogTitle>
-                            <DialogContent>El código debe ser proporcionado por su profesor</DialogContent>
-                            <form
-                                onSubmit={(event) => {
-                                    event.preventDefault()
-                                    setOpenModal(false)
-                                    const formData = new FormData(event.currentTarget)
-                                    const formJson = Object.fromEntries(formData.entries())
-                                    addToConversationArray(formJson.code)
-                                    console.log(conversationArray)
-                                }}
-                            >
-                                <Stack spacing={2}>
-                                    <FormControl>
-                                        <Input autoFocus required name="code"/>
-                                    </FormControl>
-                                    <Button type="submit" variant='contained'>Enviar</Button>
-                                </Stack>
-                            </form>
-                        </DialogContent>
-                    </Dialog>
+
+                    <HomeworkCode
+                        openModal={openModal}
+                        setOpenModal={setOpenModal}
+                        addToConversationArray={addToConversationArray}
+                    />
                 </Box>
                 <Divider/>
 
@@ -170,7 +149,7 @@ const Layout = ({theme, setTheme, isAuto}) => {
                     <ListItemButton
                         component={Link}
                         to="/"
-                        sx={{ borderRadius: 2 }}
+                        sx={{borderRadius: 2}}
                     >
                         <Home sx={{
                             mr: 1,
