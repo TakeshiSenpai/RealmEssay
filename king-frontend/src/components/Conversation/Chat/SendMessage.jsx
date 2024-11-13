@@ -15,8 +15,8 @@ const SendMessage = ({
     const token = localStorage.getItem('token')
     const [message, setMessage] = useState('')
     const [loading, setLoading] = useState(false)  // Nuevo estado para controlar el spinner
-    const IAUrl = process.env.VERCEL_IA
-                ? `https://${process.env.VERCEL_IA}`
+    const IAUrl = process.env.REACT_APP_VERCEL_IA
+                ? `https://${process.env.REACT_APP_VERCEL_IA}`
                 : 'http://127.0.0.1:2003'
     // Actualiza el estado con el valor actual del TextField
     const handleChange = (event) => {

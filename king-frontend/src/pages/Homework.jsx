@@ -35,12 +35,12 @@ const Homework = () => {
     })
     //Estas funciones recibe la informacion que da el componente
 
-    const IAUrl = process.env.VERCEL_IA
-                ? `https://${process.env.VERCEL_IA}`
+    const IAUrl = process.env.REACT_APP_VERCEL_IA
+                ? `https://${process.env.REACT_APP_VERCEL_IA}`
                 : 'http://127.0.0.1:2003'
 
-    const teacherURL = process.env.VERCEL_HOMEWORK_TEACHER
-                ? `https://${process.env.VERCEL_HOMEWORK_TEACHER}`
+    const teacherURL = process.env.REACT_APP_VERCEL_HOMEWORK_TEACHER
+                ? `https://${process.env.REACT_APP_VERCEL_HOMEWORK_TEACHER}`
                 : 'http://127.0.0.1:2002'
     //Cuando se use esto es porque el profesor creo la tarea, se puede decir que este es el ulitmo paso
     //Aqui se guarda la informacion en la base de datos
