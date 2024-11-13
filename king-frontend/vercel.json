@@ -1,0 +1,7 @@
+{
+    "env": {
+      "SUPER_VARIABLE_DE_PRUEBA": "Variable de prueba para el vercel y observar como funciona",
+      "NEXT_PUBLIC_OTHER_VAR": "your-other-var-value"
+    }
+}
+  
