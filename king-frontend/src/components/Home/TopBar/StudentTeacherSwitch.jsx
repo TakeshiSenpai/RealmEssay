@@ -1,7 +1,9 @@
 import {styled, Switch} from "@mui/material"
+import {useIsStudent} from "../../IsStudentProvider"
 
 // StudentTeacherSwitch es un componente que representa un switch para cambiar entre la vista de estudiante y profesor
-const StudentTeacherSwitch = ({isStudent, setIsStudent}) => {
+const StudentTeacherSwitch = () => {
+    const {isStudent, setIsStudent} = useIsStudent()
     return (
         <MaterialUISwitch
             checked={isStudent}

@@ -7,9 +7,9 @@ import StudentAIChat from "./pages/StudentAIChat"
 import Auth from './pages/Auth'
 import Homework from "./pages/Homework"
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material"
-
 import './index.css'
-import RealmEssayHome from "./pages/RealmEssayHome";
+import RealmEssayHome from "./pages/RealmEssayHome"
+import {IsStudentProvider} from "./components/IsStudentProvider"
 
 // App3 es el componente principal de la aplicación
 function App3() {
@@ -92,17 +92,20 @@ function App3() {
     }
 
     return (
-        <ThemeProvider theme={getTheme()}>
-            <CssBaseline/>
-            <Routes>
-                <Route path="/" element={<RealmEssayHome/>}/>
-                <Route path="/auth" element={<Auth/>}/>
-                <Route path="/essays" element={<Layout setTheme={handleThemeChange} theme={theme} isAuto={isAuto}/>}>
-                    <Route index element={<StudentAIChat/>}/>
-                    <Route path="createhomework" element={<Homework/>}/>
-                </Route>
-            </Routes>
-        </ThemeProvider>
+        <IsStudentProvider>
+            <ThemeProvider theme={getTheme()}>
+                <CssBaseline/>
+                <Routes>
+                    <Route path="/" element={<RealmEssayHome/>}/>
+                    <Route path="/auth" element={<Auth/>}/>
+                    <Route path="/essays"
+                           element={<Layout setTheme={handleThemeChange} theme={theme} isAuto={isAuto}/>}>
+                        <Route index element={<StudentAIChat/>}/>
+                        <Route path="createhomework" element={<Homework/>}/>
+                    </Route>
+                </Routes>
+            </ThemeProvider>
+        </IsStudentProvider>
     )
 }
 
@@ -110,11 +113,11 @@ function App3() {
 // Esto es necesario para redirigir al usuario a la página de autenticación si no ha iniciado sesión.
 const ProtectedAppWrapper = () => (
     <BrowserRouter>
-        <App3 />
+        <App3/>
     </BrowserRouter>
 )
 
 // Se renderiza la aplicación en el elemento con id 'root'
 const root = ReactDOM.createRoot(document.getElementById('root'))
-root.render(<ProtectedAppWrapper />)
+root.render(<ProtectedAppWrapper/>)
 reportWebVitals()

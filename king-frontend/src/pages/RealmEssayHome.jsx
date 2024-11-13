@@ -2,12 +2,14 @@ import Box from "@mui/material/Box"
 import React, {useEffect, useState} from "react"
 import TopBar from "../components/Home/TopBar/TopBar"
 import UserInfo from "../components/Home/UserInfo"
-import StudentEssays from "../components/Home/Student Essays/StudentEssays";
+import StudentEssays from "../components/Home/Student Essays/StudentEssays"
+import TeacherHome from "../components/Home/Teacher/TeacherHome"
+import {useIsStudent} from "../components/IsStudentProvider"
 
 // RealmEssayHome es un componente que representa la página principal de RealmEssay de un usuario autenticado
 const RealmEssayHome = () => {
     const [searchString, setSearchString] = useState('')
-    const [isStudent, setIsStudent] = useState(true)
+    const {isStudent} = useIsStudent()
     const [essays, setEssays] = useState([])
 
     useEffect(() => {
@@ -37,7 +39,7 @@ const RealmEssayHome = () => {
             height: '100dvh',
             marginX: 2,
         }}>
-            <TopBar setSearchString={setSearchString} isStudent={isStudent} setIsStudent={setIsStudent}/>
+            <TopBar setSearchString={setSearchString}/>
             <UserInfo/>
 
             {isStudent && (
@@ -45,7 +47,7 @@ const RealmEssayHome = () => {
             )}
 
             {!isStudent && (
-                <div>Profesor</div>
+                <TeacherHome />
             )}
         </Box>
     )

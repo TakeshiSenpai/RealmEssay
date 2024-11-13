@@ -18,7 +18,8 @@ import MoreVert from '@mui/icons-material/MoreVert'
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded'
 import {AutoAwesomeRounded, Home, PaletteRounded} from "@mui/icons-material"
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded"
-import HomeworkCode from "../components/Homeworks/HomeworkCode";
+import HomeworkCode from "../components/Homeworks/HomeworkCode"
+import {useIsStudent} from "../components/IsStudentProvider"
 
 // Layout es un componente que representa la estructura de la página
 const Layout = ({theme, setTheme, isAuto}) => {
@@ -27,9 +28,9 @@ const Layout = ({theme, setTheme, isAuto}) => {
     const [userInfo, setUserInfo] = useState({name: '', institution: '', picture: ''})
     const [conversationArray, setConversationArray] = useState([])
     const [arregloDeTareas, setArregloDeTareas] = useState(["Primera Tarea"])
+    const {isStudent} = useIsStudent()
 
     const navigate = useNavigate()
-    const [isStudent, setIsStudent] = useState(true)
 
     const [menuOpen, setMenuOpen] = useState(false)
     const [themeMenuOpen, setThemeMenuOpen] = useState(false)
@@ -64,13 +65,13 @@ const Layout = ({theme, setTheme, isAuto}) => {
     }
 
     // Cambiar entre vista de estudiante y profesor
-    const changeView = () => {
-        setIsStudent(!isStudent)
-    }
+    // const changeView = () => {
+    //     setIsStudent(!isStudent)
+    // }
 
-    const addArregloDeTareas = (nombre) => {
-        setConversationArray([...conversationArray, nombre])
-    }
+    // const addArregloDeTareas = (nombre) => {
+    //     setConversationArray([...conversationArray, nombre])
+    // }
 
     const handleThemeChange = (newTheme) => {
         setTheme(newTheme)
@@ -128,9 +129,15 @@ const Layout = ({theme, setTheme, isAuto}) => {
                         </IconButton>
                     </Tooltip>
                     <Tooltip title={isStudent ? "Ingresar código de ensayo" : "Crear Tarea"}>
-                        <IconButton sx={{ml: 'auto'}} color="neutral" aria-label="delete" /*component={Link}
-                                    to={isStudent ? "/" : "/Tarea"} */ onClick={isStudent
-                            ? () => setOpenModal(true) : () => setOpen(true)}>
+                        <IconButton sx={{ml: 'auto'}} color="neutral" aria-label="delete" onClick={() => {
+                            if (isStudent) {
+                                setOpenModal(true)
+                            } else {
+                                setOpen(true)
+                                navigate("/essays/createhomework")
+                            }
+                        }
+                        }>
                             <AddIcon/>
                         </IconButton>
 
@@ -262,16 +269,16 @@ const Layout = ({theme, setTheme, isAuto}) => {
                                 </MenuItem>
                             </Menu>
 
-                            <MenuItem
-                                component={Link}
-                                to={!isStudent ? "/" : "/createhomework"}
-                                onClick={() => {
-                                    setMenuOpen(false)
-                                    changeView()
-                                }}
-                            >
-                                {isStudent ? "Cambiar a profesor" : "Cambiar a alumno"}
-                            </MenuItem>
+                            {/*<MenuItem*/}
+                            {/*    component={Link}*/}
+                            {/*    to={"/"}*/}
+                            {/*    onClick={() => {*/}
+                            {/*        setMenuOpen(false)*/}
+                            {/*        changeView()*/}
+                            {/*    }}*/}
+                            {/*>*/}
+                            {/*    {isStudent ? "Cambiar a profesor" : "Cambiar a alumno"}*/}
+                            {/*</MenuItem>*/}
 
                             <MenuItem onClick={() => {
                                 setMenuOpen(false)
