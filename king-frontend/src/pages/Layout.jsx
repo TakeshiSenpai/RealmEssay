@@ -21,15 +21,15 @@ import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import MoreVert from '@mui/icons-material/MoreVert'
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded'
-import {AutoAwesomeRounded, PaletteRounded} from "@mui/icons-material"
-import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
+import {AutoAwesomeRounded, Home, PaletteRounded} from "@mui/icons-material"
+import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded"
 
 // Layout es un componente que representa la estructura de la página
 const Layout = ({theme, setTheme, isAuto}) => {
     const [open, setOpen] = useState(true)
     const [openModal, setOpenModal] = useState(false)
     const [userInfo, setUserInfo] = useState({name: '', institution: '', picture: ''})
-    const [conversationArray, setConversationArray] = useState(["RealmEssayHome"])
+    const [conversationArray, setConversationArray] = useState([])
     const [arregloDeTareas, setArregloDeTareas] = useState(["Primera Tarea"])
 
     const navigate = useNavigate()
@@ -103,7 +103,6 @@ const Layout = ({theme, setTheme, isAuto}) => {
                 </ListItem>
             ))
         ]
-
     }
 
     return (
@@ -165,6 +164,22 @@ const Layout = ({theme, setTheme, isAuto}) => {
                     </Dialog>
                 </Box>
                 <Divider/>
+
+                {/* Botón de Home */}
+                <ListItem>
+                    <ListItemButton
+                        component={Link}
+                        to="/"
+                        sx={{ borderRadius: 2 }}
+                    >
+                        <Home sx={{
+                            mr: 1,
+                        }}/>
+
+                        Home
+                    </ListItemButton>
+                </ListItem>
+
                 <List>
                     {
                         displaySidebarListItems()

@@ -32,7 +32,8 @@ function App3() {
                 paper: 'rgb(248,246,252)',
             },
             primary: {
-                main: '#6a55af'
+                main: '#6a55af',
+                secondary: 'rgba(106,85,175,0.09)'
             },
             colors: {
                 errorText: 'red',
@@ -51,6 +52,7 @@ function App3() {
             },
             primary: {
                 main: '#6a55af',
+                secondary: 'rgba(124,88,233,0.27)'
             },
             colors: {
                 errorText: '#cb5f7d',
@@ -97,7 +99,7 @@ function App3() {
                 <Route path="/auth" element={<Auth/>}/>
                 <Route path="/essays" element={<Layout setTheme={handleThemeChange} theme={theme} isAuto={isAuto}/>}>
                     <Route index element={<StudentAIChat/>}/>
-                    <Route path="   createhomework" element={<Homework/>}/>
+                    <Route path="createhomework" element={<Homework/>}/>
                 </Route>
             </Routes>
         </ThemeProvider>

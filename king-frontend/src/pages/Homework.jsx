@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import CreateHomework from "../components/CreateHomework.jsx"
+import CreateHomework from "../components/Homeworks/CreateHomework.jsx"
 import {Box, Button, IconButton} from '@mui/material'
 import Stepper from '@mui/material/Stepper'
 import Tooltip from '@mui/material/Tooltip'
@@ -11,8 +11,8 @@ import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded'
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded'
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded'
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
-import RubricComponent from "../components/RubricComponent.jsx"
-import HomeworkConfirmation from '../components/HomeworkConfirmation.jsx'
+import RubricComponent from "../components/Homeworks/RubricComponent.jsx"
+import HomeworkConfirmation from '../components/Homeworks/HomeworkConfirmation.jsx'
 import {Link} from "react-router-dom"
 //import { sendEmail } from '../app/api/emails/envioCodigoDeTarea.jsx'
 import CodigoDeTarea from "../app/emails/CodigoDeTarea.jsx"
