@@ -1,6 +1,8 @@
 import {InputAdornment, TextField} from "@mui/material"
 import {Search} from "@mui/icons-material"
 
+// SearchBar es un componente que representa la barra de búsqueda de la página de Home.
+// Se encarga de filtrar los ensayos por el título o materia.
 const SearchBar = ({setSearchString}) => {
     return (
         <TextField

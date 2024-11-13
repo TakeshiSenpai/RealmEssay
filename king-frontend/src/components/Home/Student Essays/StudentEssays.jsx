@@ -26,7 +26,7 @@ const StudentEssays = ({searchString, essays}) => {
                 Ensayos recientes
             </Typography>
 
-            <EssaysGrid essays={essays}/>
+            <EssaysGrid searchString={searchString} essays={essays}/>
         </Box>
     )
 }
