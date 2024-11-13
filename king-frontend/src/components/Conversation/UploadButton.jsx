@@ -16,8 +16,8 @@ const UploadButton = ({setShowConversation}) => {
         if (file[0]) setFile(file[0])
         setError(null)
     }, [])
-    const studentUrl = process.env.REACT_APP_VERCEL_HOMEWORK_STUDENT
-                ? `https://${process.env.REACT_APP_VERCEL_HOMEWORK_STUDENT}`
+    const studentUrl = process.env.VERCEL_HOMEWORK_STUDENT
+                ? `https://${process.env.VERCEL_HOMEWORK_STUDENT}`
                 : 'http://127.0.0.1:2004';
 
     // Configuración del dropzone para aceptar archivos .pdf y .txt
