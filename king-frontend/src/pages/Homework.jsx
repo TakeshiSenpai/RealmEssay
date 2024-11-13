@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import CreateHomework from "../components/CreateHomework.jsx"
+import CreateHomework from "../components/Homeworks/CreateHomework.jsx"
 import {Box, Button, IconButton} from '@mui/material'
 import Stepper from '@mui/material/Stepper'
 import Tooltip from '@mui/material/Tooltip'
@@ -11,13 +11,14 @@ import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded'
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded'
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded'
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
-import RubricComponent from "../components/RubricComponent.jsx"
-import HomeworkConfirmation from '../components/HomeworkConfirmation.jsx'
-import {Link} from "react-router-dom"
+import RubricComponent from "../components/Homeworks/RubricComponent.jsx"
+import HomeworkConfirmation from '../components/Homeworks/HomeworkConfirmation.jsx'
+import {Link, useNavigate} from "react-router-dom"
 //import { sendEmail } from '../app/api/emails/envioCodigoDeTarea.jsx'
 import CodigoDeTarea from "../app/emails/CodigoDeTarea.jsx"
 import {render} from '@react-email/components'
 import EmailProfesorConfirmation from '../app/emails/EmailProfesorConfirmation.jsx'
+import {useIsStudent} from "../components/IsStudentProvider"
 
 
 //Aqui se supone que se creará la tarea, para esto llamará a los componentes necesarios
@@ -33,6 +34,16 @@ const Homework = () => {
         description: '',
         studentList: ''
     })
+
+    const {isStudent, setIsStudent} = useIsStudent()
+    const navigate = useNavigate()
+    useEffect(() => {
+        if (!isStudent) {
+            navigate("/")
+            setIsStudent(true)
+        }
+    }, [])
+
     //Estas funciones recibe la informacion que da el componente
 
     const IAUrl = process.env.REACT_APP_VERCEL_IA
