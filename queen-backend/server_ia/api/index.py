@@ -93,10 +93,12 @@ def add_header(response):
 
 @app.route('/write_input', methods=['POST'])
 def write_input():
+    print(os.getcwd())
+    os.path.join("/tmp","input.json")
     mensaje= ""
     try:
         if "VERCEL_ENV" in os.environ:  # Esta variable solo existe en Vercel
-            file_path = 'ia_response/input.json'
+            file_path = '/tmp/input.json'
             mensaje="Si leyo el vercel_ENV"
             print(mensaje)
         else:
