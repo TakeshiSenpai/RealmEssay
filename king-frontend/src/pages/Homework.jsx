@@ -46,6 +46,13 @@ const Homework = () => {
 
     //Estas funciones recibe la informacion que da el componente
 
+    const IAUrl = process.env.REACT_APP_VERCEL_IA
+                ? `https://${process.env.REACT_APP_VERCEL_IA}`
+                : 'http://127.0.0.1:2003'
+
+    const teacherURL = process.env.REACT_APP_VERCEL_HOMEWORK_TEACHER
+                ? `https://${process.env.REACT_APP_VERCEL_HOMEWORK_TEACHER}`
+                : 'http://127.0.0.1:2002'
     //Cuando se use esto es porque el profesor creo la tarea, se puede decir que este es el ulitmo paso
     //Aqui se guarda la informacion en la base de datos
     useEffect( ()=>{
@@ -54,13 +61,15 @@ const Homework = () => {
         if(textRubric !== undefined){
             const storedUserInfo = localStorage.getItem('userInfo')
             const parsedUserInfo = JSON.parse(storedUserInfo)
-            const html = await printHtmlConfirmation(parsedUserInfo.name)
-            await updateBD(parsedUserInfo.email)
-            reiniciarParametros()
+            const homeworkParametersCopy = homeworkParameters
+            reiniciarParametros();
+            const html = await printHtmlConfirmation(homeworkParametersCopy,parsedUserInfo.name)
+            await updateBD(homeworkParametersCopy,parsedUserInfo.email)
+
             const to = []
             to.push(parsedUserInfo.email)
             //Comentado porque no quiero mil correos de momento
-           // await mandarCorreos(html,to, "Confirmación de tarea")
+           await mandarCorreos(html,to, "Confirmación de tarea")
         }
     
     }
@@ -97,18 +106,18 @@ const Homework = () => {
         }
     }
     //Aqui basicamente se hará un post a la base de datos de tarea
-    const updateBD = async (profesor)=>{
+    const updateBD = async (homeworkParametersCopy,profesor)=>{
         try {
-            const response = await fetch('http://127.0.0.1:2002/tarea/postDB', {
+            const response = await fetch(`${teacherURL}/tarea/postDB`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     id:idHomework,
-                    Nombre: homeworkParameters.taskName, 
+                    Nombre: homeworkParametersCopy.taskName,
                     Profesor: profesor,
-                    Descripcion: homeworkParameters.description,
+                    Descripcion: homeworkParametersCopy.description,
                     Rubrica: textRubric,
                     Alumnos:obtenerArregloDeCorreos() 
                 })
@@ -122,7 +131,7 @@ const Homework = () => {
     }
     const getTextRubric= async ()=>{
         try {
-            const response = await fetch('http://127.0.0.1:2003/tarea/rubrica', {
+            const response = await fetch(`${IAUrl}/tarea/rubrica`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -150,7 +159,7 @@ const Homework = () => {
     }
     const mandarCorreos = async (html, to, subject) => {
         try {
-            const response = await fetch('http://127.0.0.1:2002/tarea/email/code', {
+            const response = await fetch(`${teacherURL}/tarea/email/code`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -177,12 +186,12 @@ const Homework = () => {
         }
 
     }
-    const printHtmlConfirmation = async (profesor) =>{
+    const printHtmlConfirmation = async (homeworkParametersCopy,profesor) =>{
         try{
 
-            let textHomework = "Nombre de tarea" + homeworkParameters.taskName 
-            + "Descripción: " + homeworkParameters.description + "Estudiantes registrados " + homeworkParameters.studentList;
-            
+            let textHomework = "Nombre de tarea" + homeworkParametersCopy.taskName
+            + "Descripción: " + homeworkParametersCopy.description + "Estudiantes registrados " + homeworkParametersCopy.studentList;
+
             return await render (<EmailProfesorConfirmation 
                 textHomework = {textHomework} 
                 textRubric={textRubric}

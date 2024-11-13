@@ -9,11 +9,25 @@ sys.path.append(str(pathlib.Path(__file__).parent.resolve()))
 # from tts import tts_gcp2
 from bson.objectid import ObjectId
 
+if "VERCEL_ENV" in os.environ:  # Esta variable solo existe en Vercel
+    INPUT_file_path = 'tmp/input.json'
+    CRITERIA_file_path = 'ia_response/criteria.json'
+    INTERACTIONS_file_path = 'ia_response/user_interactions/interactions.json'
+    TTS_file_path = 'ia_response/cleanOutput.mp3'
+else:
+    INPUT_file_path = 'server_ia/ia_response/input.json'
+    CRITERIA_file_path = 'server_ia/ia_response/criteria.json'
+    INTERACTIONS_file_path = 'server_ia/ia_response/user_interactions/interactions.json'
+    TTS_file_path = 'server_ia/ia_response/cleanOutput.mp3'
+
+
 # Rutas donde se almacenarán temporalmente los datos
-INPUT_FILE = pathlib.Path('server_ia/ia_response/input.json').resolve()
-CRITERIA_FILE = pathlib.Path('server_ia/ia_response/criteria.json').resolve()
-INTERACTIONS_FILE = pathlib.Path('server_ia/ia_response/user_interactions/interactions.json').resolve()
-TTS_FILE = pathlib.Path('server_ia/ia_response/cleanOutput.mp3').resolve()
+
+print(pathlib.Path(INPUT_file_path).resolve())
+INPUT_FILE = pathlib.Path(INPUT_file_path).resolve()
+CRITERIA_FILE = pathlib.Path(CRITERIA_file_path).resolve()
+INTERACTIONS_FILE = pathlib.Path(INTERACTIONS_file_path).resolve()
+TTS_FILE = pathlib.Path(TTS_file_path).resolve()
 
 # Cargar el token desde un archivo
 def load_api_token(file_path):

@@ -21,6 +21,9 @@ const RubricComponent = ({parameters, setParameters, error,setError}) => {
         }])
     }
 
+    const apiGatewayURL = process.env.REACT_APP_VERCEL_API_GATEWAY
+                ? `https://${process.env.REACT_APP_VERCEL_API_GATEWAY}`
+                : 'http://127.0.0.1:2000'
     const handleParameterChange = (index, field, value) => {
         //const newParameters = [...parameters]
         const newParameters = parameters.map((param, i) =>
@@ -96,7 +99,7 @@ const RubricComponent = ({parameters, setParameters, error,setError}) => {
 
         // Todo bien, enviar rúbrica
         try {
-            const response = await fetch('http://127.0.0.1:2000/tarea/rubrica', {
+            const response = await fetch(`${apiGatewayURL}/tarea/rubrica`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

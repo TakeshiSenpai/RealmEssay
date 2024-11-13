@@ -16,6 +16,9 @@ const UploadButton = ({setShowConversation}) => {
         if (file[0]) setFile(file[0])
         setError(null)
     }, [])
+    const studentUrl = process.env.REACT_APP_VERCEL_HOMEWORK_STUDENT
+                ? `https://${process.env.REACT_APP_VERCEL_HOMEWORK_STUDENT}`
+                : 'http://127.0.0.1:2004';
 
     // Configuración del dropzone para aceptar archivos .pdf y .txt
     const {getRootProps, getInputProps, isDragActive} = useDropzone({
@@ -29,6 +32,10 @@ const UploadButton = ({setShowConversation}) => {
     // Enviar el archivo a la IA, si sale bien, mostrar la conversación.
     const handleSubmission = async () => {
         try {
+
+            console.log(process.env);
+            console.log(process.env.development);
+            console.log(process.env.production);
             const reader = new FileReader()
             reader.onabort = () => console.log('file reading was aborted')
             reader.onerror = () => console.log('file reading has failed')
@@ -40,7 +47,7 @@ const UploadButton = ({setShowConversation}) => {
                         .map(byte => String.fromCharCode(byte))
                         .join('');
 
-                    const response = await fetch('http://127.0.0.1:2004/submit_essay', {
+                    const response = await fetch(`${studentUrl}/submit_essay`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'

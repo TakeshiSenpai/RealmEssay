@@ -3,6 +3,7 @@ import {useEffect, useState} from 'react'
 import {Box, CircularProgress, IconButton, TextField} from '@mui/material'
 import {Send} from '@mui/icons-material'
 import {Navigate} from 'react-router-dom'
+import Showdown from 'showdown'
 
 // SendMessage es un componente que permite al estudiante enviar mensajes a la IA
 const SendMessage = ({
@@ -14,7 +15,9 @@ const SendMessage = ({
     const token = localStorage.getItem('token')
     const [message, setMessage] = useState('')
     const [loading, setLoading] = useState(false)  // Nuevo estado para controlar el spinner
-
+    const IAUrl = process.env.REACT_APP_VERCEL_IA
+                ? `https://${process.env.REACT_APP_VERCEL_IA}`
+                : 'http://127.0.0.1:2003'
     // Actualiza el estado con el valor actual del TextField
     const handleChange = (event) => {
         setMessage(event.target.value)
@@ -28,7 +31,7 @@ const SendMessage = ({
         setLoading(true) // Activar el spinner cuando se envía el mensaje
 
         try {
-            const response = await fetch('http://127.0.0.1:2003/questions_and_responses', {
+            const response = await fetch(`${IAUrl}/questions_and_responses`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
