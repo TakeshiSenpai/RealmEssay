@@ -1,10 +1,12 @@
-from flask import Flask,request,jsonify,Response
+from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 from ia_response import ia_response_claude as ia_response
+
 
 app = Flask(__name__)
 CORS(app)
 
+# Ruta para procesar la rúbrica de la tarea
 @app.route('/tarea/rubrica', methods=['POST'])
 def process_rubric():
     rubric = request.json.get('rubrica')
@@ -39,7 +41,7 @@ def process_rubric():
 
     return jsonify({'success': True, 'message': message}), 200
 
-#Ruta para obtener la respuesta de la IA al momento de realizar preguntas sobre la evaluacion(streaming en tiempo real)
+# Ruta para obtener la respuesta de la IA al momento de realizar preguntas sobre la evaluación (streaming en tiempo real)
 @app.route('/questions_and_responses', methods=['POST'])
 def get_response():
     try:
@@ -66,21 +68,6 @@ def submit_criteria():
         return jsonify({"message": "Criterios enviados exitosamente"}), 200
     except Exception as e:
         return jsonify({"error": f"Error al enviar los criterios: {str(e)}"}), 500
-    
-#
-# @app.route('/force_evaluation', methods=["GET"])
-# def force_evaluation():
-#     try:
-#         # Procesar la respuesta como un stream de datos
-#         def stream_response():
-#             # Iterar sobre los fragmentos generados por `evaluate_essay`
-#             for fragment in ia_response.evaluate_essay():
-#                 yield f"data: {fragment}\n\n"  # Formato adecuado para Server-Sent Events (SSE)
-#
-#         # Retornar el stream usando la función generadora
-#         return Response(stream_response(), content_type='text/event-stream')
-#     except Exception as e:
-#         return jsonify({"error": f"Error al evaluar el ensayo: {str(e)}"}), 500
 
 @app.after_request
 def add_header(response):

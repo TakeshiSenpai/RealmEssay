@@ -6,7 +6,8 @@ import {grey} from "@mui/material/colors";
 import {Add, Delete} from "@mui/icons-material";
 import Typography from "@mui/material/Typography";
 
-export const RubricComponent = ({parameters, setParameters, error,setError}) => {
+// RubricComponent es un componente que permite al profesor crear una rúbrica
+const RubricComponent = ({parameters, setParameters, error,setError}) => {
 
     console.log(error)
 
@@ -20,6 +21,9 @@ export const RubricComponent = ({parameters, setParameters, error,setError}) => 
         }])
     }
 
+    const apiGatewayURL = process.env.REACT_APP_VERCEL_API_GATEWAY
+                ? `https://${process.env.REACT_APP_VERCEL_API_GATEWAY}`
+                : 'http://127.0.0.1:2000'
     const handleParameterChange = (index, field, value) => {
         //const newParameters = [...parameters]
         const newParameters = parameters.map((param, i) =>
@@ -95,7 +99,7 @@ export const RubricComponent = ({parameters, setParameters, error,setError}) => 
 
         // Todo bien, enviar rúbrica
         try {
-            const response = await fetch('http://127.0.0.1:2000/tarea/rubrica', {
+            const response = await fetch(`${apiGatewayURL}/tarea/rubrica`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

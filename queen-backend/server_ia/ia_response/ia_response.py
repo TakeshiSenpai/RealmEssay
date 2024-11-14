@@ -1,24 +1,33 @@
 import json
 import os
-import pathlib
-import requests
 import sys
 
+import pathlib
+import requests
+
 sys.path.append(str(pathlib.Path(__file__).parent.resolve()))
-#print(str(pathlib.Path(__file__).parent.resolve()))
-from tts import tts_gcp2
+# from tts import tts_gcp2
 from bson.objectid import ObjectId
+
+if "VERCEL_ENV" in os.environ:  # Esta variable solo existe en Vercel
+    INPUT_file_path = 'tmp/input.json'
+    CRITERIA_file_path = 'ia_response/criteria.json'
+    INTERACTIONS_file_path = 'ia_response/user_interactions/interactions.json'
+    TTS_file_path = 'ia_response/cleanOutput.mp3'
+else:
+    INPUT_file_path = 'server_ia/ia_response/input.json'
+    CRITERIA_file_path = 'server_ia/ia_response/criteria.json'
+    INTERACTIONS_file_path = 'server_ia/ia_response/user_interactions/interactions.json'
+    TTS_file_path = 'server_ia/ia_response/cleanOutput.mp3'
+
 
 # Rutas donde se almacenarán temporalmente los datos
 
-
-#Revisen el pahtfile!!!
-#A mi(Manuel) me fallo por eso
-INPUT_FILE = pathlib.Path('server_ia/ia_response/input.json').resolve()
-CRITERIA_FILE = pathlib.Path('server_ia/ia_response/criteria.json').resolve()
-INTERACTIONS_FILE =pathlib.Path('server_ia/ia_response/user_interactions/interactions.json').resolve()
-TTS_FILE=pathlib.Path('server_ia/ia_response/cleanOutput.mp3').resolve()
-
+print(pathlib.Path(INPUT_file_path).resolve())
+INPUT_FILE = pathlib.Path(INPUT_file_path).resolve()
+CRITERIA_FILE = pathlib.Path(CRITERIA_file_path).resolve()
+INTERACTIONS_FILE = pathlib.Path(INTERACTIONS_file_path).resolve()
+TTS_FILE = pathlib.Path(TTS_file_path).resolve()
 
 # Cargar el token desde un archivo
 def load_api_token(file_path):
@@ -30,8 +39,10 @@ API_BASE_URL = "https://api.cloudflare.com/client/v4/accounts/a71faaf431a55b28fb
 API_BASE_GATEWAYLOG = "https://gateway.ai.cloudflare.com/v1/a71faaf431a55b28fbf7c2bfbe9c1fba/realm-es/workers-ai/"
 # Cargar el token de la API desde el archivo
 directorio_raiz = pathlib.Path(__file__).parent
-api_token = load_api_token(pathlib.Path(directorio_raiz / 'model_authentication'/ 'api_token.txt'))
+api_token = load_api_token(pathlib.Path(directorio_raiz / 'model_authentication' / 'api_token.txt'))
 
+
+# Función para ejecutar un modelo de IA con los datos de entrada proporcionados
 def run_model(model, inputs, timeout=1200, stream=True):
     headers = {"Authorization": f"Bearer {api_token}"}
     input_data = {"messages": inputs, "stream": stream}
@@ -39,7 +50,7 @@ def run_model(model, inputs, timeout=1200, stream=True):
     try:
         # Enviar la solicitud
         response = requests.post(f"{API_BASE_GATEWAYLOG}{model}", headers=headers, json=input_data, timeout=timeout, stream=stream)
-        
+
         # Procesar respuesta en modo streaming
         if stream:
             if response.status_code == 200:
@@ -80,34 +91,36 @@ def get_last_two_interactions():
         return interactions[-2:] if len(interactions) >= 2 else interactions
     return []
 
+
 # Función para enviar los criterios y evaluar si el ensayo ya fue enviado
 def submit_criteria(data):
     criteria = data.get('criteria')
-    
+
     # Guardar los criterios en un archivo JSON si aún no están guardados
     if not os.path.exists(CRITERIA_FILE):
         save_json(CRITERIA_FILE, data)
         print("Criterios guardados.")
     else:
         print("Los criterios ya han sido enviados anteriormente.")
-    
+
     # Intentar evaluar si el ensayo está disponible
     if os.path.exists(INPUT_FILE):
         return evaluate_essay()
     else:
         return {"message": "Criterios enviados con éxito. Esperando el ensayo del estudiante."}
 
+
 # Función para enviar el ensayo
 def submit_essay(data):
     input_text = data.get('input')
-    
+
     # Guardar el ensayo en un archivo JSON si aún no está guardado
     if not os.path.exists(INPUT_FILE):
         save_json(INPUT_FILE, data)
         print("Ensayo guardado.")
     else:
         print("El ensayo ya ha sido enviado anteriormente. sobreescribiendo datos...")
-        save_json(INPUT_FILE,data)
+        save_json(INPUT_FILE, data)
 
     # Intentar evaluar si los criterios están disponibles
     if os.path.exists(CRITERIA_FILE):
@@ -146,11 +159,14 @@ def save_interaction(input_text, response, interaction_type="essay"):
     interactions_data["interactions"].append(interaction)
     with open(INTERACTIONS_FILE, 'w') as f:
         json.dump(interactions_data, f, indent=4)
+
+
 # Función para procesar preguntas del estudiante y respuestas de la IA
 def process_questions_and_responses(student_questions):
     # Verificar que existan el ensayo y los criterios
     if not os.path.exists(INPUT_FILE) or not os.path.exists(CRITERIA_FILE):
-        return {"message": "Aún faltan datos. Asegúrate de que el estudiante haya enviado el ensayo y el profesor los criterios."}
+        return {
+            "message": "Aún faltan datos. Asegúrate de que el estudiante haya enviado el ensayo y el profesor los criterios."}
     print("Entro a  process_questions_and_responses")
     # Leer ensayo y criterios
     input_text = load_data_from_file(INPUT_FILE, 'input')
@@ -159,14 +175,16 @@ def process_questions_and_responses(student_questions):
     # Generar entradas para la IA con preguntas adicionales
     inputs = generate_inputs(input_text, criteria, student_questions)
     result_stream = run_model("@cf/meta/llama-3-8b-instruct", inputs, timeout=1200, stream=True)
-    
+
     yield from process_ia_response(result_stream, input_text, student_questions)
+
 
 # Funciones auxiliares
 def save_json(file_path, data):
     """Guarda los datos en un archivo JSON con formato legible."""
     with open(file_path, 'w') as f:
         json.dump(data, f, indent=4)
+
 
 def load_data_from_file(file_path, key):
     """Carga un valor específico de un archivo JSON."""
@@ -176,25 +194,26 @@ def load_data_from_file(file_path, key):
             return data.get(key)
     return None
 
+
 def generate_inputs(input_text, criteria, student_questions=None):
     """Genera las entradas necesarias para el modelo de IA, incluyendo las últimas interacciones."""
     # Obtener las últimas dos interacciones para proporcionar contexto
     last_interactions = get_last_two_interactions()
-    
+
     # Preparar el texto de instrucciones del sistema
     role_text = (
         "Usted es un asistente evaluador de ensayos de preparatoria y universidad"
     )
     if student_questions:
         role_text += "Además, responda cualquier pregunta que el estudiante pueda tener sobre su evaluación."
-    
+
     # Incluir las interacciones anteriores, si las hay
     if last_interactions:
         role_text += " A continuación, se incluyen las últimas interacciones para proporcionar contexto:\n"
         for interaction in last_interactions:
             role_text += f"- Pregunta: {interaction.get('question', '')}\n"
             role_text += f"- Respuesta: {interaction.get('response', '')}\n"
-    
+
     # Agregar los criterios de evaluación
     system_instructions = f"{role_text} Los criterios de evaluación son: {criteria}"
     inputs = [{"role": "system", "content": system_instructions}, {"role": "user", "content": input_text}]
@@ -202,8 +221,9 @@ def generate_inputs(input_text, criteria, student_questions=None):
     # Agregar preguntas del estudiante si las hay
     if student_questions:
         inputs.extend({"role": "user", "content": question} for question in student_questions)
-    
+
     return inputs
+
 
 # Función para evaluar el ensayo si ambos archivos están disponibles
 def evaluate_essay():
@@ -218,21 +238,22 @@ def evaluate_essay():
     # Generar entradas y procesar evaluación en la IA
     inputs = generate_inputs(input_text, criteria)
     result_stream = run_model("@cf/meta/llama-3-8b-instruct", inputs, timeout=1200, stream=True)
-    
+
     return process_ia_response(result_stream, input_text)
+
 
 def process_ia_response(result_stream, input_text, student_questions=None):
     """Procesa la respuesta del modelo IA y guarda la interacción en el archivo JSON."""
     response_text = ""
     try:
-         # Enviar las últimas dos interacciones al cliente, si están disponibles
-     
+        # Enviar las últimas dos interacciones al cliente, si están disponibles
+
         for fragment in result_stream:
             response_text += fragment
             yield fragment  # Enviar cada fragmento en tiempo real
-        
+
         # Guardar la interacción en el archivo JSON
-        clean_text=tts_gcp2.procesar_texto(response_text)
+        # clean_text = tts_gcp2.procesar_texto(response_text)
         # tts_gcp2.run_and_save(clean_text,TTS_FILE) TODO: Descomentar esta línea para habilitar la generación de audio
         if student_questions:
             for question in student_questions:

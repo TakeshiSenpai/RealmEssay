@@ -4,14 +4,18 @@ import Button from '@mui/material/Button'
 import GoogleIcon from '@mui/icons-material/Google'
 import {useNavigate} from 'react-router-dom'
 
-export const GoogleButton = () => {
+// GoogleButton es un componente que permite al usuario iniciar sesión con Google
+const GoogleButton = () => {
     const navigate = useNavigate()
-
+    const authURL =  process.env.REACT_APP_VERCEL_AUTHENTICATION
+    ? `https://${process.env.REACT_APP_VERCEL_AUTHENTICATION}`
+    : 'http://127.0.0.1:2001'
+    // Maneja el éxito de la autenticación
     const handleLoginSuccess = async (credentialResponse) => {
         const token = credentialResponse.credential
 
         try {
-            const response = await fetch('http://127.0.0.1:2000/login/google', {
+            const response = await fetch(`${authURL}/login/google`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -21,6 +25,7 @@ export const GoogleButton = () => {
 
             const data = await response.json()
 
+            // Si la autenticación es exitosa, se almacena el token y la información del usuario en el localStorage
             if (data.success) {
                 localStorage.setItem('token', data.token)
                 localStorage.setItem('userInfo', JSON.stringify(data.user_info))
@@ -58,3 +63,5 @@ export const GoogleButton = () => {
         </GoogleOAuthProvider>
     )
 }
+
+export default GoogleButton

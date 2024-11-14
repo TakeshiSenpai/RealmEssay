@@ -1,20 +1,16 @@
-import {useEffect} from 'react'
 import {Box, TextField, Typography} from '@mui/material'
 
+// CreateHomework es un componente que permite al profesor crear una tarea
 const CreateHomework = ({homeworkParameters, setHomeworkParameters}) => {
 
-    const cambiarParametros = (field, value) => {
+    // Actualiza un parámetro de la tarea
+    const changeParameters = (field, value) => {
         // Actualiza el estado de homeworkParameters basado en el campo que se está editando
         setHomeworkParameters((prev) => ({
             ...prev,
             [field]: value,
         }))
     }
-
-    // Este efecto se puede usar si necesitas ejecutar algún código cuando cambian los parámetros
-    useEffect(() => {
-        console.log("Parametros actualizados:", homeworkParameters)
-    }, [homeworkParameters])
 
     return (
         <Box component="form" sx={{display: 'flex', flexDirection: 'column', gap: 2}}>
@@ -24,19 +20,19 @@ const CreateHomework = ({homeworkParameters, setHomeworkParameters}) => {
             <TextField
                 label="Nombre de la tarea"
                 value={homeworkParameters.taskName}
-                onChange={(e) => cambiarParametros('taskName', e.target.value)}
+                onChange={(e) => changeParameters('taskName', e.target.value)}
             />
             <TextField
                 label="Descripción"
                 value={homeworkParameters.description}
-                onChange={(e) => cambiarParametros('description', e.target.value)}
+                onChange={(e) => changeParameters('description', e.target.value)}
                 multiline
                 rows={4}
             />
             <TextField
                 label="Lista de estudiantes"
                 value={homeworkParameters.studentList}
-                onChange={(e) => cambiarParametros('studentList', e.target.value)}
+                onChange={(e) => changeParameters('studentList', e.target.value)}
             />
         </Box>
     )
