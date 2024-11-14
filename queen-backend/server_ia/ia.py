@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
+from ia_response import ia_response_claude as ia_response
 
-from ia_response import ia_response
 
 app = Flask(__name__)
 CORS(app)
