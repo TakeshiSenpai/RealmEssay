@@ -25,7 +25,7 @@ INPUT_FILE = pathlib.Path('input.json').resolve()
 CRITERIA_FILE = pathlib.Path('criteria.json').resolve()
 #print(CRITERIA_FILE) #only for debugging
 INTERACTIONS_FILE =pathlib.Path('user_interactions/interactions.json').resolve()
-print(INTERACTIONS_FILE)
+#print(INTERACTIONS_FILE)
 TTS_FILE=pathlib.Path('server_ia/ia_response/cleanOutput.mp3').resolve()
 
 
@@ -192,7 +192,7 @@ def evaluate_essay():
     # Generar entradas y procesar evaluación en la IA
     system_instructions,inputs = generate_inputs(input_text, criteria)
     result_stream=run_model("claude-3-5-sonnet-20241022", system_instructions,inputs)
-    
+    #integration_test_run_model("claude-3-5-sonnet-20241022",system_instructions=system_instructions)
     return process_ia_response(result_stream, input_text)
 
 def process_ia_response(result_stream, input_text, student_questions=None):
@@ -216,7 +216,21 @@ def process_ia_response(result_stream, input_text, student_questions=None):
     except Exception as e:
         yield json.dumps({"message": f"Error al procesar la respuesta de la IA: {str(e)}"})
 
-evaluate_essay()
+# Prueba de integración con el cliente real de anthropic
+def integration_test_run_model(model,system_instructions):
+    inputs = [{"role": "user", "content": "¿Cuál es la importancia de la ética en la tecnología?"}]
+    
+    try:
+        result_stream = run_model(model, system_instructions, inputs)
+        response = "".join(fragment for fragment in result_stream)
+        print(response)  # Imprime el texto para ver la salida completa
+        assert len(response) > 0, "La respuesta del modelo debería tener contenido."
+    except Exception as e:
+        print(f"Error en la prueba de integración: {str(e)}")
+
+# Ejecuta la prueba de integración
+
+
 
 
 

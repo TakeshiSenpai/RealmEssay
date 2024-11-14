@@ -26,7 +26,7 @@ def ia():
 def homework_student():
     run_python_file("server_homework_student/homework_student.py")
 
-# def db):
+# def db():
     #run_python_file("database/maindb.py")
 
 if __name__ == "__main__":

@@ -67,6 +67,23 @@ def submit_criteria():
     except Exception as e:
         return jsonify({"error": f"Error al enviar los criterios: {str(e)}"}), 500
     
+# Ruta para enviar el ensayo y recibir la evaluación en fragmentos
+@app.route('/submit_essay', methods=['POST'])
+def submit_essay():
+    try:
+        data = request.json
+        
+        # Función generadora para transmitir la respuesta en fragmentos
+        def stream_response():
+            for fragment in ia_response.submit_essay(data):
+                yield f"data: {fragment}\n\n"  # Enviar cada fragmento al cliente progresivamente
+
+        # Retornar la respuesta como un `Response` para hacer `streaming`
+        return Response(stream_response(), content_type='text/event-stream')
+
+    except Exception as e:
+        return jsonify({"error": f"Error al procesar los datos: {str(e)}"}), 500
+
 #
 # @app.route('/force_evaluation', methods=["GET"])
 # def force_evaluation():
