@@ -1,10 +1,12 @@
-from flask import Flask,request,jsonify,Response
+from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 from ia_response import ia_response_claude as ia_response
+
 
 app = Flask(__name__)
 CORS(app)
 
+# Ruta para procesar la rúbrica de la tarea
 @app.route('/tarea/rubrica', methods=['POST'])
 def process_rubric():
     rubric = request.json.get('rubrica')
@@ -39,7 +41,7 @@ def process_rubric():
 
     return jsonify({'success': True, 'message': message}), 200
 
-#Ruta para obtener la respuesta de la IA al momento de realizar preguntas sobre la evaluacion(streaming en tiempo real)
+# Ruta para obtener la respuesta de la IA al momento de realizar preguntas sobre la evaluación (streaming en tiempo real)
 @app.route('/questions_and_responses', methods=['POST'])
 def get_response():
     try:
