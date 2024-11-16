@@ -18,21 +18,27 @@ def homework_teacher():
 def ia():
     run_python_file("server_ia/ia.py")
 
+def homework_student():
+    run_python_file("server_homework_student/homework_student.py")
+
 if __name__ == "__main__":
     # Crear procesos para ejecutar los servidores
     p1 = Process(target=api_gateway)
     p2 = Process(target=authentication)
     p3 = Process(target=homework_teacher)
     p4 = Process(target=ia)
+    p5 = Process(target=homework_student)
 
-    # Iniciar ambos procesos
+    # Iniciar los procesos
     p1.start()
     p2.start()
     p3.start()
     p4.start()
+    p5.start()
 
-    # Esperar a que ambos procesos terminen
+    # Esperar a que los procesos terminen
     p1.join()
     p2.join()
     p3.join()
     p4.join()
+    p5.join()

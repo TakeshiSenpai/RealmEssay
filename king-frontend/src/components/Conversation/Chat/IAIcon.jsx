@@ -1,5 +1,6 @@
 import {SvgIcon} from "@mui/material"
 
+// IAIcon es un componente que representa el ícono de la inteligencia artificial
 const IAIcon = (props) => {
     return (
         <SvgIcon {...props} viewBox="0 0 300 457">

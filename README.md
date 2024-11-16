@@ -68,3 +68,7 @@ Es importante leer la [**convención de código**](CODE_CONVENTION.md) antes de 
 ### Pull Requests
 
 Para revisar los pull requests, sigue los pasos en [**PULL_REQUESTS.md**](PULL_REQUESTS.md).
+
+### Vercel
+
+Para revisar las preguntas frecuentes sobre el uso de vercel, lee el siguiente documento en [**FAQ_VERCEL**](FAQ_VERCELl.md)

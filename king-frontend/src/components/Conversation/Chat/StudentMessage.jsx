@@ -1,5 +1,6 @@
 import {Box} from '@mui/material'
 
+// StudentMessage es un componente que representa un mensaje del estudiante
 const StudentMessage = ({ message }) => (
     <Box sx={{
         display: 'flex',
@@ -13,9 +14,10 @@ const StudentMessage = ({ message }) => (
             px: '1.25rem',
             py: '.625rem',
             color: 'white',
-            whiteSpace: 'pre-wrap',
-        }}>
-            {message}
+            whiteSpace: "pre-line"
+        }}
+        >
+            {message} 
         </Box>
     </Box>
 )

@@ -1,22 +1,68 @@
 import * as React from 'react'
 import {useEffect, useState} from 'react'
-import {Box, IconButton, TextField} from '@mui/material'
+import {Box, CircularProgress, IconButton, TextField} from '@mui/material'
 import {Send} from '@mui/icons-material'
 import {Navigate} from 'react-router-dom'
+import Showdown from 'showdown'
 
-export const SendMessage = ({studentConversationArray, setStudentConversationArray}) => {
+// SendMessage es un componente que permite al estudiante enviar mensajes a la IA
+const SendMessage = ({
+                                studentConversationArray,
+                                setStudentConversationArray,
+                                aIConversationArray,
+                                setAiConversationArray
+                            }) => {
     const token = localStorage.getItem('token')
     const [message, setMessage] = useState('')
-
+    const [loading, setLoading] = useState(false)  // Nuevo estado para controlar el spinner
+    const IAUrl = process.env.REACT_APP_VERCEL_IA
+                ? `https://${process.env.REACT_APP_VERCEL_IA}`
+                : 'http://127.0.0.1:2003'
+    // Actualiza el estado con el valor actual del TextField
     const handleChange = (event) => {
-        setMessage(event.target.value) // Actualiza el estado con el valor actual
+        setMessage(event.target.value)
     }
 
+    // Enviar el mensaje a la IA
     const handleSubmit = async () => {
-        // Aquí se debería hablar con la IA y que por aquí responda
+        // Agrega el mensaje del estudiante a la conversación
         setStudentConversationArray([...studentConversationArray, message])
         setMessage('')
-        // También debe inhabilitar el chat hasta que la IA conteste como un spinner
+        setLoading(true) // Activar el spinner cuando se envía el mensaje
+
+        try {
+            const response = await fetch(`${IAUrl}/questions_and_responses`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({student_questions: [message]})
+            })
+            if (response.ok) {
+                const reader = response.body.getReader()
+                const decoder = new TextDecoder('utf-8')
+                let done = false
+                let accumulatedText = ""
+
+                while (!done) {
+                    const {value, done: streamDone} = await reader.read()
+                    console.log(value, done)
+                    done = streamDone
+                    if (value) {
+                        const chunk = decoder.decode(value, {stream: true})
+                        accumulatedText += chunk
+
+                        // Actualizar el array con el nuevo fragmento
+                        setAiConversationArray([...aIConversationArray, accumulatedText])
+                    }
+                }
+            } else {
+                console.error(`Error: ${response.status} - ${response.statusText}`)
+            }
+        } catch (error) {
+            console.error('Error durante la recepción de la respuesta de la IA:', error)
+        }
+        setLoading(false)  // Desactivar el spinner al finalizar la solicitud o en caso de error
     }
 
     // Enviar el mensaje al presionar `Ctrl (Command) + Enter`
@@ -43,14 +89,13 @@ export const SendMessage = ({studentConversationArray, setStudentConversationArr
                 marginBottom: '-10px',
             }}
         >
-            {/* Área de texto en el centro, aquí se habla con la IA */}
             <TextField
                 multiline
                 maxRows={4}
                 placeholder="Escribe tu comentario o pregunta sobre el ensayo..."
-                variant="outlined" // Usamos outlined en vez de filled porque filled tiene una alineación rara
-                value={message} // El valor del TextArea viene del estado
-                onChange={handleChange} // Cada vez que el usuario escribe, se ejecuta esta función
+                variant="outlined"
+                value={message}
+                onChange={handleChange}
                 fullWidth
                 sx={{
                     flexGrow: 1,
@@ -60,20 +105,24 @@ export const SendMessage = ({studentConversationArray, setStudentConversationArr
                         borderRadius: '24px',
                     },
                 }}
+                disabled={loading}  // Desactiva el TextField mientras se espera la respuesta
             />
 
-            {/* Botón a la derecha, es el botón de envío, probablemente aquí debería ir el spinner */}
-            <IconButton
-                variant="outlined"
-                onClick={handleSubmit}
-                sx={{
-                    ml: 'auto',
-                    color: (theme) => theme.palette.primary.main,
-                }}
-                disabled={!message.trim()}
-            >
-                <Send/>
-            </IconButton>
+            {loading ? (
+                <CircularProgress size={30} sx={{color: (theme) => theme.palette.primary.main}}/>
+            ) : (
+                <IconButton
+                    variant="outlined"
+                    onClick={handleSubmit}
+                    sx={{
+                        ml: 'auto',
+                        color: (theme) => theme.palette.primary.main,
+                    }}
+                    disabled={!message.trim()}
+                >
+                    <Send/>
+                </IconButton>
+            )}
         </Box>
     ) : (
         <Navigate to="/auth"/>

@@ -17,7 +17,7 @@ git clone https://github.com/TakeshiSenpai/RealmEssay
 4. **Cambia a la rama** del Pull Request.
    - Reemplaza `#` por el número del Pull Request.
 ```
-git fetch origin pull/#/head && git checkout FETCH_HEAD
+git fetch origin pull/#/head && git checkout FETCH_HEAD --force
 ```
 
 5. En caso de que se requieran cambios, una vez actualizado el pull request en Github, para actualizar la rama local, vuelve a ejecutar el comando del paso 4. 
