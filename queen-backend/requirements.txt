@@ -9,6 +9,7 @@ click
 colorama
 cryptography
 dnspython
+edge-tts
 Flask
 Flask-Cors
 google
