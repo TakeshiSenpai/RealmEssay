@@ -31,6 +31,7 @@ const SendMessage = ({
         setLoading(true) // Activar el spinner cuando se envía el mensaje
 
         try {
+    
             const response = await fetch(`${IAUrl}/questions_and_responses`, {
                 method: 'POST',
                 headers: {

@@ -38,6 +38,7 @@ const Homework = () => {
     const {isStudent, setIsStudent} = useIsStudent()
     const navigate = useNavigate()
     useEffect(() => {
+        console.log(isStudent);
         if (!isStudent) {
             navigate("/")
             setIsStudent(true)
@@ -276,9 +277,12 @@ const Homework = () => {
                     creationIndex >= 2 && (
                         <Button onClick={() => {
                             cambiarIndice(1)
-                        }} sx={{ml: 'auto'}} component={Link} to={creationIndex === 2 ? "/createhomework" : ""}>
+                        }} 
+                        sx={{ml: 'auto'}} 
+                        >
                             Crear
                         </Button>)
+                        //component={Link} to={creationIndex === 2 ? "essays/createhomework" : ""}
                 }
             </Box>
 
