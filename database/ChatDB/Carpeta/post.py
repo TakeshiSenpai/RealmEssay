@@ -17,7 +17,6 @@ client = MongoClient(f"mongodb+srv://{mongo_user}:{mongo_password}@{mongo_cluste
 db = client["ChatDB"]
 carpeta_collection = db["Carpeta"]
 
-
 # Función para crear una nueva carpeta desde un archivo JSON que contiene objetos
 def crear_carpeta_desde_json(nombre_archivo_json):
     try:

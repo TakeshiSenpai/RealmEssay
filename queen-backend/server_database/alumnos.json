@@ -1,0 +1,18 @@
+[
+    {
+        "Correo": "alumno1@example.com",
+        "Entrega": {
+            "Fecha": "2024-10-25",
+            "Archivo": "tarea1.pdf"
+        },
+        "Calificacion": 90
+    },
+    {
+        "Correo": "alumno2@example.com",
+        "Entrega": {
+            "Fecha": "2024-10-26",
+            "Archivo": "tarea2.pdf"
+        },
+        "Calificacion": 95
+    }
+]
