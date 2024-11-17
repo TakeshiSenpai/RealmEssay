@@ -27,21 +27,21 @@ def obtener_todos_los_chats(archivo_json=None):
         for chat in chats:
             chat['_id'] = str(chat['_id'])
 
-        # Si se proporciona un archivo JSON, exportar los datos
+        # Si se proporciona un archivo JSON, exportar los datos con UTF-8
         if archivo_json:
-            with open(archivo_json, 'w') as file:
-                json.dump(chats, file, indent=4)
+            with open(archivo_json, 'w', encoding='utf-8') as file:
+                json.dump(chats, file, ensure_ascii=False, indent=4)
             print(f"Datos exportados a {archivo_json}")
 
-        # Imprimir chats en la consola
+        # Imprimir chats en la consola en formato JSON legible
         print("Datos obtenidos de la colección 'Chat':")
         for chat in chats:
-            print(chat)
+            print(json.dumps(chat, ensure_ascii=False, indent=4))
         
         return chats
 
     except Exception as e:
-        print(f"Ocurrió un error: {e}")
+        print(f"Ocurrió un error: {str(e).encode('utf-8').decode('utf-8')}")
 
 # Ejemplo de uso
 if __name__ == "__main__":

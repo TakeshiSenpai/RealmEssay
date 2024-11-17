@@ -1,11 +1,11 @@
 [
     {
-        "_id": "671dc941a253e2c4d8abfae5",
+        "_id": "6739483de4679a6e126f0f13",
         "Correo": "alumno@example.com",
-        "Entrega": [
-            {"Fecha": "2024-10-25"},
-            {"Archivo": "entrega_tarea.pdf"}
-        ],
-        "Calificacion": 90
+        "Entrega": {
+            "Fecha": "2024-10-26",
+            "Archivo": "tarea.pdf"
+        },
+        "Calificacion": 100
     }
 ]
