@@ -10,7 +10,8 @@ const IAMessage = ({message}) => {
     const superMessage = () => {
         const conv = new Showdown.Converter()
         // Asegurarnos que los saltos de líneas y los tabs se muestren de manera correcta
-        return conv.makeHtml(message.replaceAll("\\n", "<br>").replaceAll("\\t", "&nbsp;&nbsp;&nbsp;&nbsp;"))
+        //return conv.makeHtml(message.replaceAll("\\n", "<br>").replaceAll("\\t", "&nbsp;&nbsp;&nbsp;&nbsp;"))
+        return conv.makeHtml(message)
     }
 
     return (

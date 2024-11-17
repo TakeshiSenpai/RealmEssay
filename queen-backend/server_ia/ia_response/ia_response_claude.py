@@ -12,7 +12,7 @@ from bson.objectid import ObjectId
 def load_data_from_file(file_path, key):
     """Carga un valor específico de un archivo JSON."""
     if os.path.exists(file_path):
-        with open(file_path, 'r') as f:
+        with open(file_path, 'r', encoding="utf-8") as f:
             data = json.load(f)
             return data.get(key)
     return None
@@ -29,16 +29,16 @@ if "VERCEL_ENV" in os.environ:  # Esta variable solo existe en Vercel
     INTERACTIONS_file_path = 'ia_response/user_interactions/interactions.json'
     TTS_file_path = 'ia_response/cleanOutput.mp3'
 else:
-    INPUT_file_path = pathlib.Path('input.json').resolve()
-    # print(INPUT_file_path)
-    CRITERIA_file_path =  pathlib.Path('criteria.json').resolve()
-    # print(CRITERIA_file_path)
-    INTERACTIONS_file_path = pathlib.Path('ia_response/user_interactions/interactions.json').resolve()
-
-    #print(INTERACTIONS_file_path)
+    INPUT_file_path = pathlib.Path('server_ia/ia_response/input.json').resolve()
+    CRITERIA_file_path =  pathlib.Path('server_ia/ia_response/criteria.json').resolve()
+    INTERACTIONS_file_path = pathlib.Path('server_ia/ia_response/user_interactions/interactions.json').resolve()
     TTS_file_path = 'server_ia/ia_response/cleanOutput.mp3'
 
 
+print(INPUT_file_path)
+print(INTERACTIONS_file_path)
+print(CRITERIA_file_path)
+print(TTS_file_path)
 # Cargar el token desde un archivo
 def load_api_token(file_path):
     with open(file_path, 'r') as file:
@@ -231,8 +231,8 @@ def process_ia_response(result_stream, input_text, student_questions=None):
         print("intentando procesar el stream de respuesta de la IA")
         for text in result_stream:
             response_text += text
-            yield f"data: {json.dumps({'text': text})}\n\n"
-
+            #yield f"data: {json.dumps({'text': text})}\n\n"
+            yield text
         # Guardar la interacción en el archivo JSON
         clean_text=tts_gcp2.procesar_texto(response_text)
         print(clean_text)

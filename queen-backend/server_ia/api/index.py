@@ -8,9 +8,9 @@ CORS(app)
 import json
 try:
     #En vercel asi deberia ser porque el root es server_ia
-    from ia_response import ia_response
+    from ia_response import ia_response_claude
 except:
-    from  server_ia.ia_response import ia_response
+    from  server_ia.ia_response import ia_response_claude
 
 #El de welcome esta hecho para probar como funciona el vercel
 
@@ -63,14 +63,20 @@ def get_response():
     try:
         #student_questions del cuerpo de la solicitud POST
         data = request.json
+        print("Porque no imprimio nada wtf")
+        print(data)
         student_questions = data.get("student_questions", [])
+        print(student_questions)
         # Procesar la respuesta como un stream de datos
-        def stream_response():
-            for fragment in ia_response.process_questions_and_responses(student_questions):
-                yield fragment
+        def generate():
+            for chunk in ia_response_claude.process_questions_and_responses(student_questions):
+                if isinstance(chunk, str):
+                    yield f"data: {json.dumps({'text': chunk})}\n\n"
+                else:
+                    yield f"data: {json.dumps(chunk)}\n\n"
 
         # Retornar el stream usando la función generadora
-        return Response(stream_response(), content_type='text/event-stream')
+        return Response(generate(), content_type='text/event-stream')
 
     except Exception as e:
         return jsonify({"error": f"Error al obtener la respuesta: {str(e)}"}), 500
@@ -80,7 +86,7 @@ def get_response():
 def submit_criteria():
     try:
         criteria_data = request.json
-        ia_response.submit_criteria(criteria_data)
+        ia_response_claude.submit_criteria(criteria_data)
         return jsonify({"message": "Criterios enviados exitosamente"}), 200
     except Exception as e:
         return jsonify({"error": f"Error al enviar los criterios: {str(e)}"}), 500
