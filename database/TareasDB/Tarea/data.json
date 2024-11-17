@@ -1,14 +1,9 @@
 {
-    "Descripcion": "Tarea de matemáticas sobre álgebra",
+    "_id": "671dc4104eb0128c1f12a1e3",
+    "Descripcion": "Tarea de matematicas sobre algebra",
     "Alumnos": [
-        {
-            "AlumnoId": "605c9a1b8cfa0d1c4cb7dbae",
-            "Nombre": "Juan Pérez"
-        },
-        {
-            "AlumnoId": "605c9a1b8cfa0d1c4cb7dbaf",
-            "Nombre": "María López"
-        }
+        { "AlumnoId": "605c9a1b8cfa0d1c4cb7dbae", "Nombre": "Juan Perez" },
+        { "AlumnoId": "605c9a1b8cfa0d1c4cb7dbaf", "Nombre": "Maria Lopez" }
     ],
-    "Rubrica": "Puntaje: 100, Evaluación por conceptos"
+    "Rubrica": "Puntaje: 100, Evaluacion por conceptos"
 }
