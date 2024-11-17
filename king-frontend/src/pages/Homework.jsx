@@ -17,7 +17,7 @@ import {Link, useNavigate} from "react-router-dom"
 //import { sendEmail } from '../app/api/emails/envioCodigoDeTarea.jsx'
 import CodigoDeTarea from "../app/emails/CodigoDeTarea.jsx"
 import {render} from '@react-email/components'
-import EmailProfesorConfirmation from '../app/emails/EmailProfesorConfirmation.jsx'
+import EmailProfesorConfirmation from '../app/emails/emailProfesorConfirmation.jsx'
 import {useIsStudent} from "../components/IsStudentProvider"
 
 
@@ -38,6 +38,7 @@ const Homework = () => {
     const {isStudent, setIsStudent} = useIsStudent()
     const navigate = useNavigate()
     useEffect(() => {
+        console.log(isStudent);
         if (!isStudent) {
             navigate("/")
             setIsStudent(true)
@@ -276,9 +277,12 @@ const Homework = () => {
                     creationIndex >= 2 && (
                         <Button onClick={() => {
                             cambiarIndice(1)
-                        }} sx={{ml: 'auto'}} component={Link} to={creationIndex === 2 ? "/createhomework" : ""}>
+                        }} 
+                        sx={{ml: 'auto'}} 
+                        >
                             Crear
                         </Button>)
+                        //component={Link} to={creationIndex === 2 ? "essays/createhomework" : ""}
                 }
             </Box>
 
