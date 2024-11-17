@@ -33,7 +33,8 @@ else:
     # print(INPUT_file_path)
     CRITERIA_file_path =  pathlib.Path('criteria.json').resolve()
     # print(CRITERIA_file_path)
-    INTERACTIONS_file_path =  pathlib.Path('user_interactions/interactions.json').resolve()
+    INTERACTIONS_file_path = pathlib.Path('ia_response/user_interactions/interactions.json').resolve()
+
     #print(INTERACTIONS_file_path)
     TTS_file_path = 'server_ia/ia_response/cleanOutput.mp3'
 
@@ -193,8 +194,8 @@ def process_questions_and_responses(student_questions):
     for question in student_questions:
         system_instructions, inputs = generate_inputs(input_text, criteria, question)
         result_stream = run_model("claude-3-5-sonnet-20241022", system_instructions, inputs)
-        for text in process_ia_response(result_stream, input_text, student_questions):
-            yield text
+        return process_ia_response(result_stream, input_text, student_questions)
+
         # response_text = "".join(result_stream)
         # responses.append({"question": question, "response": response_text})
         # print(f"Pregunta: {question}, Respuesta: {response_text}")
@@ -230,8 +231,8 @@ def process_ia_response(result_stream, input_text, student_questions=None):
         print("intentando procesar el stream de respuesta de la IA")
         for text in result_stream:
             response_text += text
-            print(text, end="", flush=True)
-        
+            yield f"data: {json.dumps({'text': text})}\n\n"
+
         # Guardar la interacción en el archivo JSON
         clean_text=tts_gcp2.procesar_texto(response_text)
         print(clean_text)
@@ -244,5 +245,5 @@ def process_ia_response(result_stream, input_text, student_questions=None):
     except Exception as e:
         yield json.dumps({"message": f"Error al procesar la respuesta de la IA: {str(e)}"})
 
-for text in process_questions_and_responses(data.get("student_questions")):
-    print(text,end="",flush=True)
+# for text in process_questions_and_responses(data.get("student_questions")):
+#     print(text,end="",flush=True)
