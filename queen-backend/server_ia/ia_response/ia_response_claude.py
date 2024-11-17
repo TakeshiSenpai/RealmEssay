@@ -34,6 +34,7 @@ else:
     CRITERIA_file_path =  pathlib.Path('criteria.json').resolve()
     # print(CRITERIA_file_path)
     INTERACTIONS_file_path = pathlib.Path('ia_response/user_interactions/interactions.json').resolve()
+
     #print(INTERACTIONS_file_path)
     TTS_file_path = 'server_ia/ia_response/cleanOutput.mp3'
 
@@ -195,6 +196,10 @@ def process_questions_and_responses(student_questions):
         result_stream = run_model("claude-3-5-sonnet-20241022", system_instructions, inputs)
         return process_ia_response(result_stream, input_text, student_questions)
 
+        # response_text = "".join(result_stream)
+        # responses.append({"question": question, "response": response_text})
+        # print(f"Pregunta: {question}, Respuesta: {response_text}")
+
     # Retornar todas las respuestas como JSON
 
 
@@ -228,7 +233,6 @@ def process_ia_response(result_stream, input_text, student_questions=None):
             response_text += text
             yield f"data: {json.dumps({'text': text})}\n\n"
 
-        
         # Guardar la interacción en el archivo JSON
         clean_text=tts_gcp2.procesar_texto(response_text)
         print(clean_text)

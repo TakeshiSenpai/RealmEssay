@@ -20,6 +20,7 @@ if response.status_code == 200:
     for chunk in response.iter_content(chunk_size=None, decode_unicode=True):
         # Imprime cada fragmento del stream
         print(chunk, end='', flush=True)
+
 else:
     print(f"Error: {response.status_code} - {response.text}")
 

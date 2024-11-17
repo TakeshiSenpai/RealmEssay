@@ -3,6 +3,7 @@ from flask_cors import CORS
 from ia_response import ia_response_claude as ia_response
 import json
 
+
 app = Flask(__name__)
 CORS(app)
 
@@ -71,6 +72,23 @@ def submit_criteria():
         return jsonify({"message": "Criterios enviados exitosamente"}), 200
     except Exception as e:
         return jsonify({"error": f"Error al enviar los criterios: {str(e)}"}), 500
+    
+# Ruta para enviar el ensayo y recibir la evaluación en fragmentos
+@app.route('/submit_essay', methods=['POST'])
+def submit_essay():
+    try:
+        data = request.json
+        
+        # Función generadora para transmitir la respuesta en fragmentos
+        def stream_response():
+            for text in ia_response.submit_essay(data):
+                yield f"data: {text}\n\n"  # Enviar cada fragmento al cliente progresivamente
+
+        # Retornar la respuesta como un `Response` para hacer `streaming`
+        return Response(stream_response(), content_type='text/event-stream')
+
+    except Exception as e:
+        return jsonify({"error": f"Error al procesar los datos: {str(e)}"}), 500
 
 
 @app.route('/submit_essay', methods=['POST'])
