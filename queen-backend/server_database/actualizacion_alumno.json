@@ -1,0 +1,8 @@
+{
+    "Correo": "alumno1_actualizado@example.com",
+    "Entrega": {
+        "Fecha": "2024-11-01",
+        "Archivo": "tarea1_actualizada.pdf"
+    },
+    "Calificacion": 95
+}

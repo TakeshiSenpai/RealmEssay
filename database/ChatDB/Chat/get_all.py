@@ -1,4 +1,3 @@
-from flask import Flask, jsonify
 import os
 import json
 from pymongo import MongoClient
@@ -18,12 +17,8 @@ client = MongoClient(f"mongodb+srv://{mongo_user}:{mongo_password}@{mongo_cluste
 db = client["ChatDB"]
 chat_collection = db["Chat"]
 
-# Inicializar la aplicación Flask
-app = Flask(__name__)
-
-# Endpoint para obtener todos los chats
-@app.route('/chats', methods=['GET'])
-def obtener_chats():
+# Función para obtener todos los documentos de la colección 'Chat'
+def obtener_todos_los_chats(archivo_json=None):
     try:
         # Obtener todos los chats
         chats = list(chat_collection.find())
@@ -31,13 +26,24 @@ def obtener_chats():
         # Convertir ObjectId a string para que sea serializable en JSON
         for chat in chats:
             chat['_id'] = str(chat['_id'])
-        
-        # Devolver los chats en formato JSON
-        return jsonify(chats)
-    
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
 
-# Ejecutar la aplicación
-if __name__ == '__main__':
-    app.run(debug=True)
+        # Si se proporciona un archivo JSON, exportar los datos
+        if archivo_json:
+            with open(archivo_json, 'w') as file:
+                json.dump(chats, file, indent=4)
+            print(f"Datos exportados a {archivo_json}")
+
+        # Imprimir chats en la consola
+        print("Datos obtenidos de la colección 'Chat':")
+        for chat in chats:
+            print(chat)
+        
+        return chats
+
+    except Exception as e:
+        print(f"Ocurrió un error: {e}")
+
+# Ejemplo de uso
+if __name__ == "__main__":
+    # Exportar todos los datos a un archivo JSON (opcional)
+    obtener_todos_los_chats('chats.json')

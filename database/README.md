@@ -27,3 +27,41 @@ Instala los requisitos ejecutando:
 
 ```bash
 pip install pymongo
+
+Clase ChatDBManager
+La clase ChatDBManager está diseñada para gestionar la base de datos ChatDB, que incluye las colecciones Carpeta y Chat.
+
+Métodos Disponibles
+1. CRUD Genérico
+set_collection(collection_name): Cambia la colección activa.
+create_from_json(json_file): Crea documentos desde un archivo JSON.
+read_all(): Lee todos los documentos de la colección activa.
+read_by_id(document_id): Lee un documento específico por su ID.
+update_by_id(document_id, json_file): Actualiza un documento específico con datos de un archivo JSON.
+delete_by_id(document_id): Elimina un documento específico por su ID.
+2. Métodos Específicos
+buscar_carpeta_por_nombre(nombre_carpeta): Busca carpetas por nombre (insensible a mayúsculas).
+buscar_chats_por_correo(correo_alumno): Busca chats asociados a un correo de alumno.
+
+Clase TareasDBManager
+La clase TareasDBManager gestiona la base de datos TareasDB, que incluye las colecciones Alumno y Tarea.
+
+Métodos Disponibles
+1. CRUD Genérico
+set_collection(collection_name): Cambia la colección activa.
+create_from_json(json_file): Crea documentos desde un archivo JSON.
+read_all(): Lee todos los documentos de la colección activa.
+read_by_id(document_id): Lee un documento específico por su ID.
+update_by_id(document_id, json_file): Actualiza un documento específico con datos de un archivo JSON.
+delete_by_id(document_id): Elimina un documento específico por su ID.
+2. Métodos Específicos
+buscar_alumnos_por_calificacion(calificacion_minima): Busca alumnos con calificaciones mayores o iguales a un valor específico.
+
+Pruebas
+1. Pruebas para ChatDBManager
+Ejecuta las pruebas en test_chatdb.py:
+python test_chatdb.py
+
+2. Pruebas para TareasDBManager
+Ejecuta las pruebas en test_tareasdb.py:
+python test_tareasdb.py

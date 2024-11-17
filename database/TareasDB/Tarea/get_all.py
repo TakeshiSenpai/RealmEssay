@@ -17,8 +17,8 @@ client = MongoClient(f"mongodb+srv://{mongo_user}:{mongo_password}@{mongo_cluste
 db = client["TareasDB"]
 tarea_collection = db["Tarea"]
 
-# Función para obtener todas las tareas y exportarlas a un archivo JSON
-def exportar_tareas_a_json(archivo_json):
+# Función para obtener todos los documentos de la colección 'Tarea'
+def obtener_todas_las_tareas(archivo_json=None):
     try:
         # Obtener todas las tareas
         tareas = list(tarea_collection.find())
@@ -26,15 +26,24 @@ def exportar_tareas_a_json(archivo_json):
         # Convertir ObjectId a string para que sea serializable en JSON
         for tarea in tareas:
             tarea['_id'] = str(tarea['_id'])
+
+        # Si se proporciona un archivo JSON, exportar los datos
+        if archivo_json:
+            with open(archivo_json, 'w') as file:
+                json.dump(tareas, file, indent=4)
+            print(f"Datos exportados a {archivo_json}")
+
+        # Imprimir tareas en la consola
+        print("Datos obtenidos de la colección 'Tarea':")
+        for tarea in tareas:
+            print(tarea)
         
-        # Escribir las tareas en el archivo JSON
-        with open(archivo_json, 'w') as file:
-            json.dump(tareas, file, indent=4)
-        
-        print(f"Tareas exportadas a {archivo_json}")
-    
+        return tareas
+
     except Exception as e:
         print(f"Ocurrió un error: {e}")
 
 # Ejemplo de uso
-exportar_tareas_a_json('data.json')
+if __name__ == "__main__":
+    # Exportar todos los datos a un archivo JSON (opcional)
+    obtener_todas_las_tareas('tareas.json')

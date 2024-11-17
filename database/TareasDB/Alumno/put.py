@@ -1,9 +1,19 @@
+import os
+import json
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-import json
+from dotenv import load_dotenv
+
+# Cargar variables de entorno desde el archivo .env
+load_dotenv()
+
+# Leer variables de entorno
+mongo_user = os.getenv("MONGO_USER")
+mongo_password = os.getenv("MONGO_PASSWORD")
+mongo_cluster = os.getenv("MONGO_CLUSTER")
 
 # Conexión a MongoDB
-client = MongoClient("mongodb+srv://alan11gt:ioUvPgAvDZcVwWXs@cluster0.2b8il.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+client = MongoClient(f"mongodb+srv://{mongo_user}:{mongo_password}@{mongo_cluster}/?retryWrites=true&w=majority&appName=Cluster0")
 db = client["TareasDB"]
 alumno_collection = db["Alumno"]
 
@@ -33,4 +43,4 @@ def actualizar_alumno_desde_json(alumno_id, archivo_json):
         print(f"Ocurrió un error: {e}")
 
 # Ejemplo de uso
-actualizar_alumno_desde_json("605c9a1b8cfa0d1c4cb7dbae", 'C:\\Users\\alan1\\Documents\\GitHub\\RealmEssay\\RealmEssay\\data-base\\TareasDB\\Alumno\\data.json')
+actualizar_alumno_desde_json("605c9a1b8cfa0d1c4cb7dbae", 'data.json')

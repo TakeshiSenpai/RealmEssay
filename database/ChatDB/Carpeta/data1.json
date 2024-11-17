@@ -1,16 +1,197 @@
 [
     {
-        "_id": "671b464bcf72d845cf4c6616",
+        "_id": "671b532ee3390ab6f086c72c",
         "CorreoProfesor": "ejemploCorreo@uabc.com",
         "Nombre": "Fulanito",
         "Chats": [
-            "N",
-            "o",
-            " ",
-            "s",
-            "\u00c3",
-            "\u00a9"
+            "605c9a1b8cfa0d1c4cb7dbae",
+            "605c9a1b8cfa0d1c4cb7dbaf"
         ],
-        "Carpeta": "2B"
+        "Carpeta": {
+            "CorreoProfesor": "ejemploCorreo@uabc.com",
+            "Nombre": "Fulanito",
+            "Chats": [
+                {
+                    "ChatId": "605c9a1b8cfa0d1c4cb7dbae",
+                    "CorreoAlumno": "alumno1@example.com",
+                    "RespuestasIA": [
+                        "Respuesta IA 1",
+                        "Respuesta IA 2"
+                    ],
+                    "RespuestasAlumno": [
+                        "Respuesta Alumno 1",
+                        "Respuesta Alumno 2"
+                    ]
+                },
+                {
+                    "ChatId": "605c9a1b8cfa0d1c4cb7dbae",
+                    "CorreoAlumno": "alumno1@example.com",
+                    "RespuestasIA": [
+                        "Respuesta IA 1",
+                        "Respuesta IA 2"
+                    ],
+                    "RespuestasAlumno": [
+                        "Respuesta Alumno 1",
+                        "Respuesta Alumno 2"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "_id": "671c76e6fa16050ac8a80ee5",
+        "CorreoProfesor": "ejemploCorreo@uabc.com",
+        "Nombre": "Fulanito",
+        "Chats": [
+            "605c9a1b8cfa0d1c4cb7dbae",
+            "605c9a1b8cfa0d1c4cb7dbaf"
+        ],
+        "Carpeta": {
+            "CorreoProfesor": "ejemploCorreo@uabc.com",
+            "Nombre": "Fulanito",
+            "Chats": [
+                {
+                    "ChatId": "605c9a1b8cfa0d1c4cb7dbae",
+                    "CorreoAlumno": "alumno1@example.com",
+                    "RespuestasIA": [
+                        "Respuesta IA 1",
+                        "Respuesta IA 2"
+                    ],
+                    "RespuestasAlumno": [
+                        "Respuesta Alumno 1",
+                        "Respuesta Alumno 2"
+                    ]
+                },
+                {
+                    "ChatId": "605c9a1b8cfa0d1c4cb7dbae",
+                    "CorreoAlumno": "alumno1@example.com",
+                    "RespuestasIA": [
+                        "Respuesta IA 1",
+                        "Respuesta IA 2"
+                    ],
+                    "RespuestasAlumno": [
+                        "Respuesta Alumno 1",
+                        "Respuesta Alumno 2"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "_id": "671c7af82ad164a2095f14d1",
+        "CorreoProfesor": "ejemploCorreo@uabc.com",
+        "Nombre": "Fulanito",
+        "Chats": [
+            "605c9a1b8cfa0d1c4cb7dbae",
+            "605c9a1b8cfa0d1c4cb7dbaf"
+        ],
+        "Carpeta": {
+            "CorreoProfesor": "ejemploCorreo@uabc.com",
+            "Nombre": "Fulanito",
+            "Chats": [
+                {
+                    "ChatId": "605c9a1b8cfa0d1c4cb7dbae",
+                    "CorreoAlumno": "alumno1@example.com",
+                    "RespuestasIA": [
+                        "Respuesta IA 1",
+                        "Respuesta IA 2"
+                    ],
+                    "RespuestasAlumno": [
+                        "Respuesta Alumno 1",
+                        "Respuesta Alumno 2"
+                    ]
+                },
+                {
+                    "ChatId": "605c9a1b8cfa0d1c4cb7dbae",
+                    "CorreoAlumno": "alumno1@example.com",
+                    "RespuestasIA": [
+                        "Respuesta IA 1",
+                        "Respuesta IA 2"
+                    ],
+                    "RespuestasAlumno": [
+                        "Respuesta Alumno 1",
+                        "Respuesta Alumno 2"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "_id": "671dc3ca44bfafea4c197bcd",
+        "CorreoProfesor": "ejemploCorreo@uabc.com",
+        "Nombre": "Fulanito",
+        "Chats": [
+            "605c9a1b8cfa0d1c4cb7dbae",
+            "605c9a1b8cfa0d1c4cb7dbaf"
+        ],
+        "Carpeta": {
+            "CorreoProfesor": "ejemploCorreo@uabc.com",
+            "Nombre": "Fulanito",
+            "Chats": [
+                {
+                    "ChatId": "605c9a1b8cfa0d1c4cb7dbae",
+                    "CorreoAlumno": "alumno1@example.com",
+                    "RespuestasIA": [
+                        "Respuesta IA 1",
+                        "Respuesta IA 2"
+                    ],
+                    "RespuestasAlumno": [
+                        "Respuesta Alumno 1",
+                        "Respuesta Alumno 2"
+                    ]
+                },
+                {
+                    "ChatId": "605c9a1b8cfa0d1c4cb7dbae",
+                    "CorreoAlumno": "alumno1@example.com",
+                    "RespuestasIA": [
+                        "Respuesta IA 1",
+                        "Respuesta IA 2"
+                    ],
+                    "RespuestasAlumno": [
+                        "Respuesta Alumno 1",
+                        "Respuesta Alumno 2"
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "_id": "672007ff4196bacf1c28a537",
+        "CorreoProfesor": "ejemploCorreo@uabc.com",
+        "Nombre": "Fulanito",
+        "Chats": [
+            "605c9a1b8cfa0d1c4cb7dbae",
+            "605c9a1b8cfa0d1c4cb7dbaf"
+        ],
+        "Carpeta": {
+            "CorreoProfesor": "ejemploCorreo@uabc.com",
+            "Nombre": "Fulanito",
+            "Chats": [
+                {
+                    "ChatId": "605c9a1b8cfa0d1c4cb7dbae",
+                    "CorreoAlumno": "alumno1@example.com",
+                    "RespuestasIA": [
+                        "Respuesta IA 1",
+                        "Respuesta IA 2"
+                    ],
+                    "RespuestasAlumno": [
+                        "Respuesta Alumno 1",
+                        "Respuesta Alumno 2"
+                    ]
+                },
+                {
+                    "ChatId": "605c9a1b8cfa0d1c4cb7dbae",
+                    "CorreoAlumno": "alumno1@example.com",
+                    "RespuestasIA": [
+                        "Respuesta IA 1",
+                        "Respuesta IA 2"
+                    ],
+                    "RespuestasAlumno": [
+                        "Respuesta Alumno 1",
+                        "Respuesta Alumno 2"
+                    ]
+                }
+            ]
+        }
     }
 ]
