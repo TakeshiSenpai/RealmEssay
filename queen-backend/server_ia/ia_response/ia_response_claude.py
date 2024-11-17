@@ -5,7 +5,7 @@ import sys
 import anthropic
 sys.path.append(str(pathlib.Path(__file__).parent.resolve()))
 #print(str(pathlib.Path(__file__).parent.resolve()))
-from tts import tts_gcp2
+from tts import tts_local
 from bson.objectid import ObjectId
 
 # Rutas donde se almacenarán temporalmente los datos
@@ -223,27 +223,48 @@ def evaluate_essay():
     for text in process_ia_response(result_stream, input_text):
            yield text
 
+
+
 def process_ia_response(result_stream, input_text, student_questions=None):
-    """Procesa la respuesta del modelo IA y guarda la interacción en el archivo JSON."""
+    """
+    Procesa la respuesta del modelo IA y guarda la interacción en un archivo JSON.
+
+    Args:
+        result_stream: Generador con fragmentos de texto provenientes del modelo IA.
+        input_text: Texto de entrada proporcionado por el usuario.
+        student_questions: Lista de preguntas hechas por el estudiante (opcional).
+
+    Yields:
+        Texto procesado del resultado del modelo IA.
+    """
     response_text = ""
     try:
-         # Enviar las últimas dos interacciones al cliente, si están disponibles
-        print("intentando procesar el stream de respuesta de la IA")
+        print("Intentando procesar el stream de respuesta de la IA...")
+
+        # Construir la respuesta a partir del stream
         for text in result_stream:
             response_text += text
-            #yield f"data: {json.dumps({'text': text})}\n\n"
-            yield text
+            yield text  # Enviar cada fragmento al cliente o donde se consuma
+
+        # Procesar el texto de respuesta
+        clean_text = tts_local.procesar_texto(response_text)
+       # print(f"Texto limpio: {clean_text}")
+        tts_local.run_edge_tts(clean_text,"es-MX-DaliaNeural")
+
+
         # Guardar la interacción en el archivo JSON
-        clean_text=tts_gcp2.procesar_texto(response_text)
-        print(clean_text)
-        # tts_gcp2.run_and_save(clean_text,TTS_FILE) TODO: Descomentar esta línea para habilitar la generación de audio
         if student_questions:
             for question in student_questions:
                 save_interaction(question, response_text, interaction_type="question")
         else:
             save_interaction(input_text, response_text, interaction_type="essay")
+
     except Exception as e:
-        yield json.dumps({"message": f"Error al procesar la respuesta de la IA: {str(e)}"})
+        # Informar sobre errores
+        error_message = f"Error al procesar la respuesta de la IA: {str(e)}"
+        print(error_message)
+        yield json.dumps({"message": error_message})
 
 # for text in process_questions_and_responses(data.get("student_questions")):
 #     print(text,end="",flush=True)
+#tts_local.run_edge_tts("hola mundo esta es mi nueva voz",'es-MX-DaliaNeural')

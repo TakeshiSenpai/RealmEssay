@@ -1,11 +1,13 @@
 import pathlib
-import os
+import os,sys
 from os.path import dirname, abspath, join
 from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 import json
+sys.path.append(str(pathlib.Path(__file__).parent.parent.resolve()))
+print(str(pathlib.Path(__file__).parent.parent.resolve()))
 try:
     #En vercel asi deberia ser porque el root es server_ia
     from ia_response import ia_response_claude
