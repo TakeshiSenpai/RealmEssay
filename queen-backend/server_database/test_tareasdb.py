@@ -1,5 +1,4 @@
 from tareasdb_manager import TareasDBManager
-
 # Inicializar la clase
 tareas_db = TareasDBManager()
 
