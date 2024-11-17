@@ -17,15 +17,8 @@ response = requests.post(url, json=data, stream=True)
 if response.status_code == 200:
     print("Recibiendo la respuesta en fragmentos:")
     
-    # Leer los fragmentos a medida que se reciben
-    for chunk in response.iter_lines():
-        if chunk:
-            # Decodificar y procesar cada fragmento de datos
-            decoded_chunk = chunk.decode('utf-8')
-            if decoded_chunk == "[DONE]":
-                print("Stream completado.")
-                break
-            print("Fragmento recibido:", decoded_chunk)
+   for text in response:
+
 else:
     print(f"Error: {response.status_code} - {response.text}")
 final=time.time()
