@@ -7,12 +7,24 @@ from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 import os
 from flask_cors import cross_origin
+try:
+    #Porque en vercel el root es server_homework_student
+    from tareasdb_manager import TareasDBManager
+except:
+    from server_homework_student.tareasdb_manager import TareasDBManager
 app = Flask(__name__)
 CORS(app)
 #El de welcome esta hecho para probar como funciona el vercel
 
 ia_server_url = os.getenv("VERCEL_IA","127.0.0.1:2003")
 ia_server_url = f"https://{ia_server_url}" if "VERCEL_IA" in os.environ else f"http://{ia_server_url}"
+
+#Inicializar la base de datos
+tareas_db = TareasDBManager()
+# Seleccionar la colección 'Alumno'
+tareas_db.set_collection("Alumno")
+
+
 @app.route('/api', methods=['GET'])
 def welcome():
     return jsonify({'success':True, 'message':'welcome student'}),200

@@ -31,6 +31,7 @@ const SendMessage = ({
         setLoading(true) // Activar el spinner cuando se envía el mensaje
 
         try {
+    
             const response = await fetch(`${IAUrl}/questions_and_responses`, {
                 method: 'POST',
                 headers: {
@@ -49,11 +50,20 @@ const SendMessage = ({
                     console.log(value, done)
                     done = streamDone
                     if (value) {
-                        const chunk = decoder.decode(value, {stream: true})
-                        accumulatedText += chunk
-
-                        // Actualizar el array con el nuevo fragmento
-                        setAiConversationArray([...aIConversationArray, accumulatedText])
+                        const chunk = decoder.decode(value, { stream: true });
+    
+                        // Procesa el chunk para extraer el texto
+                        const matches = chunk.match(/data:\s*(\{.*\})/); // Busca el JSON en el chunk
+                        if (matches) {
+                            const jsonData = JSON.parse(matches[1]); // Parsea el JSON encontrado
+                            const text = jsonData.text; // Extrae el texto
+    
+                            // Acumula solo el texto
+                            accumulatedText += text;
+    
+                            // Actualiza el array con el nuevo fragmento
+                            setAiConversationArray([...aIConversationArray, accumulatedText]);
+                        }
                     }
                 }
             } else {
