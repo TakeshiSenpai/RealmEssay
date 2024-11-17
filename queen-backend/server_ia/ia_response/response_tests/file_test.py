@@ -18,7 +18,6 @@ def getPDFText(file):
 
 # URLs del servidor
 url = 'http://127.0.0.1:2003/submit_essay'
-url_force_evaluation = 'http://127.0.0.1:2003/force_evaluation'
 
 def clean_text(text):
     """Limpia el texto del ensayo eliminando caracteres innecesarios."""

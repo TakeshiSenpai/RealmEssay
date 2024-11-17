@@ -1,9 +1,12 @@
 import os
+import os
 from multiprocessing import Process
 
 def run_python_file(file_path):
     if not os.path.exists(file_path):
         file_path = f"queen-backend/{file_path}"
+    os.system(f"python3 {file_path}")
+
     os.system(f"python3 {file_path}")
 
 def api_gateway():
@@ -20,6 +23,9 @@ def ia():
 
 def homework_student():
     run_python_file("server_homework_student/homework_student.py")
+
+# def db():
+    #run_python_file("database/maindb.py")
 
 if __name__ == "__main__":
     # Crear procesos para ejecutar los servidores

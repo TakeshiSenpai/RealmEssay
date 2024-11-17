@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
+from ia_response import ia_response_claude as ia_response
+import json
 
-from ia_response import ia_response
 
 app = Flask(__name__)
 CORS(app)
@@ -49,12 +50,15 @@ def get_response():
         data = request.json
         student_questions = data.get("student_questions", [])
         # Procesar la respuesta como un stream de datos
-        def stream_response():
-            for fragment in ia_response.process_questions_and_responses(student_questions):
-                yield fragment
+        def generate():
+            for chunk in ia_response.process_questions_and_responses(data):
+                if isinstance(chunk, str):
+                    yield f"data: {json.dumps({'text': chunk})}\n\n"
+                else:
+                    yield f"data: {json.dumps(chunk)}\n\n"
 
         # Retornar el stream usando la función generadora
-        return Response(stream_response(), content_type='text/event-stream')
+        return Response(generate(), content_type='text/event-stream')
 
     except Exception as e:
         return jsonify({"error": f"Error al obtener la respuesta: {str(e)}"}), 500
@@ -68,6 +72,43 @@ def submit_criteria():
         return jsonify({"message": "Criterios enviados exitosamente"}), 200
     except Exception as e:
         return jsonify({"error": f"Error al enviar los criterios: {str(e)}"}), 500
+    
+# Ruta para enviar el ensayo y recibir la evaluación en fragmentos
+@app.route('/submit_essay', methods=['POST'])
+def submit_essay():
+    try:
+        data = request.json
+        
+        # Función generadora para transmitir la respuesta en fragmentos
+        def stream_response():
+            for text in ia_response.submit_essay(data):
+                yield f"data: {text}\n\n"  # Enviar cada fragmento al cliente progresivamente
+
+        # Retornar la respuesta como un `Response` para hacer `streaming`
+        return Response(stream_response(), content_type='text/event-stream')
+
+    except Exception as e:
+        return jsonify({"error": f"Error al procesar los datos: {str(e)}"}), 500
+
+
+@app.route('/submit_essay', methods=['POST'])
+def handle_submit_essay():
+    try:
+        data = request.get_json()
+        if not data or 'input' not in data:
+            return jsonify({"error": "No essay provided"}), 400
+
+        def generate():
+            for chunk in ia_response.submit_essay(data):
+                if isinstance(chunk, str):
+                    yield f"data: {json.dumps({'text': chunk})}\n\n"
+                else:
+                    yield f"data: {json.dumps(chunk)}\n\n"
+
+        return Response(generate(), mimetype='text/event-stream')
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 @app.after_request
 def add_header(response):

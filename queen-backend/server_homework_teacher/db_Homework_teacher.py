@@ -10,6 +10,6 @@ tarea_collection = db["Tarea"]
 #Se le debe enviar el request que se obtiene de la conexion del frontend
 def post(request):
     email = request.get("email")
-    
+
     pass
 
