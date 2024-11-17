@@ -1,9 +1,12 @@
 import os
+import os
 from multiprocessing import Process
 
 def run_python_file(file_path):
     if not os.path.exists(file_path):
         file_path = f"queen-backend/{file_path}"
+    os.system(f"python3 {file_path}")
+
     os.system(f"python3 {file_path}")
 
 def api_gateway():
