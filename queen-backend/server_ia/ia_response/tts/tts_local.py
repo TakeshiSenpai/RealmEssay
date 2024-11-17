@@ -41,7 +41,7 @@ def run_edge_tts(text, voice):
         subprocess.CalledProcessError: Si el comando falla.
     """
     clean_text = procesar_texto(text)
-    command = f"edge-tts --voice {voice} --text \"{clean_text}\" --write-media cleanOutput.mp3"
+    command = f"edge-tts --voice {voice} --text \"{clean_text}\" --write-media cleanOutput.mp3 --write-subtitles cleanOutput.vtt"
     try:
         subprocess.run(command, shell=True, check=True)
         print("Audio generado con éxito: cleanOutput.mp3")
