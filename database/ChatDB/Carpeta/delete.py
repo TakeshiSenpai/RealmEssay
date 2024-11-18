@@ -30,4 +30,4 @@ def eliminar_carpeta(carpeta_id):
         print(f"Ocurrió un error: {e}")
 
 # Ejemplo de uso
-eliminar_carpeta("671b464bcf72d845cf4c6616")
+eliminar_carpeta("673977653861e4d136ac9ac1")

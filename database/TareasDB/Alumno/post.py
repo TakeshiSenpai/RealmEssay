@@ -17,23 +17,30 @@ client = MongoClient(f"mongodb+srv://{mongo_user}:{mongo_password}@{mongo_cluste
 db = client["TareasDB"]
 alumno_collection = db["Alumno"]
 
-# Función para crear un nuevo alumno desde un archivo JSON
+# Función para crear alumnos desde un archivo JSON
 def crear_alumno_desde_json(archivo_json):
     try:
-        # Leer el archivo JSON
-        with open(archivo_json, 'r') as file:
+        # Leer el archivo JSON con codificación UTF-8
+        with open(archivo_json, 'r', encoding='utf-8') as file:
             datos_alumno = json.load(file)
 
-        # Insertar el alumno en la colección
-        resultado = alumno_collection.insert_one(datos_alumno)
-        print(f"Alumno creado con ID: {resultado.inserted_id}")
+        # Insertar los datos en la colección
+        if isinstance(datos_alumno, list):
+            resultado = alumno_collection.insert_many(datos_alumno)
+            print(f"{len(resultado.inserted_ids)} alumnos creados.")
+        elif isinstance(datos_alumno, dict):
+            resultado = alumno_collection.insert_one(datos_alumno)
+            print(f"Alumno creado con ID: {resultado.inserted_id}")
+        else:
+            print("El archivo JSON no contiene un formato válido (debe ser un objeto o una lista de objetos).")
     
     except FileNotFoundError:
         print(f"Archivo {archivo_json} no encontrado.")
     except json.JSONDecodeError:
         print(f"Error al decodificar el archivo JSON {archivo_json}.")
     except Exception as e:
-        print(f"Ocurrió un error: {e}")
+        print(f"Ocurrió un error: {str(e).encode('utf-8').decode('utf-8')}")
 
 # Ejemplo de uso
-crear_alumno_desde_json('data.json')
+if __name__ == "__main__":
+    crear_alumno_desde_json('data.json')

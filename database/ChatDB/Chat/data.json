@@ -1,6 +1,12 @@
-{
-    "CorreoAlumno": "ejemploCorreo@uabc.com",
-    "RespuestaAlumno": "¿Por qué mi calificacion fue 85?",
-    "RespuestaIA": "Por k ta mal tu cosa"
-}
-  
+[
+    {
+        "CorreoAlumno": "alumno1@example.com",
+        "RespuestasIA": ["Hola, ¿cómo estás?", "Estoy mal, gracias."],
+        "RespuestasAlumno": ["Estoy mal, ¿y tú?", "Perfecto."]
+    },
+    {
+        "CorreoAlumno": "alumno2@example.com",
+        "RespuestasIA": ["¿Qué necesitas?", "¿Puedo ayudarte?"],
+        "RespuestasAlumno": ["Nada, gracias.", "Solo explorando."]
+    }
+]

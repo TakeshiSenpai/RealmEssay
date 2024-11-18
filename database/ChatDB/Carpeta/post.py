@@ -23,8 +23,8 @@ def crear_carpeta_desde_json(nombre_archivo_json):
         # Obtener la ruta del archivo JSON relativa a donde se ejecuta el script
         ruta_archivo = os.path.join(os.path.dirname(__file__), nombre_archivo_json)
 
-        # Leer el archivo JSON
-        with open(ruta_archivo, 'r') as file:
+        # Leer el archivo JSON con codificación UTF-8
+        with open(ruta_archivo, 'r', encoding='utf-8') as file:
             datos_carpeta = json.load(file)
 
         # Si el campo "Chats" es una lista de objetos, conviértelo adecuadamente

@@ -20,8 +20,8 @@ tarea_collection = db["Tarea"]
 # Función para actualizar una tarea por su ID usando datos desde un archivo JSON
 def actualizar_tarea_desde_json(tarea_id, archivo_json):
     try:
-        # Leer el archivo JSON
-        with open(archivo_json, 'r') as file:
+        # Leer el archivo JSON con codificación UTF-8
+        with open(archivo_json, 'r', encoding='utf-8') as file:
             nuevos_datos = json.load(file)
 
         # Actualizar la tarea en la colección
@@ -40,7 +40,8 @@ def actualizar_tarea_desde_json(tarea_id, archivo_json):
     except json.JSONDecodeError:
         print(f"Error al decodificar el archivo JSON {archivo_json}.")
     except Exception as e:
-        print(f"Ocurrió un error: {e}")
+        print(f"Ocurrió un error: {str(e).encode('utf-8').decode('utf-8')}")
 
 # Ejemplo de uso
-actualizar_tarea_desde_json("671dc4104eb0128c1f12a1e3", 'data.json')
+if __name__ == "__main__":
+    actualizar_tarea_desde_json("6739c4e5ea37f175c3833ed8", 'data.json')

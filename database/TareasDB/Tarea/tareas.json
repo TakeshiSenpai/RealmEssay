@@ -1,0 +1,21 @@
+[
+    {
+        "_id": "6739c4e5ea37f175c3833ed8",
+        "Descripcion": "Ensayo de la primera guerra mundial",
+        "Alumnos": [
+            {
+                "AlumnoId": "605c9a1b8cfa0d1c4cb7dbae",
+                "Nombre": "Juan Pérez"
+            },
+            {
+                "AlumnoId": "605c9a1b8cfa0d1c4cb7dbaf",
+                "Nombre": "Maria López"
+            },
+            {
+                "AlumnoId": "605c9a1b8cfa0d1c4cb7dbae",
+                "Nombre": "Alumno Nuevo"
+            }
+        ],
+        "Rubrica": "Puntaje: 100, Evaluacion por conceptos"
+    }
+]

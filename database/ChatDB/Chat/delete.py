@@ -30,4 +30,4 @@ def eliminar_chat(chat_id):
         print(f"Ocurrió un error: {e}")
 
 # Ejemplo de uso
-eliminar_chat("671b3efee259173f17114f35")
+eliminar_chat("673993b946e26957157fbc4e")

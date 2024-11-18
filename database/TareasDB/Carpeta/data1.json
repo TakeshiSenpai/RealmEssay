@@ -1,13 +1,13 @@
 [
     {
-        "_id": "671dc8b2601035818fb18c00",
+        "_id": "67399c4515e172b3a77629c2",
         "Correo": "profesor@example.com",
-        "Nombre": "Carpeta de Matem\u00c3\u00a1ticas",
+        "Nombre": "Carpeta de Matemáticas actualizadas",
         "Tareas": [
             {
                 "TareaId": "605c9a1b8cfa0d1c4cb7dbae",
                 "Descripcion": "Tarea 1",
-                "Rubrica": "Puntaje: 100"
+                "Rubrica": "Puntaje: 0"
             },
             {
                 "TareaId": "605c9a1b8cfa0d1c4cb7dbaf",

@@ -30,4 +30,4 @@ def eliminar_alumno(alumno_id):
         print(f"Ocurrió un error: {e}")
 
 # Ejemplo de uso
-eliminar_alumno("605c9a1b8cfa0d1c4cb7dbae")
+eliminar_alumno("6739483de4679a6e126f0f13")
