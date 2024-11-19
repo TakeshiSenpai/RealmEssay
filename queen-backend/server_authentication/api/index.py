@@ -44,13 +44,15 @@ def login_google():
         jwt_token = generate_jwt(user_info)
 
         chat_db_manager.set_collection("Carpeta")
+        tareas_db_manager.set_collection("Carpeta")
+
         carpetas = chat_db_manager.read_all()
-        existe_correo = any(carpeta.get('Correo') == idinfo.get("email") for carpeta in carpetas)
+        existe_correo = any(carpeta.get('email') == idinfo.get("email") for carpeta in carpetas)
 
         if not existe_correo:
             carpeta = {
                 "nombre": idinfo.get("name"),
-                "Correo": idinfo.get("email"),
+                "email": idinfo.get("email"),
                 "data": []
             }
             chat_db_manager.create_from_json_object(carpeta)

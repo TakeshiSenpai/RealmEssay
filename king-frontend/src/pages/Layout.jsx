@@ -46,23 +46,85 @@ const Layout = ({theme, setTheme, isAuto}) => {
 
         if (storedUserInfo) {
             const parsedUserInfo = JSON.parse(storedUserInfo)
-
-            console.log(parsedUserInfo)
-
             setUserInfo({
                 name: parsedUserInfo.name,
                 institution: parsedUserInfo.institution,
-                picture: parsedUserInfo.picture
+                picture: parsedUserInfo.picture,
+                email: parsedUserInfo.email
             })
         }
 
         const savedTheme = localStorage.getItem('theme')
         if (savedTheme) setTheme(savedTheme)
-    }, [])
+        console.log(userInfo)
+        if (userInfo.email) {
+            addToConversationsArray(userInfo.email);
+        }
+    }, [userInfo.email, setTheme]);
 
-    const addToConversationArray = (code) => {
-        setConversationArray([...conversationArray, code])
+    const addToConversationsArray = async (email) => {
+        const apiGatewayURL = process.env.REACT_APP_VERCEL_API_GATEWAY
+            ? `https://${process.env.REACT_APP_VERCEL_API_GATEWAY}`
+            : 'http://127.0.0.1:2000'
+        
+        try {
+            const response = await fetch(`${apiGatewayURL}/get/tareas`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email }),
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Error en la solicitud: ${response.status} ${response.statusText}`);
+            }
+    
+            const data = await response.json();
+    
+            // Verifica que se haya recibido correctamente las tareas
+            if (data && data.tareas) {
+                const tareaNombres = data.tareas.map(tarea => tarea.Nombre)
+                setConversationArray(tareaNombres)
+            } else {
+                console.warn('No se encontraron tareas o el campo "tareas" está vacío.');
+            }
+        } catch (error) {
+            console.error('Error al realizar la solicitud:', error);
+        }
     }
+
+    const addToConversationArray = async (code) => {
+        const apiGatewayURL = process.env.REACT_APP_VERCEL_API_GATEWAY
+            ? `https://${process.env.REACT_APP_VERCEL_API_GATEWAY}`
+            : 'http://127.0.0.1:2000';
+    
+        try {
+            const response = await fetch(`${apiGatewayURL}/get/tarea`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({code: code, email: userInfo.email}),
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Error en la solicitud: ${response.status} ${response.statusText}`)
+            }
+    
+            const data = await response.json()
+    
+            // Verifica que data.tarea exista y tenga el campo Nombre
+            if (data && data.tarea && data.tarea.Nombre) {
+                setConversationArray((prevArray) => [...prevArray, data.tarea.Nombre])
+            } else {
+                console.warn('No se encontró la tarea o no tiene el campo Nombre.')
+            }
+        } catch (error) {
+            console.error('Error al realizar la solicitud:', error)
+        }
+    };
+    
 
     // Cambiar entre vista de estudiante y profesor
     // const changeView = () => {
