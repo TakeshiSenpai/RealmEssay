@@ -7,19 +7,19 @@ import Showdown from 'showdown'
 
 // SendMessage es un componente que permite al estudiante enviar mensajes a la IA
 const SendMessage = ({
-                                studentConversationArray,
-                                setStudentConversationArray,
-                                aIConversationArray,
-                                setAiConversationArray,
-                                doneIA, 
-                                setDoneIA
-                            }) => {
+                         studentConversationArray,
+                         setStudentConversationArray,
+                         aIConversationArray,
+                         setAiConversationArray,
+                         doneIA,
+                         setDoneIA
+                     }) => {
     const token = localStorage.getItem('token')
     const [message, setMessage] = useState('')
     const [loading, setLoading] = useState(false)  // Nuevo estado para controlar el spinner
     const IAUrl = process.env.REACT_APP_VERCEL_IA
-                ? `https://${process.env.REACT_APP_VERCEL_IA}`
-                : 'http://127.0.0.1:2003'
+        ? `https://${process.env.REACT_APP_VERCEL_IA}`
+        : 'http://127.0.0.1:2003'
     // Actualiza el estado con el valor actual del TextField
     const handleChange = (event) => {
         setMessage(event.target.value)
@@ -33,7 +33,7 @@ const SendMessage = ({
         setLoading(true) // Activar el spinner cuando se envía el mensaje
 
         try {
-    
+
             const response = await fetch(`${IAUrl}/questions_and_responses`, {
                 method: 'POST',
                 headers: {
@@ -46,38 +46,37 @@ const SendMessage = ({
                 const decoder = new TextDecoder('utf-8')
                 let done = false
                 let accumulatedText = ""
-                
+
                 while (!done) {
                     const {value, done: streamDone} = await reader.read()
-                    console.log(value, done)
                     done = streamDone
                     if (value) {
-                        const chunk = decoder.decode(value, { stream: true });
-    
+                        const chunk = decoder.decode(value, {stream: true});
+
                         // Procesa el chunk para extraer el texto
                         const matches = chunk.match(/data:\s*(\{.*\})/); // Busca el JSON en el chunk
                         if (matches) {
                             const jsonData = JSON.parse(matches[1]); // Parsea el JSON encontrado
                             const text = jsonData.text; // Extrae el texto
-    
+                            console.log(text)
                             // Acumula solo el texto
                             accumulatedText += text;
-    
+
                             // Actualiza el array con el nuevo fragmento
                             setAiConversationArray([...aIConversationArray, accumulatedText]);
-                    
-                            setDoneIA([...doneIA,done])
-                            
+
+                            setDoneIA([...doneIA, done])
+
                         }
                     }
                 }
-                setDoneIA([...doneIA,done])
+                setDoneIA([...doneIA, done])
             } else {
-                
+
                 console.error(`Error: ${response.status} - ${response.statusText}`)
             }
         } catch (error) {
-            
+
             console.error('Error durante la recepción de la respuesta de la IA:', error)
         }
         setLoading(false)  // Desactivar el spinner al finalizar la solicitud o en caso de error
