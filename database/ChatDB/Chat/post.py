@@ -20,8 +20,8 @@ chat_collection = db["Chat"]
 # Función para crear chats desde un archivo JSON
 def crear_chat_desde_json(archivo_json):
     try:
-        # Leer el archivo JSON
-        with open(archivo_json, 'r') as file:
+        # Leer el archivo JSON con codificación UTF-8
+        with open(archivo_json, 'r', encoding='utf-8') as file:
             chats = json.load(file)
 
         # Insertar los chats en la colección
@@ -37,7 +37,7 @@ def crear_chat_desde_json(archivo_json):
     except json.JSONDecodeError:
         print(f"Error al decodificar el archivo JSON {archivo_json}.")
     except Exception as e:
-        print(f"Ocurrió un error: {e}")
+        print(f"Ocurrió un error: {str(e).encode('utf-8').decode('utf-8')}")
 
 # Ejemplo de uso
 crear_chat_desde_json('data.json')

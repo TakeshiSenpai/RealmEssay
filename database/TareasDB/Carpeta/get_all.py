@@ -26,13 +26,13 @@ def obtener_todas_las_carpetas(archivo_json=None):
         # Convertir ObjectId a string para que sea serializable en JSON
         for carpeta in carpetas:
             carpeta['_id'] = str(carpeta['_id'])
-            if "Chats" in carpeta:  # Si existen datos en el campo 'Chats'
+            if "Chats" in carpeta and isinstance(carpeta["Chats"], list):
                 carpeta['Chats'] = [str(chat['ChatId']) for chat in carpeta['Chats']]
 
-        # Si se proporciona un archivo JSON, exportar los datos
+        # Si se proporciona un archivo JSON, exportar los datos con UTF-8
         if archivo_json:
-            with open(archivo_json, 'w') as file:
-                json.dump(carpetas, file, indent=4)
+            with open(archivo_json, 'w', encoding='utf-8') as file:
+                json.dump(carpetas, file, ensure_ascii=False, indent=4)
             print(f"Datos exportados a {archivo_json}")
 
         # Imprimir carpetas en la consola
@@ -41,11 +41,11 @@ def obtener_todas_las_carpetas(archivo_json=None):
             print(carpeta)
         
         return carpetas
-    
+
     except Exception as e:
         print(f"Ocurrió un error: {e}")
 
 # Ejemplo de uso
 if __name__ == "__main__":
     # Exportar todos los datos a un archivo JSON (opcional)
-    obtener_todas_las_carpetas('carpetas.json')
+    obtener_todas_las_carpetas('data1.json')

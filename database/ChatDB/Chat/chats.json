@@ -1,0 +1,26 @@
+[
+    {
+        "_id": "673993b946e26957157fbc4e",
+        "CorreoAlumno": "alumno1@example.com",
+        "RespuestasIA": [
+            "Hola, ¿cómo estás?",
+            "Estoy mal, gracias."
+        ],
+        "RespuestasAlumno": [
+            "Estoy mal, ¿y tú?",
+            "Perfecto."
+        ]
+    },
+    {
+        "_id": "673993b946e26957157fbc4f",
+        "CorreoAlumno": "alumno2@example.com",
+        "RespuestasIA": [
+            "¿Qué necesitas?",
+            "¿Puedo ayudarte?"
+        ],
+        "RespuestasAlumno": [
+            "Nada, gracias.",
+            "Solo explorando."
+        ]
+    }
+]

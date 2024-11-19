@@ -30,4 +30,4 @@ def eliminar_tarea(tarea_id):
         print(f"Ocurrió un error: {e}")
 
 # Ejemplo de uso
-eliminar_tarea("671dc4104eb0128c1f12a1e3")
+eliminar_tarea("6739c4e5ea37f175c3833ed8")

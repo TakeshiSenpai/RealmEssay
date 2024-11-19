@@ -1,9 +1,9 @@
 {
-    "_id": "671dc4104eb0128c1f12a1e3",
-    "Descripcion": "Tarea de matematicas sobre algebra",
+    "Descripcion": "Ensayo de la primera guerra mundial",
     "Alumnos": [
-        { "AlumnoId": "605c9a1b8cfa0d1c4cb7dbae", "Nombre": "Juan Perez" },
-        { "AlumnoId": "605c9a1b8cfa0d1c4cb7dbaf", "Nombre": "Maria Lopez" }
+        { "AlumnoId": "605c9a1b8cfa0d1c4cb7dbae", "Nombre": "Juan Rodríguez" },
+        { "AlumnoId": "605c9a1b8cfa0d1c4cb7dbaf", "Nombre": "Maria López" },
+        { "AlumnoId": "605c9a1b8cfa0d1c4cb7dbae", "Nombre": "Alumno Nuevo"}
     ],
     "Rubrica": "Puntaje: 100, Evaluacion por conceptos"
 }

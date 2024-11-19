@@ -20,8 +20,8 @@ tarea_collection = db["Tarea"]
 # Función para crear una nueva tarea desde un archivo JSON
 def crear_tarea_desde_json(archivo_json):
     try:
-        # Leer el archivo JSON
-        with open(archivo_json, 'r') as file:
+        # Leer el archivo JSON con codificación UTF-8
+        with open(archivo_json, 'r', encoding='utf-8') as file:
             datos_tarea = json.load(file)
 
         # Insertar la tarea en la colección
@@ -33,7 +33,8 @@ def crear_tarea_desde_json(archivo_json):
     except json.JSONDecodeError:
         print(f"Error al decodificar el archivo JSON {archivo_json}.")
     except Exception as e:
-        print(f"Ocurrió un error: {e}")
+        print(f"Ocurrió un error: {str(e).encode('utf-8').decode('utf-8')}")
 
 # Ejemplo de uso
-crear_tarea_desde_json('data.json')
+if __name__ == "__main__":
+    crear_tarea_desde_json('data.json')

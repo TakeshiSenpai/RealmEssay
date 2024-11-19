@@ -17,30 +17,40 @@ client = MongoClient(f"mongodb+srv://{mongo_user}:{mongo_password}@{mongo_cluste
 db = client["TareasDB"]
 alumno_collection = db["Alumno"]
 
-# Función para actualizar un alumno por su ID usando datos desde un archivo JSON
-def actualizar_alumno_desde_json(alumno_id, archivo_json):
+# Función para actualizar un alumno desde un archivo JSON con lista de objetos
+def actualizar_alumno_desde_json(archivo_json):
     try:
-        # Leer el archivo JSON
-        with open(archivo_json, 'r') as file:
-            nuevos_datos = json.load(file)
+        # Leer el archivo JSON con codificación UTF-8
+        with open(archivo_json, 'r', encoding='utf-8') as file:
+            datos_alumnos = json.load(file)
 
-        # Actualizar el alumno en la colección
-        resultado = alumno_collection.update_one(
-            {"_id": ObjectId(alumno_id)}, 
-            {"$set": nuevos_datos}
-        )
+        # Verificar que sea una lista
+        if isinstance(datos_alumnos, list):
+            for alumno in datos_alumnos:
+                if "_id" in alumno:
+                    alumno["_id"] = ObjectId(alumno["_id"])  # Convertir _id a ObjectId
 
-        if resultado.matched_count > 0:
-            print(f"Alumno con ID {alumno_id} actualizado.")
+                # Extraer el ID y removerlo de los datos para la actualización
+                alumno_id = alumno.pop("_id")
+                resultado = alumno_collection.update_one(
+                    {"_id": alumno_id},
+                    {"$set": alumno}
+                )
+
+                if resultado.matched_count > 0:
+                    print(f"Alumno con ID {alumno_id} actualizado.")
+                else:
+                    print(f"Alumno con ID {alumno_id} no encontrado.")
         else:
-            print(f"Alumno con ID {alumno_id} no encontrado.")
+            print("El archivo JSON debe contener una lista de objetos.")
     
     except FileNotFoundError:
         print(f"Archivo {archivo_json} no encontrado.")
     except json.JSONDecodeError:
         print(f"Error al decodificar el archivo JSON {archivo_json}.")
     except Exception as e:
-        print(f"Ocurrió un error: {e}")
+        print(f"Ocurrió un error: {str(e).encode('utf-8').decode('utf-8')}")
 
 # Ejemplo de uso
-actualizar_alumno_desde_json("605c9a1b8cfa0d1c4cb7dbae", 'data.json')
+if __name__ == "__main__":
+    actualizar_alumno_desde_json('data.json')
