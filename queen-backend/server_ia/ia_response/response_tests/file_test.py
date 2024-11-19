@@ -56,4 +56,4 @@ def test(filename):
     real_input(text_data)
     #print(text_data)
 
-test(str(pathlib.Path('Propuesta de arquitectura.pdf').resolve()))
+#test(str(pathlib.Path('Propuesta de arquitectura.pdf').resolve()))

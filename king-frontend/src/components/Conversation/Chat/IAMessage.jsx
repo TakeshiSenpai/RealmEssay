@@ -1,10 +1,12 @@
-import {Box} from "@mui/material"
+import {Box, CircularProgress} from "@mui/material"
 import React from "react"
 import IAIcon from "./IAIcon"
 import Showdown from "showdown"
+import Audio from "./Audio"
+
 
 // IAMessage es un componente que representa un mensaje de la inteligencia artificial
-const IAMessage = ({message}) => {
+const IAMessage = ({message,doneIA}) => {
     
     // Función que convierte el mensaje en HTML
     const superMessage = () => {
@@ -18,6 +20,7 @@ const IAMessage = ({message}) => {
         <Box sx={{
             display: 'flex',
             alignItems: 'flex-end',
+            gap: 2,
             width: '100%',
         }}>
             <Box sx={{
@@ -36,12 +39,31 @@ const IAMessage = ({message}) => {
                 borderRadius: '24px',
                 px: '1.25rem',
                 py: '.625rem',
+                maxWidth : '800px',
                 backgroundColor: (theme) => theme.palette.colors.iaBackground,
                 whiteSpace: 'pre-wrap',
             }}
+    
                  dangerouslySetInnerHTML={{__html: superMessage()}}>
             </Box>
-        </Box>)
+            <Box sx={{
+                borderRadius: '24px',
+                px: '1.25rem',
+                py: '.625rem',
+                backgroundColor: (theme) => theme.palette.colors.iaBackground,
+            }}>
+                {console.log(doneIA)}
+                {!doneIA ? <CircularProgress size={30} sx={{color: (theme) => theme.palette.primary.main}}/>:<Audio 
+                doneIA={doneIA}
+                message={message}
+                /> }
+            </Box>
+           
+        </Box>
+        
+
+        
+        )
 }
 
 export default IAMessage

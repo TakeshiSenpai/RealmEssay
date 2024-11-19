@@ -1,0 +1,66 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:03.587
+Este es un artículo académico / técnico que presenta el
+
+00:00:03.600 --> 00:00:07.025
+desarrollo de una plataforma didáctica para el control servo-visual de
+
+00:00:07.037 --> 00:00:14.738
+un levitador neumático Analizaré sus principales componentes ESTRUCTURA Título
+Autores
+
+00:00:14.750 --> 00:00:22.438
+e información institucional UABC Resumen Introducción Secciones técnicas Conclu-
+siones Referencias
+
+00:00:23.312 --> 00:00:27.238
+CONTENIDO PRINCIPAL El documento describe un proyecto que consiste en
+
+00:00:27.525 --> 00:00:31.275
+1 Una maqueta / prototipo de un levitador neumático que
+
+00:00:31.288 --> 00:00:34.112
+hace flotar una pelota de ping-pong en un tubo usando
+
+00:00:34.125 --> 00:00:37.900
+aire 2 Uso de visión por computadora en lugar de
+
+00:00:37.913 --> 00:00:41.688
+sensores tradicionales para medir la posición 3 Implementación de un
+
+00:00:41.700 --> 00:00:46.050
+controlador PID para regular la posición 4 Una interfaz gráfica
+
+00:00:46.062 --> 00:00:51.212
+desarrollada con Tkinter ASPECTO EDUCATIVO El proyecto está diseñado para
+
+00:00:51.225 --> 00:00:56.538
+ser utilizado en materias como Sistemas de Control Microcontroladores Electróni-
+ca
+
+00:00:56.550 --> 00:01:03.150
+Avanzada Sistemas Embebidos Control de Sistemas Dinámicos ASPECTOS TÉCNICOS Usa
+
+00:01:03.163 --> 00:01:06.350
+procesamiento de imágenes para detectar la posición de la pelota
+
+00:01:06.612 --> 00:01:11.500
+Implementa comunicación UART entre la computadora y el microcontrolador Utiliza
+
+00:01:11.513 --> 00:01:17.062
+Arduino ATmega328p para el control Incorpora una interfaz gráfica para
+
+00:01:17.075 --> 00:01:22.925
+ajustar parámetros FORMATO Se observan algunos problemas con caracteres especia-
+les
+
+00:01:23.162 --> 00:01:26.638
+tildes y símbolos que aparecen mal codificados en el texto
+
+00:01:27.500 --> 00:01:30.575
+Hay algún aspecto específico del documento sobre el que desee
+
+00:01:30.588 --> 00:01:31.600
+más información
+

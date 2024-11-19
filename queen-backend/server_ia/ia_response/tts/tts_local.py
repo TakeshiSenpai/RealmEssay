@@ -1,4 +1,7 @@
 import subprocess
+import io
+import edge_tts
+import asyncio
 
 
 # Función para limpiar el texto
@@ -47,5 +50,28 @@ def run_edge_tts(text, voice):
         print("Audio generado con éxito: cleanOutput.mp3")
     except subprocess.CalledProcessError as e:
         print(f"Error al ejecutar edge_tts: {e}")
+
+
+async def _async_generator_to_list(async_gen):
+    result = []
+    async for item in async_gen:
+        result.append(item)
+    return result
+
+async def _iterate_chunks(audio):
+    async for chunk in audio.stream():
+        if chunk["type"] == "audio":
+            yield chunk["data"]
+
+
+def run_edge_tts_return_binary(text, voice):
+    audio = edge_tts.Communicate(text=text, voice=voice)
+    chunks = asyncio.run(_async_generator_to_list(_iterate_chunks(audio)))
+    buffer = io.BytesIO()
+
+    for chunk in chunks:
+        buffer.write(chunk)
+
+    return buffer.getvalue()
 
 

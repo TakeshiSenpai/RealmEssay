@@ -4,11 +4,12 @@ import SendMessage from '../components/Conversation/Chat/SendMessage'
 import Conversation from '../components/Conversation/Conversation'
 import UploadButton from "../components/Conversation/UploadButton"
 
+
 // StudentAIChat es un componente que representa la vista del chat del alumno con la IA
 const StudentAIChat = () => {
     const [studentConversationArray, setStudentConversationArray] = useState([])
     const [aIConversationArray, setAiConversationArray] = useState([])
-
+    const [doneIA, setDoneIA] = useState([]);
     const [showConversation, setShowConversation] = useState(false)
 
     return showConversation ? (
@@ -27,6 +28,8 @@ const StudentAIChat = () => {
                 <Conversation 
                     studentConversationArray={studentConversationArray} 
                     aIConversationArray={aIConversationArray}
+                    doneIA={doneIA}
+                    setDoneIA={setDoneIA}
                 />
             </Box>
 
@@ -40,6 +43,8 @@ const StudentAIChat = () => {
                     setStudentConversationArray={setStudentConversationArray}
                     aIConversationArray={aIConversationArray}
                     setAiConversationArray={setAiConversationArray}
+                    doneIA={doneIA}
+                    setDoneIA={setDoneIA}
                 />
             </Box>
         </Box>
