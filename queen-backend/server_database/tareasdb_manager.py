@@ -22,6 +22,25 @@ class TareasDBManager:
         self.db = self.client["TareasDB"]
         self.collection = None
 
+    def create_from_json_object(self, json_object):
+        """
+        Crea un documento en la colección activa desde un objeto JSON.
+        :param json_object: Objeto JSON (puede ser un dict o una lista de dicts).
+        """
+        try:
+            # Verifica si el objeto es una lista de documentos o un solo documento
+            if isinstance(json_object, list):
+                result = self.collection.insert_many(json_object)
+                print(f"{len(result.inserted_ids)} documentos creados.")
+            elif isinstance(json_object, dict):
+                result = self.collection.insert_one(json_object)
+                print(f"Documento creado con ID: {result.inserted_id}")
+            else:
+                print("El objeto JSON proporcionado no es válido. Debe ser un dict o una lista de dicts.")
+        except Exception as e:
+            print(f"Error al crear documento(s): {e}")
+
+
     def set_collection(self, collection_name):
         """
         Cambia la colección activa.
