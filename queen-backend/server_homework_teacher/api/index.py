@@ -6,17 +6,14 @@ from email.mime.text import MIMEText
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-# Librerías para conexión a la base de datos MongoDB
-from pymongo import MongoClient
+from server_database.chatdb_manager import ChatDBManager
+from server_database.tareasdb_manager import TareasDBManager
+
+tarea_db_manager = TareasDBManager()
+chat_db_manager = ChatDBManager()
 
 # Cargar las variables de entorno desde el archivo .env
 load_dotenv()
-
-# Conexión a la base de datos MongoDB
-client = MongoClient(
-    "mongodb+srv://alan11gt:ioUvPgAvDZcVwWXs@cluster0.2b8il.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
-db = client["TareasDB"]
-tarea_collection = db["Tarea"]
 
 # Crear la aplicación Flask
 app = Flask(__name__)
@@ -100,25 +97,46 @@ def post_tarea_db():
     """
     try:
         # Obtener los datos de la tarea del cuerpo de la solicitud
+        id_tarea = request.json.get('id')
         profesor = request.json.get('Profesor')
         nombre = request.json.get('Nombre')
         rubrica = request.json.get('Rubrica')
         alumnos = request.json.get('Alumnos')
         descripcion = request.json.get('Descripcion')
-        tarea_id = request.json.get("id")  # ID único para la tarea (puede generarse automáticamente)
+
+        alumnos = [alumno.strip() for alumno in alumnos]
+        
+        alumnos_objeto = []
+
+        for alumno in alumnos:
+            alumnos_objeto.append({
+                "email": alumno,
+                "Aceptada": False  
+            })
+
+        print(alumnos_objeto)
 
         # Crear el diccionario con los datos de la tarea
         datos_tarea = {
-            "id": tarea_id,
-            "Profesor": profesor,
+            "id": id_tarea,
             "Descripcion": descripcion,
             "Nombre": nombre,
             "Rubrica": rubrica,
-            "Alumnos": alumnos
+            "Alumnos": alumnos_objeto
         }
 
-        # Insertar la tarea en la base de datos
-        tarea_collection.insert_one(datos_tarea)
+        tarea_db_manager.set_collection("Carpeta")
+        carpetas = tarea_db_manager.read_all()
+        carpeta_profesor = None
+
+        for carpeta in carpetas:
+            if carpeta["email"] == profesor:
+                carpeta_profesor = carpeta
+                break
+        carpeta_profesor["data"].append(datos_tarea)
+
+        tarea_db_manager.update_by_id(carpeta_profesor["_id"], carpeta_profesor)
+
         return jsonify({'success': True, 'message': 'Tarea guardada correctamente'}), 200
 
     except Exception as e:

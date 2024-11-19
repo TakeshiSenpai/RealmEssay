@@ -65,6 +65,13 @@ const Homework = () => {
             const homeworkParametersCopy = homeworkParameters
             reiniciarParametros();
             const html = await printHtmlConfirmation(homeworkParametersCopy,parsedUserInfo.name)
+            const payload = {
+                email: parsedUserInfo.email,
+                name: parsedUserInfo.name,
+                homeworkParameters: homeworkParametersCopy,
+                htmlContent: html,
+            }
+            console.log(payload)
             await updateBD(homeworkParametersCopy,parsedUserInfo.email)
 
             const to = []

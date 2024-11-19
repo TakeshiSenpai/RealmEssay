@@ -65,10 +65,7 @@ def get_response():
     try:
         #student_questions del cuerpo de la solicitud POST
         data = request.json
-        print("Porque no imprimio nada wtf")
-        print(data)
         student_questions = data.get("student_questions", [])
-        print(student_questions)
         # Procesar la respuesta como un stream de datos
         def generate():
             for chunk in ia_response_claude.process_questions_and_responses(student_questions):

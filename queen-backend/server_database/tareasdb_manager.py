@@ -22,13 +22,31 @@ class TareasDBManager:
         self.db = self.client["TareasDB"]
         self.collection = None
 
+    def create_from_json_object(self, json_object):
+        """
+        Crea un documento en la colección activa desde un objeto JSON.
+        :param json_object: Objeto JSON (puede ser un dict o una lista de dicts).
+        """
+        try:
+            # Verifica si el objeto es una lista de documentos o un solo documento
+            if isinstance(json_object, list):
+                result = self.collection.insert_many(json_object)
+                print(f"{len(result.inserted_ids)} documentos creados.")
+            elif isinstance(json_object, dict):
+                result = self.collection.insert_one(json_object)
+                print(f"Documento creado con ID: {result.inserted_id}")
+            else:
+                print("El objeto JSON proporcionado no es válido. Debe ser un dict o una lista de dicts.")
+        except Exception as e:
+            print(f"Error al crear documento(s): {e}")
+
+
     def set_collection(self, collection_name):
         """
         Cambia la colección activa.
         :param collection_name: Nombre de la colección (por ejemplo, "Alumno" o "Tarea").
         """
         self.collection = self.db[collection_name]
-        print(f"Colección activa: {collection_name}")
 
     # CRUD GENÉRICO
 
@@ -58,9 +76,6 @@ class TareasDBManager:
             documents = list(self.collection.find())
             for doc in documents:
                 doc['_id'] = str(doc['_id'])  # Convertir ObjectId a string
-            print("Documentos obtenidos:")
-            for doc in documents:
-                print(doc)
             return documents
         except Exception as e:
             print(f"Error al leer documentos: {e}")
@@ -82,26 +97,36 @@ class TareasDBManager:
         except Exception as e:
             print(f"Error al leer documento por ID: {e}")
 
-    def update_by_id(self, document_id, json_file):
+    def update_by_id(self, document_id, json_data):
         """
-        Actualiza un documento por su ID en la colección activa desde un archivo JSON.
+        Actualiza un documento por su ID en la colección activa desde un objeto JSON.
         :param document_id: ID del documento.
-        :param json_file: Ruta del archivo JSON con los datos para actualizar.
+        :param json_data: Objeto JSON (diccionario) con los datos para actualizar.
         """
         try:
-            with open(json_file, 'r') as file:
-                data = json.load(file)
+            # Asegúrate de que json_data sea un diccionario
+            if not isinstance(json_data, dict):
+                raise ValueError("El parámetro json_data debe ser un diccionario.")
+            
+            # Eliminar el campo '_id' si existe para evitar errores
+            if "_id" in json_data:
+                del json_data["_id"]
 
+            # Realizar la actualización
             result = self.collection.update_one(
                 {"_id": ObjectId(document_id)},
-                {"$set": data}
+                {"$set": json_data}
             )
+
+            # Verificar si se actualizó algún documento
             if result.matched_count > 0:
-                print(f"Documento con ID {document_id} actualizado.")
+                print(f"Documento con ID {document_id} actualizado exitosamente.")
             else:
-                print("Documento no encontrado.")
+                print(f"No se encontró ningún documento con el ID {document_id}.")
         except Exception as e:
             print(f"Error al actualizar documento: {e}")
+
+
 
     def delete_by_id(self, document_id):
         """
