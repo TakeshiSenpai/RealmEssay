@@ -3,7 +3,7 @@ import {Button} from "@mui/material"
 import {Grading} from "@mui/icons-material"
 import Typography from "@mui/material/Typography"
 import {useNavigate} from "react-router-dom"
-import {useIsStudent} from "../../IsStudentProvider"
+import {useIsStudent} from "../../IsStudentProvider";
 
 const TeacherHome = () => {
     const navigate = useNavigate()

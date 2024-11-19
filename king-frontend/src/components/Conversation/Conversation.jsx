@@ -11,8 +11,6 @@ export function Conversation({ studentConversationArray, aIConversationArray,don
         if (conversationEndRef.current) {
             conversationEndRef.current.scrollIntoView({ behavior: 'smooth' })
         }
-        console.log("Ahora en conversation")
-        console.log(doneIA)
     }, [studentConversationArray, aIConversationArray])
 
     return (

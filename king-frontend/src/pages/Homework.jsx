@@ -17,7 +17,7 @@ import {Link, useNavigate} from "react-router-dom"
 //import { sendEmail } from '../app/api/emails/envioCodigoDeTarea.jsx'
 import CodigoDeTarea from "../app/emails/CodigoDeTarea.jsx"
 import {render} from '@react-email/components'
-import EmailProfesorConfirmation from '../app/emails/EmailProfesorConfirmation.jsx'
+import EmailProfesorConfirmation from '../app/emails/emailProfesorConfirmation'
 import {useIsStudent} from "../components/IsStudentProvider"
 
 
