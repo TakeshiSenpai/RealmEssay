@@ -76,6 +76,42 @@ def get_tareas():
     
     return jsonify({'success': True, 'tareas': carpetas_encontradas}), 200
 
+@app.route('/get/tarea/id', methods=['POST'])
+def get_tareas_id():
+    # Validar que la solicitud tiene datos JSON válidos
+    if not request.json or 'name' not in request.json:
+        return jsonify({'success': False, 'error': 'Nombre de tarea no proporcionado'}), 400
+
+    task_name = request.json.get('name')
+    
+    # Asegurarse de que `task_name` no sea None
+    if not task_name:
+        return jsonify({'success': False, 'error': 'Nombre de tarea vacío'}), 400
+    
+    tareas_db_manager.set_collection("Carpeta")
+    carpetas = tareas_db_manager.read_all()
+    tarea_encontrada = None
+
+    try:
+        # Extraer ID desde `task_name`
+        id_tarea = task_name.split("-")[1].strip()  # Solo toma la primera parte y elimina espacios
+        print(id_tarea)
+        # Buscar la tarea correspondiente
+        for carpeta in carpetas:
+            for tarea in carpeta.get("data", []):  # Usa `.get()` para evitar errores si "data" no existe
+                if str(tarea.get("id")) == id_tarea:
+                    tarea_encontrada = tarea
+                    break
+            if tarea_encontrada:
+                break  
+        print(tarea_encontrada)
+    except Exception as e:
+        return jsonify({'success': False, 'error': f'Error al procesar la tarea: {str(e)}'}), 500
+
+    if tarea_encontrada:
+        return jsonify({'success': True, 'tarea': tarea_encontrada}), 200
+    else:
+        return jsonify({'success': False, 'error': 'Tarea no encontrada'}), 404
 
 @app.after_request
 def add_header(response):

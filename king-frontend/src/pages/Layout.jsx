@@ -29,6 +29,7 @@ const Layout = ({theme, setTheme, isAuto}) => {
     const [conversationArray, setConversationArray] = useState([])
     const [arregloDeTareas, setArregloDeTareas] = useState(["Primera Tarea"])
     const {isStudent} = useIsStudent()
+    const [selectedIndex, setSelectedIndex] = useState(null);
 
     const navigate = useNavigate()
 
@@ -84,7 +85,7 @@ const Layout = ({theme, setTheme, isAuto}) => {
     
             // Verifica que se haya recibido correctamente las tareas
             if (data && data.tareas) {
-                const tareaNombres = data.tareas.map(tarea => tarea.Nombre)
+                const tareaNombres = data.tareas.map(tarea => tarea.Nombre +" - " +  tarea.id)
                 setConversationArray(tareaNombres)
             } else {
                 console.warn('No se encontraron tareas o el campo "tareas" está vacío.');
@@ -116,7 +117,7 @@ const Layout = ({theme, setTheme, isAuto}) => {
     
             // Verifica que data.tarea exista y tenga el campo Nombre
             if (data && data.tarea && data.tarea.Nombre) {
-                setConversationArray((prevArray) => [...prevArray, data.tarea.Nombre])
+                setConversationArray((prevArray) => [...prevArray, (data.tarea.Nombre +" - " + data.tarea.id)])
             } else {
                 console.warn('No se encontró la tarea o no tiene el campo Nombre.')
             }
@@ -134,6 +135,27 @@ const Layout = ({theme, setTheme, isAuto}) => {
     // const addArregloDeTareas = (nombre) => {
     //     setConversationArray([...conversationArray, nombre])
     // }
+    const handleFetchTask = async (taskName) => {
+        const apiGatewayURL = process.env.REACT_APP_VERCEL_API_GATEWAY
+            ? `https://${process.env.REACT_APP_VERCEL_API_GATEWAY}`
+            : 'http://127.0.0.1:2000';
+    
+        try {
+            const response = await fetch(`${apiGatewayURL}/get/tarea/id`, { // Reemplaza con tu URL
+                method: 'POST', // Cambia según el método de tu API
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name: taskName}), // Envía el nombre de la tarea
+            })
+    
+            const data = await response.json();
+            console.log('Respuesta del servidor:', data.tarea);
+            localStorage.setItem("tarea", data.tarea)
+        } catch (error) {
+            console.error('Error en el fetch:', error);
+        }
+    }
 
     const handleThemeChange = (newTheme) => {
         setTheme(newTheme)
@@ -144,14 +166,25 @@ const Layout = ({theme, setTheme, isAuto}) => {
     const displaySidebarListItems = () => {
         if (isStudent) {
             return [
-                conversationArray.map((_, index) => (
+                conversationArray.map((item, index) => (
                     <ListItem key={index}>
-                        <ListItemButton component={Link} to="/">
-                            {conversationArray[index].length > 30 ? conversationArray[index].slice(0, 25) + "..." : conversationArray[index]}
+                        <ListItemButton
+                            component={Link}
+                            to="/essays"
+                            onClick={() => {
+                                setSelectedIndex(index); // Actualiza el índice seleccionado
+                                handleFetchTask(item); // Realiza el fetch con el nombre de la tarea
+                            }}
+                            sx={{
+                                fontWeight: selectedIndex === index ? 'bold' : 'normal', // Cambia el estilo si está seleccionado
+                                backgroundColor: selectedIndex === index ? '#f0f0f0' : 'transparent', // Ejemplo: cambia color de fondo
+                            }}
+                        >
+                            {item.length > 30 ? item.slice(0, 25) + "..." : item}
                         </ListItemButton>
                     </ListItem>
                 ))
-            ]
+            ];
         }
         return [
             arregloDeTareas.map((_, index) => (
