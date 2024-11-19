@@ -3,6 +3,9 @@ import os
 import pathlib
 import sys
 import anthropic
+
+from server_ia.ia_response.response_tests.file_test import clean_text
+
 sys.path.append(str(pathlib.Path(__file__).parent.resolve()))
 #print(str(pathlib.Path(__file__).parent.resolve()))
 from tts import tts_local
@@ -247,9 +250,9 @@ def process_ia_response(result_stream, input_text, student_questions=None):
             yield text  # Enviar cada fragmento al cliente o donde se consuma
 
         # Procesar el texto de respuesta
-        clean_text = tts_local.procesar_texto(response_text)
+        #clean_text = tts_local.procesar_texto(response_text)
        # print(f"Texto limpio: {clean_text}")
-        tts_local.run_edge_tts(clean_text,"es-MX-DaliaNeural")
+        #tts_local.run_edge_tts(clean_text,"es-MX-DaliaNeural")
 
 
         # Guardar la interacción en el archivo JSON
@@ -264,6 +267,11 @@ def process_ia_response(result_stream, input_text, student_questions=None):
         error_message = f"Error al procesar la respuesta de la IA: {str(e)}"
         print(error_message)
         yield json.dumps({"message": error_message})
+
+
+def send_tts(response_text):
+    clean_text_tts = tts_local.procesar_texto(response_text)
+    return tts_local.run_edge_tts_return_binary(clean_text_tts,'es-MX-DaliaNeural')
 
 # for text in process_questions_and_responses(data.get("student_questions")):
 #     print(text,end="",flush=True)

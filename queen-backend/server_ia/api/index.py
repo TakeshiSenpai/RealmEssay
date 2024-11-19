@@ -65,10 +65,7 @@ def get_response():
     try:
         #student_questions del cuerpo de la solicitud POST
         data = request.json
-        print("Porque no imprimio nada wtf")
-        print(data)
         student_questions = data.get("student_questions", [])
-        print(student_questions)
         # Procesar la respuesta como un stream de datos
         def generate():
             for chunk in ia_response_claude.process_questions_and_responses(student_questions):
@@ -82,6 +79,19 @@ def get_response():
 
     except Exception as e:
         return jsonify({"error": f"Error al obtener la respuesta: {str(e)}"}), 500
+
+
+@app.route('/text_to_speech', methods=['POST'])
+def get_tts():
+    # Se supone que va a regresar lo ultimo generado
+    try:
+        text = request.json.get('text')
+        print(text)
+        data_tts = ia_response_claude.send_tts(text)
+        return Response(data_tts, mimetype='audio/mpeg')
+    except Exception as e:
+        print(e)
+        return jsonify({"error": f"Error al obtener la respuesta: {str(e)}"}), 400
 
 # Ruta para enviar los criterios de la IA
 @app.route('/submit_criteria', methods=['POST'])

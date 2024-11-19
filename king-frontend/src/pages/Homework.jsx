@@ -17,7 +17,7 @@ import {Link, useNavigate} from "react-router-dom"
 //import { sendEmail } from '../app/api/emails/envioCodigoDeTarea.jsx'
 import CodigoDeTarea from "../app/emails/CodigoDeTarea.jsx"
 import {render} from '@react-email/components'
-import EmailProfesorConfirmation from '../app/emails/emailProfesorConfirmation.jsx'
+import EmailProfesorConfirmation from '../app/emails/EmailProfesorConfirmation.jsx'
 import {useIsStudent} from "../components/IsStudentProvider"
 
 
@@ -65,6 +65,13 @@ const Homework = () => {
             const homeworkParametersCopy = homeworkParameters
             reiniciarParametros();
             const html = await printHtmlConfirmation(homeworkParametersCopy,parsedUserInfo.name)
+            const payload = {
+                email: parsedUserInfo.email,
+                name: parsedUserInfo.name,
+                homeworkParameters: homeworkParametersCopy,
+                htmlContent: html,
+            }
+            console.log(payload)
             await updateBD(homeworkParametersCopy,parsedUserInfo.email)
 
             const to = []

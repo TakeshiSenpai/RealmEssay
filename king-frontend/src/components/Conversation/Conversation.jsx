@@ -2,9 +2,8 @@ import {Box} from "@mui/material"
 import React, {useEffect, useRef} from "react"
 import StudentMessage from "./Chat/StudentMessage"
 import IAMessage from "./Chat/IAMessage"
-
 // Conversation es un componente que representa la conversación entre el estudiante y la IA
-export function Conversation({ studentConversationArray, aIConversationArray }) {
+export function Conversation({ studentConversationArray, aIConversationArray,doneIA }) {
     const conversationEndRef = useRef(null)
 
     // Hace scroll hasta el final de la conversación con una animación suave
@@ -12,6 +11,8 @@ export function Conversation({ studentConversationArray, aIConversationArray }) 
         if (conversationEndRef.current) {
             conversationEndRef.current.scrollIntoView({ behavior: 'smooth' })
         }
+        console.log("Ahora en conversation")
+        console.log(doneIA)
     }, [studentConversationArray, aIConversationArray])
 
     return (
@@ -22,8 +23,13 @@ export function Conversation({ studentConversationArray, aIConversationArray }) 
                         <Box sx={{ padding: 1 }} />
                         <StudentMessage message={mensaje} />
                         <Box sx={{ padding: 1 }} />
-                        {aIConversationArray[indice] && <IAMessage message={aIConversationArray[indice]} />}
+                        {aIConversationArray[indice] && <IAMessage 
+                        message={aIConversationArray[indice]}
+                        doneIA = {doneIA[indice]}
+                        />}
+                        
                     </React.Fragment>
+
                 ))
             )}
             <div ref={conversationEndRef} />
