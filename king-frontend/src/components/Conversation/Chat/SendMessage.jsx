@@ -10,7 +10,9 @@ const SendMessage = ({
                                 studentConversationArray,
                                 setStudentConversationArray,
                                 aIConversationArray,
-                                setAiConversationArray
+                                setAiConversationArray,
+                                doneIA, 
+                                setDoneIA
                             }) => {
     const token = localStorage.getItem('token')
     const [message, setMessage] = useState('')
@@ -44,7 +46,7 @@ const SendMessage = ({
                 const decoder = new TextDecoder('utf-8')
                 let done = false
                 let accumulatedText = ""
-
+                
                 while (!done) {
                     const {value, done: streamDone} = await reader.read()
                     console.log(value, done)
@@ -63,13 +65,19 @@ const SendMessage = ({
     
                             // Actualiza el array con el nuevo fragmento
                             setAiConversationArray([...aIConversationArray, accumulatedText]);
+                    
+                            setDoneIA([...doneIA,done])
+                            
                         }
                     }
                 }
+                setDoneIA([...doneIA,done])
             } else {
+                
                 console.error(`Error: ${response.status} - ${response.statusText}`)
             }
         } catch (error) {
+            
             console.error('Error durante la recepción de la respuesta de la IA:', error)
         }
         setLoading(false)  // Desactivar el spinner al finalizar la solicitud o en caso de error
